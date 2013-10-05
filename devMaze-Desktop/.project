@@ -3,6 +3,7 @@
 	<name>devMaze-Desktop</name>
 	<comment></comment>
 	<projects>
+		<project>devMaze</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
