@@ -1,6 +1,8 @@
 package dev.talk.maze;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 
 public class GameFrame implements ApplicationListener {
 	/* This is a gaming outline that covers the six major notifications that
@@ -18,9 +20,12 @@ public class GameFrame implements ApplicationListener {
 		
 	}
 	
-	// The main loop, fires up to 60 fps 
+	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
 	public void render() {
+		// Clear the screen to Deep Blue
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 	}
 	
