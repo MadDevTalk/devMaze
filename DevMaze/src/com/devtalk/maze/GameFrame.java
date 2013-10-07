@@ -3,12 +3,12 @@ package com.devtalk.maze;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameFrame implements ApplicationListener {
-	/* This is a gaming outline that covers the six major notifications that
-	 * Android sends an application. We can pretty much ignore Pause, Resume,
-	 * and Resize until we target Android. 
-	 */
+	OrthographicCamera camera;
+	SpriteBatch batch;
 	
 	// Runs when the application is first instantiated
 	public void create() {
@@ -17,6 +17,10 @@ public class GameFrame implements ApplicationListener {
 	 * Create the SpriteBatch object
 	 * Set the screen to the MenuScreen
 	 */
+		camera = new OrthographicCamera();
+		batch = new SpriteBatch();
+		
+		   
 		
 	}
 	
