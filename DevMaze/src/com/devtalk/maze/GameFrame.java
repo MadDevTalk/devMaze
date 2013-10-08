@@ -13,9 +13,9 @@ public class GameFrame implements ApplicationListener {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	
-	Texture imgMatt, imgAle, imgChristian, imgMax;
+	Texture imgMatt, imgAle, imgChristian, imgMax, imgDevTalk;
 	Music musTunak;
-	Rectangle matt, ale, max, christian;
+	Rectangle matt, ale, max, christian, devtalk;
 	
 	// Runs when the application is first instantiated
 	public void create() {
@@ -25,14 +25,24 @@ public class GameFrame implements ApplicationListener {
 		batch = new SpriteBatch();
 	
 		// Load assets
+		imgDevTalk = new Texture(Gdx.files.internal("devtalk.png"));
 		imgMatt = new Texture(Gdx.files.internal("matt.png"));
 		imgAle = new Texture(Gdx.files.internal("ale.png"));
 		imgChristian = new Texture(Gdx.files.internal("christian.png"));
 		imgMax = new Texture(Gdx.files.internal("max.png"));
+		musTunak = Gdx.audio.newMusic(Gdx.files.internal("tunak.mp3"));
 		
 		// Immediately set the camera and start the music
 		camera.setToOrtho(false, 1243, 768);
+		musTunak.setLooping(true);
+		musTunak.play();
 
+		
+		devtalk = new Rectangle();
+		devtalk.x = 256;
+		devtalk.y = 240 - 128;
+		devtalk.width = 256;
+		devtalk.height = 256;
 		// Create rectangles for the textures, because SpriteBatchs can draw 
 		// rectangles, but not textures
 		max = new Rectangle();
@@ -63,9 +73,10 @@ public class GameFrame implements ApplicationListener {
 	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
 	public void render() {
-		// Clear the screen to Deep Blue
+		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		camera.update();
 		
 		// Tell batch to use the same coordinates as the camera
 		batch.setProjectionMatrix(camera.combined);
@@ -74,8 +85,12 @@ public class GameFrame implements ApplicationListener {
 		batch.draw(imgMax, max.x, max.y);
 		batch.draw(imgMatt, matt.x, matt.y);
 		batch.draw(imgAle, ale.x, ale.y);
+		batch.draw(imgDevTalk, ale.x, ale.y);
 		batch.draw(imgChristian, christian.x, christian.y);
 		batch.end();	// Bunch draw calls before this
+		
+		matt.x += 300 * Gdx.graphics.getDeltaTime();
+		if(matt.overlaps(max)) matt.x = 10;
 	}
 	
 	public void resize(int width, int height) {
