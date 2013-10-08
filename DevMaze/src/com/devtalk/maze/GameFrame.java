@@ -25,42 +25,39 @@ public class GameFrame implements ApplicationListener {
 		batch = new SpriteBatch();
 	
 		// Load assets
-		imgMatt = new Texture(Gdx.files.internal("droplet.png"));
-		imgAle = new Texture(Gdx.files.internal("droplet.png"));
-		imgChristian = new Texture(Gdx.files.internal("droplet.png"));
-		imgMax = new Texture(Gdx.files.internal("droplet.png"));
-		musTunak = Gdx.audio.newMusic(Gdx.files.internal("tunak.mp3"));
+		imgMatt = new Texture(Gdx.files.internal("matt.png"));
+		imgAle = new Texture(Gdx.files.internal("ale.png"));
+		imgChristian = new Texture(Gdx.files.internal("christian.png"));
+		imgMax = new Texture(Gdx.files.internal("max.png"));
 		
 		// Immediately set the camera and start the music
 		camera.setToOrtho(false, 1243, 768);
-		musTunak.setLooping(true);
-		musTunak.play();
-		
+
 		// Create rectangles for the textures, because SpriteBatchs can draw 
 		// rectangles, but not textures
 		max = new Rectangle();
-		max.x = 1243 - 138;
-		max.y = 768 - 138;
-		max.width = 128;
-		max.height = 128;
+		max.x = 1243 - 266;
+		max.y = 768 - 266;
+		max.width = 256;
+		max.height = 256;
 		
 		matt = new Rectangle();
 		matt.x = 10;
-		matt.y = 768 - 138;
-		matt.width = 128;
-		matt.height = 128;
+		matt.y = 768 - 266;
+		matt.width = 256;
+		matt.height = 256;
 		
 		ale = new Rectangle();
 		ale.x = 10;
 		ale.y = 10;
-		ale.width = 128;
-		ale.height = 128;
+		ale.width = 256;
+		ale.height = 256;
 		
 		christian = new Rectangle();
-		christian.x = 1243 - 128;
+		christian.x = 1243 - 266;
 		christian.y = 10;
-		christian.width = 128;
-		christian.height = 128;
+		christian.width = 256;
+		christian.height = 256;
 	}
 	
 	// The main loop, fires @ 60 fps 

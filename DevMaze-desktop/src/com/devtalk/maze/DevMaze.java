@@ -8,8 +8,8 @@ public class DevMaze {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "DevMaze";
 		cfg.useGL20 = false;
-		cfg.width = 1243;
-		cfg.height = 768;
+		cfg.width = 800;
+		cfg.height = 480;
 		
 		new LwjglApplication(new GameFrame(), cfg);
 	}
