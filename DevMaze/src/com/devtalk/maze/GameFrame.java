@@ -8,14 +8,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.MathUtils;
 
 public class GameFrame implements ApplicationListener {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	
-	Texture imgMatt, imgAle, imgChristian, imgMax, imgDevTalk;
+	Array<Roommate> roommates;
+	
+	Texture imgDevTalk;
 	Music musTunak;
-	Rectangle matt, ale, max, christian, devtalk;
+	Rectangle devtalk;
 	
 	// Runs when the application is first instantiated
 	public void create() {
@@ -23,51 +27,20 @@ public class GameFrame implements ApplicationListener {
 		// Create Camera and SpriteBatch (pretty much always)
 		camera = new OrthographicCamera();
 		batch = new SpriteBatch();
+		roommates = new Array<Roommate>();
 	
 		// Load assets
 		imgDevTalk = new Texture(Gdx.files.internal("devtalk.png"));
-		imgMatt = new Texture(Gdx.files.internal("matt.png"));
-		imgAle = new Texture(Gdx.files.internal("ale.png"));
-		imgChristian = new Texture(Gdx.files.internal("christian.png"));
-		imgMax = new Texture(Gdx.files.internal("max.png"));
+		roommates.add(new Roommate("matt", 0, 0));
+		roommates.add(new Roommate("max", 1243-256, 768-256));
+		roommates.add(new Roommate("ale", 0, 768-256));
+		roommates.add(new Roommate("christian", 1243-256, 0));
 		musTunak = Gdx.audio.newMusic(Gdx.files.internal("tunak.mp3"));
 		
-		// Immediately set the camera and start the music
+		// Immediately set the camera and set the music
 		camera.setToOrtho(false, 1243, 768);
 		musTunak.setLooping(true);
-		musTunak.play();
 
-		
-		devtalk = new Rectangle();
-		devtalk.x = 256;
-		devtalk.y = 240 - 128;
-		devtalk.width = 256;
-		devtalk.height = 256;
-		// Create rectangles for the textures, because SpriteBatchs can draw 
-		// rectangles, but not textures
-		max = new Rectangle();
-		max.x = 1243 - 266;
-		max.y = 768 - 266;
-		max.width = 256;
-		max.height = 256;
-		
-		matt = new Rectangle();
-		matt.x = 10;
-		matt.y = 768 - 266;
-		matt.width = 256;
-		matt.height = 256;
-		
-		ale = new Rectangle();
-		ale.x = 10;
-		ale.y = 10;
-		ale.width = 256;
-		ale.height = 256;
-		
-		christian = new Rectangle();
-		christian.x = 1243 - 266;
-		christian.y = 10;
-		christian.width = 256;
-		christian.height = 256;
 	}
 	
 	// The main loop, fires @ 60 fps 
@@ -80,17 +53,36 @@ public class GameFrame implements ApplicationListener {
 		
 		// Tell batch to use the same coordinates as the camera
 		batch.setProjectionMatrix(camera.combined);
+		// Draw everything
+		batch.begin();
+		for(Roommate roommate: roommates) {
+	        batch.draw(roommate.texture(), roommate.getx(), roommate.gety());
+	    }
+		batch.end();
 		
-		batch.begin();	// Bunch draw calls after this
-		batch.draw(imgMax, max.x, max.y);
-		batch.draw(imgMatt, matt.x, matt.y);
-		batch.draw(imgAle, ale.x, ale.y);
-		batch.draw(imgDevTalk, ale.x, ale.y);
-		batch.draw(imgChristian, christian.x, christian.y);
-		batch.end();	// Bunch draw calls before this
-		
-		matt.x += 300 * Gdx.graphics.getDeltaTime();
-		if(matt.overlaps(max)) matt.x = 10;
+		// Move the roommates
+		for(Roommate roommate: roommates) 
+		{
+
+			int direction = MathUtils.random(0, 3);
+	        roommate.move(direction);
+	        
+	        for(int i = 0; i < roommates.size; i++)
+	        {
+	        	Roommate other = roommates.peek();
+	        	roommates.swap(i, roommates.size-1);
+	        	if(roommate.boundary().overlaps(other.boundary()))
+	        	{
+	        		musTunak.play();
+	        		if(direction < 2) {
+	        			roommate.move(direction + 2);
+	        		}
+	        		else {
+	        			roommate.move(direction - 2);
+	        		}
+	        	}
+	        }
+	    }
 	}
 	
 	public void resize(int width, int height) {
