@@ -15,8 +15,10 @@ public class GameFrame implements ApplicationListener {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	
-	Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
-	Texture NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
+	Texture IN_MAZE;
+	Texture NOT_IN_MAZE;
+	
+	Maze maze;
 	
 	Array<Roommate> roommates;
 	
@@ -29,11 +31,15 @@ public class GameFrame implements ApplicationListener {
 		
 		batch = new SpriteBatch();
 		
+		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
+		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
+		
 		roommates = new Array<Roommate>();
 	
-		Maze maze = new Maze();
+		maze = new Maze(25, 15);
 		
 		// Load assets
+		/**
 		roommates.add(new Roommate("triple_left", 0, 0));
 		roommates.add(new Roommate("double_top_bottom", 32, 0));
 		roommates.add(new Roommate("double_top_bottom", 64, 0));
@@ -44,6 +50,7 @@ public class GameFrame implements ApplicationListener {
 		roommates.add(new Roommate("triple_right", 0, 32));
 		roommates.add(new Roommate("double_bottom_right", 0, 64));
 		roommates.add(new Roommate("double_left_right", 32, 64));
+		**/
 
 	}
 	
@@ -57,12 +64,23 @@ public class GameFrame implements ApplicationListener {
 		
 		// Tell batch to use the same coordinates as the camera
 		batch.setProjectionMatrix(camera.combined);
+		
 		// Draw everything
 		batch.begin();
-		for(Roommate roommate: roommates) {
-	        batch.draw(roommate.texture(), roommate.getx(), roommate.gety());
-	    }
 		
+		int row, col = 0;
+		for (int i = 0; i < maze.tiles.length; i ++)
+		{
+			row = i * 32;
+			for (int j = 0; j < maze.tiles[0].length; j++)
+			{
+				col = j * 32;
+				if (maze.tiles[i][j].inMaze() )
+					batch.draw(IN_MAZE, row, col);
+				else
+					batch.draw(NOT_IN_MAZE, row, col);
+			}
+		}
 		
 		batch.end();
 		

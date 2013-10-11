@@ -13,7 +13,7 @@ public class Maze {
 	private static final int DEFAULT_HEIGHT = 50;
 	private static final int DEFAULT_WIDTH = 20;
 	
-	private Tile[][] tiles;
+	public Tile[][] tiles;
 	
 	public Maze() 
 	{
@@ -23,6 +23,15 @@ public class Maze {
 	public Maze(int width, int height) 
 	{
 		tiles = new Tile[width][height];
+		
+		for (int i = 0; i < tiles.length; i ++)
+		{
+			for (int j = 0; j < tiles[0].length; j++)
+			{
+				tiles[i][j] = new Tile();
+			}
+		}
+		
 		this.generate();
 	}
 	
@@ -54,8 +63,9 @@ public class Maze {
 		walls.addAll(get_Neighbors(row, col));
 		
 		// While there are walls in the list:
-		while (!walls.isEmpty())
+		while (walls.size() > 1)
 		{
+			
 			// Pick a random wall from the list
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 			
