@@ -26,19 +26,22 @@ public class GameFrame implements ApplicationListener {
 
 		// Create Camera and SpriteBatch (pretty much always)
 		camera = new OrthographicCamera();
+		camera.setToOrtho(false, 800, 480);
+		
 		batch = new SpriteBatch();
+		
 		roommates = new Array<Roommate>();
 	
 		// Load assets
 		imgDevTalk = new Texture(Gdx.files.internal("devtalk.png"));
-		roommates.add(new Roommate("matt", 0, 0));
-		roommates.add(new Roommate("max", 1243-256, 768-256));
-		roommates.add(new Roommate("ale", 0, 768-256));
-		roommates.add(new Roommate("christian", 1243-256, 0));
+		roommates.add(new Roommate("triple_left", 0, 0));
+		roommates.add(new Roommate("double_top_bottom", 32, 0));
+		roommates.add(new Roommate("double_top_bottom", 64, 0));
+		roommates.add(new Roommate("double_bottom_right", 96, 0));
+		roommates.add(new Roommate("double_top_right", 96, 32));
+		roommates.add(new Roommate("double_top_bottom", 64, 32));
 		musTunak = Gdx.audio.newMusic(Gdx.files.internal("tunak.mp3"));
 		
-		// Immediately set the camera and set the music
-		camera.setToOrtho(false, 1243, 768);
 		musTunak.setLooping(true);
 
 	}
@@ -60,29 +63,6 @@ public class GameFrame implements ApplicationListener {
 	    }
 		batch.end();
 		
-		// Move the roommates
-		for(Roommate roommate: roommates) 
-		{
-
-			int direction = MathUtils.random(0, 3);
-	        roommate.move(direction);
-	        
-	        for(int i = 0; i < roommates.size; i++)
-	        {
-	        	Roommate other = roommates.peek();
-	        	roommates.swap(i, roommates.size-1);
-	        	if(roommate.boundary().overlaps(other.boundary()))
-	        	{
-	        		musTunak.play();
-	        		if(direction < 2) {
-	        			roommate.move(direction + 2);
-	        		}
-	        		else {
-	        			roommate.move(direction - 2);
-	        		}
-	        	}
-	        }
-	    }
 	}
 	
 	public void resize(int width, int height) {

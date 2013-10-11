@@ -14,13 +14,10 @@ public class Roommate {
 	{
 		name = name.toLowerCase();
 		image = new Texture(Gdx.files.internal(name + ".png"));
-		x = a; y = b; 
+		x = a; 
+		y = b; 
 		
-		boundary = new Rectangle();
-		boundary.x = x;
-		boundary.y = y;
-		boundary.width = 256;
-		boundary.height = 256;
+		boundary = new Rectangle(x, y, 32, 32);
 	}
 	
 	public int getx()
@@ -41,32 +38,6 @@ public class Roommate {
 	public Rectangle boundary()
 	{
 		return boundary;
-	}
-	
-	public void	move(int direction) 
-	{
-		switch(direction) 
-		{
-			case 0:
-				y += 50;
-				boundary.y += 50;
-				break;
-				
-			case 1:
-				x += 50;
-				boundary.x += 50;
-				break;	
-				
-			case 2:
-				y -= 50;
-				boundary.y -= 50;
-				break;
-				
-			case 3:
-				x -= 50;
-				boundary.x -= 50;
-				break;
-		}
 	}
 
 }
