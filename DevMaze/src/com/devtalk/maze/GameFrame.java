@@ -17,10 +17,6 @@ public class GameFrame implements ApplicationListener {
 	
 	Array<Roommate> roommates;
 	
-	Texture imgDevTalk;
-	Music musTunak;
-	Rectangle devtalk;
-	
 	// Runs when the application is first instantiated
 	public void create() {
 
@@ -33,16 +29,16 @@ public class GameFrame implements ApplicationListener {
 		roommates = new Array<Roommate>();
 	
 		// Load assets
-		imgDevTalk = new Texture(Gdx.files.internal("devtalk.png"));
 		roommates.add(new Roommate("triple_left", 0, 0));
 		roommates.add(new Roommate("double_top_bottom", 32, 0));
 		roommates.add(new Roommate("double_top_bottom", 64, 0));
 		roommates.add(new Roommate("double_bottom_right", 96, 0));
 		roommates.add(new Roommate("double_top_right", 96, 32));
 		roommates.add(new Roommate("double_top_bottom", 64, 32));
-		musTunak = Gdx.audio.newMusic(Gdx.files.internal("tunak.mp3"));
-		
-		musTunak.setLooping(true);
+		roommates.add(new Roommate("double_bottom_left", 32, 32));
+		roommates.add(new Roommate("triple_right", 0, 32));
+		roommates.add(new Roommate("double_bottom_right", 0, 64));
+		roommates.add(new Roommate("double_left_right", 32, 64));
 
 	}
 	
