@@ -15,6 +15,9 @@ public class GameFrame implements ApplicationListener {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	
+	Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
+	Texture NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
+	
 	Array<Roommate> roommates;
 	
 	// Runs when the application is first instantiated
@@ -28,6 +31,8 @@ public class GameFrame implements ApplicationListener {
 		
 		roommates = new Array<Roommate>();
 	
+		Maze maze = new Maze();
+		
 		// Load assets
 		roommates.add(new Roommate("triple_left", 0, 0));
 		roommates.add(new Roommate("double_top_bottom", 32, 0));
@@ -57,6 +62,8 @@ public class GameFrame implements ApplicationListener {
 		for(Roommate roommate: roommates) {
 	        batch.draw(roommate.texture(), roommate.getx(), roommate.gety());
 	    }
+		
+		
 		batch.end();
 		
 	}

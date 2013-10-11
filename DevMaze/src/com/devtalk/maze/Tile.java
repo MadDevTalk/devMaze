@@ -5,49 +5,20 @@ import com.badlogic.gdx.graphics.Texture;
 public class Tile {
 	
 	Texture image;
-	private STATE state;
-	private TYPE type;
-	
-	public static enum STATE 
-	{
-		IN_MAZE,
-		NOT_IN_MAZE,
-	}
-	
-	public enum TYPE {
-		SINGLE_TOP,
-		SINGLE_RIGHT,
-		SINGLE_BOTTOM,
-		SINGLE_LEFT,
-		DOUBLE_TOP_RIGHT,
-	}
+	private boolean inMaze;
 	
 	public Tile()
 	{
-		state = STATE.NOT_IN_MAZE;
+		this.inMaze = false;
 	}
 	
-	public void set_State(STATE state) 
+	public void set_inMaze(boolean inMaze)
 	{
-		this.state = state;
+		this.inMaze = inMaze;
 	}
 	
-	public STATE get_State()
+	public boolean inMaze()
 	{
-		return this.state;
-	}
-	
-	public TYPE get_Type()
-	{
-		return this.type;
-	}
-	
-	public void set_Type(TYPE type)
-	{
-		this.type = type;
-	}
-	
-	public Texture get_Img() {
-		return this.image;
+		return this.inMaze;
 	}
 }
