@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameFrame implements ApplicationListener {
+	MazeInputProcessor inputProcessor;
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	
@@ -30,15 +31,19 @@ public class GameFrame implements ApplicationListener {
 		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
 		PLAYER = new Texture(Gdx.files.internal("char.png"));
+		
+		inputProcessor = new MazeInputProcessor(camera);
 	
 		maze = new Maze(50, 30);
 		
+		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	
 	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
 	public void render() {
-		handleInput();
+		handleKeys();
+		
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -69,23 +74,21 @@ public class GameFrame implements ApplicationListener {
 		
 	}
 	
-	private void handleInput() {
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                //if (camera.position.x > 0)
-                        camera.translate(-3, 0, 0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                //if (camera.position.x < 1024)
-                        camera.translate(3, 0, 0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                //if (camera.position.y > 0)
-                        camera.translate(0, -3, 0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                //if (camera.position.y < 1024)
-                        camera.translate(0, 3, 0);
-        }
+	private boolean handleKeys()
+	{
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) 
+        	camera.translate(-3, 0, 0);
+        
+	    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+	    	camera.translate(3, 0, 0);
+	    
+	    if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
+	    	camera.translate(0, -3, 0);
+	    
+	    if(Gdx.input.isKeyPressed(Input.Keys.UP))
+	    	camera.translate(0, 3, 0);
+	    
+	    return false;
 	}
 	
 	public void resize(int width, int height) {
