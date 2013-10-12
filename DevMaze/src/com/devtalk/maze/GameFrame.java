@@ -14,6 +14,7 @@ public class GameFrame implements ApplicationListener {
 	
 	Texture IN_MAZE;
 	Texture NOT_IN_MAZE;
+	Texture PLAYER;
 	
 	Maze maze;
 	
@@ -28,6 +29,7 @@ public class GameFrame implements ApplicationListener {
 		
 		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
+		PLAYER = new Texture(Gdx.files.internal("char.png"));
 	
 		maze = new Maze(50, 30);
 		
@@ -61,7 +63,8 @@ public class GameFrame implements ApplicationListener {
 					batch.draw(NOT_IN_MAZE, row, col);
 			}
 		}
-		
+
+		batch.draw(PLAYER, camera.position.x, camera.position.y);
 		batch.end();
 		
 	}
