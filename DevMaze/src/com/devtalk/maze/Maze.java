@@ -24,7 +24,7 @@ public class Maze {
 	{
 		tiles = new Tile[width][height];
 		
-		for (int i = 0; i < tiles.length; i ++)
+		for (int i = 0; i < tiles.length; i++)
 		{
 			for (int j = 0; j < tiles[0].length; j++)
 			{
