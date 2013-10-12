@@ -39,9 +39,6 @@ public class Maze {
 	/**
 	 * Generates a maze within the boundaries using Randomized Prim's Algorithm defined:
 	 * 	http://en.wikipedia.org/wiki/Prim's_algorithm
-	 * 
-	 * 
-	 * unfinished
 	 */
 	private void generate()
 	{

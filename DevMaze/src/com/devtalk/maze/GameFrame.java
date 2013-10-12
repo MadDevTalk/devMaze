@@ -2,14 +2,10 @@ package com.devtalk.maze;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.math.MathUtils;
 
 public class GameFrame implements ApplicationListener {
 	OrthographicCamera camera;
@@ -19,8 +15,6 @@ public class GameFrame implements ApplicationListener {
 	Texture NOT_IN_MAZE;
 	
 	Maze maze;
-	
-	Array<Roommate> roommates;
 	
 	// Runs when the application is first instantiated
 	public void create() {
@@ -33,25 +27,9 @@ public class GameFrame implements ApplicationListener {
 		
 		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
-		
-		roommates = new Array<Roommate>();
 	
 		maze = new Maze(25, 15);
 		
-		// Load assets
-		/**
-		roommates.add(new Roommate("triple_left", 0, 0));
-		roommates.add(new Roommate("double_top_bottom", 32, 0));
-		roommates.add(new Roommate("double_top_bottom", 64, 0));
-		roommates.add(new Roommate("double_bottom_right", 96, 0));
-		roommates.add(new Roommate("double_top_right", 96, 32));
-		roommates.add(new Roommate("double_top_bottom", 64, 32));
-		roommates.add(new Roommate("double_bottom_left", 32, 32));
-		roommates.add(new Roommate("triple_right", 0, 32));
-		roommates.add(new Roommate("double_bottom_right", 0, 64));
-		roommates.add(new Roommate("double_left_right", 32, 64));
-		**/
-
 	}
 	
 	// The main loop, fires @ 60 fps 
