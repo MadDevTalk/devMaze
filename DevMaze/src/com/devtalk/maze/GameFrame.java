@@ -22,10 +22,9 @@ public class GameFrame implements ApplicationListener {
 	// Runs when the application is first instantiated
 	public void create() {
 
-		// Create Camera and SpriteBatch (pretty much always)
+		// Create Camera and SpriteBatch
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
-		
 		batch = new SpriteBatch();
 		
 		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
