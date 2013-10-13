@@ -3,13 +3,11 @@ package com.devtalk.maze;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class MazeInputProcessor extends GameFrame implements InputProcessor {
 
     Camera camera;
-    
     Vector3 touch_down = new Vector3();
     
     public MazeInputProcessor(Camera camera) {
@@ -50,10 +48,7 @@ public class MazeInputProcessor extends GameFrame implements InputProcessor {
 
 	@Override
     public boolean touchDragged(int x, int y, int pointer) {
-		System.out.println(x + ", " + y);
         moveCamera( x, y );
-        
-        
         
         return false;
     }
