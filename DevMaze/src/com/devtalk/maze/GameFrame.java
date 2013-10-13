@@ -27,14 +27,13 @@ public class GameFrame implements ApplicationListener {
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
 		
+		// Load assets
 		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
 		PLAYER = new Texture(Gdx.files.internal("char.png"));
 		
-		inputProcessor = new MazeInputProcessor(camera);
-	
 		maze = new Maze(50, 30);
-		
+		inputProcessor = new MazeInputProcessor(camera);
 		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	

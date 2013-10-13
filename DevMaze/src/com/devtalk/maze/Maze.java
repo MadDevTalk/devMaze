@@ -62,26 +62,23 @@ public class Maze {
 		// While there are walls in the list:
 		while (walls.size() > 1)
 		{
-			
 			// Pick a random wall from the list
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 			
 			// If the cell on the opposite side isn't in the maze yet
 			if (!getOppositeTile(wall).inMaze())
 			{
-				// Mark the edge a passage
+				// Mark the edge a passage (Open the wall)
 				tiles[wall.gety2()][wall.getx2()].set_inMaze(true);
 				
 				// Mark the cell on the opposite side a passage
 				getOppositeTile(wall).set_inMaze(true);
 				
 				// Add the walls of the cell to the wall list
-
 				int xOffset = wall.getx2() - wall.getx1();
 				int yOffset = wall.gety2() - wall.gety1();
 				
-				walls.addAll(get_Neighbors(wall.gety2() + yOffset, wall.getx2() + xOffset));
-				
+				walls.addAll(get_Neighbors(wall.gety2() + yOffset, wall.getx2() + xOffset));	
 			}
 			else
 			{
