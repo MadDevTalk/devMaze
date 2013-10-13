@@ -1,13 +1,16 @@
 package com.devtalk.maze;
 
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class MazeInputProcessor extends GameFrame implements InputProcessor {
 
-    Vector3 last_touch_down = new Vector3();
     Camera camera;
+    
+    Vector3 touch_down = new Vector3();
     
     public MazeInputProcessor(Camera camera) {
     	this.camera = camera;
@@ -33,7 +36,9 @@ public class MazeInputProcessor extends GameFrame implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		if (button == Buttons.LEFT)
+			touch_down = new Vector3(screenX, screenY, 0);
+			
 		return false;
 	}
 
@@ -43,26 +48,24 @@ public class MazeInputProcessor extends GameFrame implements InputProcessor {
 		return false;
 	}
 
+	@Override
     public boolean touchDragged(int x, int y, int pointer) {
-        moveCamera( x, y );     
+		System.out.println(x + ", " + y);
+        moveCamera( x, y );
+        
+        
+        
         return false;
     }
 
     private void moveCamera( int touch_x, int touch_y ) {
-        Vector3 new_position = getNewCameraPosition( touch_x, touch_y );
         
-        camera.translate( new_position.sub( camera.position ) );
-
-        last_touch_down.set( touch_x, touch_y, 0);
-    }
-
-    private Vector3 getNewCameraPosition( int x, int y ) {
-        Vector3 new_position = last_touch_down;
-        new_position.sub(x, y, 0);
-        new_position.y = -new_position.y;
-        new_position.add( camera.position );
-
-        return new_position;
+        Vector3 new_position = new Vector3(touch_x, touch_y, 0);
+        
+        new_position.sub( touch_down );
+        camera.translate( -new_position.x, new_position.y, 0 );
+        
+        touch_down.add( new_position );
     }
 
 	@Override

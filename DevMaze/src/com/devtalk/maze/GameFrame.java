@@ -36,6 +36,20 @@ public class GameFrame implements ApplicationListener {
 	
 		maze = new Maze(50, 30);
 		
+		int x = 0, y = 0;
+		for (int i = 0; i < maze.tiles.length; i++) {
+			for (int j = 0; j < maze.tiles[0].length; j++) {
+				if (maze.tiles[i][j].inMaze())
+				{
+					x = j;
+					y = i;
+					break;
+				}
+			}
+		}
+		
+		//camera.translate(x*32, y*32);
+		
 		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	
@@ -47,6 +61,7 @@ public class GameFrame implements ApplicationListener {
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
 		camera.update();
 		
 		// Tell batch to use the same coordinates as the camera
