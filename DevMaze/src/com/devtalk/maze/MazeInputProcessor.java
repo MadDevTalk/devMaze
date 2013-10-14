@@ -5,7 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 
-public class MazeInputProcessor extends GameFrame implements InputProcessor {
+public class MazeInputProcessor implements InputProcessor {
 
     Camera camera;
     Vector3 touch_down = new Vector3();
