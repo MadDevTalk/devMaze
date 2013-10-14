@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 public class GameFrame implements ApplicationListener {
 	OrthographicCamera camera;
 	SpriteBatch batch;
+	MazeInputProcessor inputProcessor;
 	
 	Texture IN_MAZE;
 	Texture NOT_IN_MAZE;
@@ -32,14 +33,10 @@ public class GameFrame implements ApplicationListener {
 		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
 		PLAYER = new Texture(Gdx.files.internal("char.png"));
 		
-<<<<<<< HEAD
 		maze = new Maze(50, 30);
 		inputProcessor = new MazeInputProcessor(camera);
 		Gdx.input.setInputProcessor(inputProcessor);
-=======
 		Gdx.input.setInputProcessor(new MazeInputProcessor(camera));
-		
-		maze = new Maze(50, 30);
 
 		openTile:
 		for (int i = 0; i < maze.tiles.length; i ++)
@@ -49,7 +46,7 @@ public class GameFrame implements ApplicationListener {
 					camera.translate(i*32 - camera.viewportWidth/2, j*32 - camera.viewportHeight/2);
 					break openTile;
 				}
->>>>>>> origin/CameraPanning
+
 	}
 	
 	// The main loop, fires @ 60 fps 
