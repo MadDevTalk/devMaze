@@ -73,17 +73,12 @@ public class GameFrame implements ApplicationListener {
 			for (int j = 0; j < maze.tiles[0].length; j++)
 			{
 				if (maze.tiles[i][j].inMaze() )
-<<<<<<< HEAD
 					batch.draw(IN_MAZE, i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
 				else
 					batch.draw(NOT_IN_MAZE, i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
-=======
-					batch.draw(IN_MAZE, i*32, j*32);
-				else
-					batch.draw(NOT_IN_MAZE, i*32, j*32);
->>>>>>> 9fd2bc0d1cf74f04c5badc09370fb8ebfd5d0e88
 			}
 		}
+
 		batch.draw(PLAYER, camera.position.x, camera.position.y);
 		batch.end();
 		
