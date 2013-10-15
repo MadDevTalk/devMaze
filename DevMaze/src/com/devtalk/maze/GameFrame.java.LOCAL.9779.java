@@ -78,6 +78,7 @@ public class GameFrame implements ApplicationListener {
 					batch.draw(NOT_IN_MAZE, i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
 			}
 		}
+
 		batch.draw(PLAYER, camera.position.x, camera.position.y);
 		batch.end();
 		

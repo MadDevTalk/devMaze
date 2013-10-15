@@ -48,19 +48,19 @@ public class MazeInputProcessor extends GameFrame implements InputProcessor {
 
 	@Override
     public boolean touchDragged(int x, int y, int pointer) {
-        moveCamera( x, y );
+		// the current position of the pointer
+        Vector3 new_position = new Vector3(x, y, 0);
         
-        return false;
-    }
-
-    private void moveCamera( int touch_x, int touch_y ) {
-        
-        Vector3 new_position = new Vector3(touch_x, touch_y, 0);
-        
+        // offset of new position from where drag started
         new_position.sub( touch_down );
+        
+        // move camera by offset, need to invert x
         camera.translate( -new_position.x, new_position.y, 0 );
         
+        // move the drag started position to the current position
         touch_down.add( new_position );
+        
+        return false;
     }
 
 	@Override
