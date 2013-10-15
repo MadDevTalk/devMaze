@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameFrame implements ApplicationListener {
 	
@@ -56,6 +57,11 @@ public class GameFrame implements ApplicationListener {
 	// LibGDX combines the main and user input threads
 	public void render() {
 		camera.translate(player.velocity);
+		if (player.dragged)
+		{
+			player.velocity = new Vector3();
+			player.dragged = false;
+		}
 		
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);

@@ -88,7 +88,7 @@ public class MazeInputProcessor extends GameFrame implements InputProcessor {
         new_position.sub( touch_down );
         
         // move camera by offset, need to invert x
-        player.position.add( -new_position.x, new_position.y, 0 );
+        player.translate( (int)-new_position.x, (int)new_position.y );
         
         // move the drag started position to the current position
         touch_down.add( new_position );
