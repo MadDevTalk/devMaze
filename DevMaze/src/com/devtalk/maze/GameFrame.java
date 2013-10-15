@@ -40,6 +40,8 @@ public class GameFrame implements ApplicationListener {
 		
 		maze = new Maze(50, 30);
 
+		// search for an open tile to place player, this should be change
+		// TODO: place at start of maze
 		openTile:
 		for (int i = 0; i < maze.tiles.length; i ++)
 			for (int j = 0; j < maze.tiles[0].length; j ++)
