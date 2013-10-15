@@ -91,7 +91,6 @@ public class GameFrame implements ApplicationListener {
 	
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	// Save user app information
