@@ -2,17 +2,15 @@ package com.devtalk.maze;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 
 public class GameFrame implements ApplicationListener {
 	
-	private static final int EDGE_SIZE_PX = 32;
-	private static final int KEY_VEL_PxPer60S = 4;
+	public static final int EDGE_SIZE_PX = 32;
+	public static final int KEY_VEL_PxPer60S = 4;
 	
 	OrthographicCamera camera;
 	SpriteBatch batch;
@@ -22,6 +20,7 @@ public class GameFrame implements ApplicationListener {
 	Texture PLAYER;
 	
 	Maze maze;
+	Player player;
 	
 	// Runs when the application is first instantiated
 	public void create() {
@@ -36,7 +35,8 @@ public class GameFrame implements ApplicationListener {
 		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
 		PLAYER = new Texture(Gdx.files.internal("char.png"));
 		
-		Gdx.input.setInputProcessor(new MazeInputProcessor(camera));
+		player = new Player((int) camera.position.x, (int) camera.position.y);
+		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
 		
 		maze = new Maze(50, 30);
 
@@ -55,7 +55,7 @@ public class GameFrame implements ApplicationListener {
 	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
 	public void render() {
-		handleKeys();
+		camera.translate(player.velocity);
 		
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -81,49 +81,6 @@ public class GameFrame implements ApplicationListener {
 		batch.draw(PLAYER, camera.position.x, camera.position.y);
 		batch.end();
 		
-	}
-	
-	private boolean handleKeys()
-	{
-		Vector3 test = camera.position;
-		
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-        {
-    		int x = (int) ((test.x - KEY_VEL_PxPer60S) / EDGE_SIZE_PX);
-    		int y = (int) (test.y / EDGE_SIZE_PX);
-    		
-    		if (maze.tiles[x][y].inMaze())
-    			camera.translate(-KEY_VEL_PxPer60S, 0, 0);
-        }
-        
-	    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-	    {
-    		int x = (int) ((test.x + KEY_VEL_PxPer60S + EDGE_SIZE_PX) / EDGE_SIZE_PX);
-    		int y = (int) (test.y / EDGE_SIZE_PX);
-	    	
-    		if (maze.tiles[x][y].inMaze()) 
-    			camera.translate(KEY_VEL_PxPer60S, 0, 0);
-	    }
-	    	
-	    if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-	    {
-    		int x = (int) (test.x / EDGE_SIZE_PX);
-    		int y = (int) ((test.y - KEY_VEL_PxPer60S) / EDGE_SIZE_PX);
-    		
-    		if (maze.tiles[x][y].inMaze()) 
-    			camera.translate(0, -KEY_VEL_PxPer60S, 0);
-	    }
-	    
-	    if(Gdx.input.isKeyPressed(Input.Keys.UP))
-	    {
-    		int x = (int) (test.x / EDGE_SIZE_PX);
-    		int y = (int) ((test.y + KEY_VEL_PxPer60S + EDGE_SIZE_PX) / EDGE_SIZE_PX);
-    		
-    		if (maze.tiles[x][y].inMaze()) 
-    			camera.translate(0, KEY_VEL_PxPer60S, 0);
-	    }
-	    
-	    return false;
 	}
 	
 	public void resize(int width, int height) {
