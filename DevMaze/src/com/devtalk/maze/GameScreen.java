@@ -10,17 +10,14 @@ import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 	final DevMaze game;
-	OrthographicCamera camera;
-	MazeInputProcessor inputProcessor;
 	
+	OrthographicCamera camera;
 	Texture IN_MAZE;
 	Texture NOT_IN_MAZE;
 	Texture PLAYER;
-	
 	Maze maze;
+	MazeInputProcessor inputProcessor;
 
-	
-	// Runs when the application is first instantiated
 	public GameScreen(final DevMaze g) {
 		this.game = g;
 
@@ -35,8 +32,7 @@ public class GameScreen implements Screen {
 
 		maze = new Maze(50, 30);
 		inputProcessor = new MazeInputProcessor(camera);
-
-		
+		Gdx.input.setInputProcessor(inputProcessor);
 		openTile:
 		for (int i = 0; i < maze.tiles.length; i ++) {
 			for (int j = 0; j < maze.tiles[0].length; j ++) {
@@ -51,13 +47,13 @@ public class GameScreen implements Screen {
 	
 	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
-	public void render() {
-		System.out.println("MADE IT TO GAME SCREEN");
+	public void render(float delta) {
 		
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
+		game.batch.setProjectionMatrix(camera.combined);
 		
 		handleKeys();
 		
@@ -143,12 +139,6 @@ public class GameScreen implements Screen {
 	
 	// Kills the app. Calls a pause first
 	public void dispose() {
-		
-	}
-
-	@Override
-	public void render(float delta) {
-		// TODO Auto-generated method stub
 		
 	}
 

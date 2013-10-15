@@ -15,9 +15,9 @@ public class DevMaze extends Game {
 		font = new BitmapFont();
 		this.setScreen(new MainMenuScreen(this));
 	}
-
+	
 	public void render() {
-		this.getScreen().render(0);	// Ignoring delta parameter
+		super.render();
 	}
 	
 	public void dispose() {
