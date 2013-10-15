@@ -37,6 +37,10 @@ public class Player extends GameFrame {
 		position.add(xOffset, yOffset, 0);
 	}
 	
+	public void set(int x, int y) {
+		position = new Vector3(x, y, 0);
+	}
+	
 	public Texture texture()
 	{
 		return image;

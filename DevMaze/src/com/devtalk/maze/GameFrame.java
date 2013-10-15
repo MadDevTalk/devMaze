@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 
 public class GameFrame implements ApplicationListener {
 	
@@ -40,7 +39,7 @@ public class GameFrame implements ApplicationListener {
 			for (int j = 0; j < maze.tiles[0].length; j ++)
 				if (maze.tiles[i][j].inMaze()) 
 				{
-					camera.translate(i*EDGE_SIZE_PX - camera.viewportWidth/2, j*EDGE_SIZE_PX - camera.viewportHeight/2);
+					player.set(i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
 					break openTile;
 				}
 	}
