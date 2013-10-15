@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 public class GameFrame implements ApplicationListener {
 	
 	public static final int EDGE_SIZE_PX = 32;
+	public static final int PLAYER_SIZE_PX = 32;
 	public static final int KEY_VEL_PxPer60S = 4;
 	
 	OrthographicCamera camera;
@@ -47,12 +48,8 @@ public class GameFrame implements ApplicationListener {
 	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
 	public void render() {
-		camera.translate(player.velocity);
-		if (player.dragged)
-		{
-			player.velocity = new Vector3();
-			player.dragged = false;
-		}
+		player.updatePos();
+		camera.position.set(player.position);
 		
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
