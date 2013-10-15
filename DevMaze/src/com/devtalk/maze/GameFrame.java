@@ -16,8 +16,6 @@ public class GameFrame implements ApplicationListener {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	
-	Texture IN_MAZE;
-	Texture NOT_IN_MAZE;
 	Texture PLAYER;
 	
 	Maze maze;
@@ -31,9 +29,6 @@ public class GameFrame implements ApplicationListener {
 		camera.setToOrtho(false, 800, 480);
 		
 		batch = new SpriteBatch();
-		
-		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
-		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
 		PLAYER = new Texture(Gdx.files.internal("char.png"));
 		
 		player = new Player((int) camera.position.x, (int) camera.position.y);
@@ -74,16 +69,11 @@ public class GameFrame implements ApplicationListener {
 		
 		// Draw everything
 		batch.begin();
+		
 		for (int i = 0; i < maze.tiles.length; i ++)
-		{
 			for (int j = 0; j < maze.tiles[0].length; j++)
-			{
-				if (maze.tiles[i][j].inMaze() )
-					batch.draw(IN_MAZE, i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
-				else
-					batch.draw(NOT_IN_MAZE, i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
-			}
-		}
+				batch.draw(maze.tiles[i][j].texture(), i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
+		
 		batch.draw(PLAYER, camera.position.x, camera.position.y);
 		batch.end();
 		

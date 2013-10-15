@@ -20,16 +20,16 @@ public class MazeInputProcessor extends GameFrame implements InputProcessor {
 	    switch (keycode)
 	    {
 	    case Keys.UP:
-	    	player.move(0, KEY_VEL_PxPer60S);
+	    	player.start(0, KEY_VEL_PxPer60S);
 	    	break;
 	    case Keys.RIGHT:
-	    	player.move(KEY_VEL_PxPer60S, 0);
+	    	player.start(KEY_VEL_PxPer60S, 0);
 	    	break;
 	    case Keys.DOWN:
-	    	player.move(0, -KEY_VEL_PxPer60S);
+	    	player.start(0, -KEY_VEL_PxPer60S);
 	    	break;
 	    case Keys.LEFT:
-	    	player.move(-KEY_VEL_PxPer60S, 0);
+	    	player.start(-KEY_VEL_PxPer60S, 0);
 	    	break;
 	    default:
 	    	break;

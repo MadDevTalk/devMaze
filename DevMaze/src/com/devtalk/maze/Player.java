@@ -18,7 +18,7 @@ public class Player {
 		position.add(velocity);
 	}
 	
-	public void move(int xVel, int yVel) {
+	public void start(int xVel, int yVel) {
 		velocity.add(xVel, yVel, 0);
 	}
 	
