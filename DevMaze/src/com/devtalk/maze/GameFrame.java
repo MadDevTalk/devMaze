@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameFrame implements ApplicationListener {
 	
-	public static final int EDGE_SIZE_PX = 32;
+	public static final int EDGE_SIZE_PX = 64;
 	public static final int PLAYER_SIZE_PX = 32;
 	public static final int KEY_VEL_PxPer60S = 4;
 	
@@ -27,10 +27,10 @@ public class GameFrame implements ApplicationListener {
 		
 		batch = new SpriteBatch();
 		
-		player = new Player((int) camera.position.x, (int) camera.position.y);
-		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
-		
 		maze = new Maze(50, 30);
+		
+		player = new Player((int) camera.position.x, (int) camera.position.y, maze.walls);
+		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
 
 		// search for an open tile to place player, this should be change
 		// TODO: place at start of maze

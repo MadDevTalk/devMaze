@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector3;
  * @author max
  *
  */
-public class Maze {
+public class Maze extends GameFrame {
 
 	private static final int DEFAULT_HEIGHT = 50;
 	private static final int DEFAULT_WIDTH = 20;
@@ -20,6 +20,8 @@ public class Maze {
 	
 	public Tile[][] tiles;
 	
+	public List<Tile> walls;
+	
 	public Maze() 
 	{
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -28,16 +30,22 @@ public class Maze {
 	public Maze(int width, int height) 
 	{
 		tiles = new Tile[width][height];
+		walls = new ArrayList<Tile>();
 		
 		for (int i = 0; i < tiles.length; i++)
 		{
 			for (int j = 0; j < tiles[0].length; j++)
 			{
-				tiles[i][j] = new Tile();
+				tiles[i][j] = new Tile(i * EDGE_SIZE_PX, j * EDGE_SIZE_PX, EDGE_SIZE_PX);
 			}
 		}
 		
 		this.generate();
+		
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[0].length; j++)
+				if (!tiles[i][j].inMaze())
+					walls.add(tiles[i][j]);
 	}
 	
 	
