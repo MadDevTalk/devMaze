@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 
@@ -15,8 +14,6 @@ public class GameFrame implements ApplicationListener {
 	
 	OrthographicCamera camera;
 	SpriteBatch batch;
-	
-	Texture PLAYER;
 	
 	Maze maze;
 	Player player;
@@ -29,7 +26,6 @@ public class GameFrame implements ApplicationListener {
 		camera.setToOrtho(false, 800, 480);
 		
 		batch = new SpriteBatch();
-		PLAYER = new Texture(Gdx.files.internal("char.png"));
 		
 		player = new Player((int) camera.position.x, (int) camera.position.y);
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
@@ -74,7 +70,7 @@ public class GameFrame implements ApplicationListener {
 			for (int j = 0; j < maze.tiles[0].length; j++)
 				batch.draw(maze.tiles[i][j].texture(), i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
 		
-		batch.draw(PLAYER, camera.position.x, camera.position.y);
+		batch.draw(player.texture(), camera.position.x, camera.position.y);
 		batch.end();
 		
 	}

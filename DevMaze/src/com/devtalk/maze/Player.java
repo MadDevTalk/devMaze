@@ -1,8 +1,12 @@
 package com.devtalk.maze;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
+	
+	private static Texture image = new Texture(Gdx.files.internal("char.png"));
 	
 	Vector3 velocity;
 	Vector3 position;
@@ -30,6 +34,11 @@ public class Player {
 	{
 		velocity = new Vector3(xOffset, yOffset, 0);
 		dragged = true;
+	}
+	
+	public Texture texture()
+	{
+		return image;
 	}
 	
 }
