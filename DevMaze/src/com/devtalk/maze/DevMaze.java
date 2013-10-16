@@ -10,10 +10,12 @@ public class DevMaze extends Game {
 	BitmapFont font;
 
 	public void create() {
+		System.out.println("Im alive!");
 		batch = new SpriteBatch();
 		// Arial font (LibGDX's default)
 		font = new BitmapFont();
 		this.setScreen(new MainMenuScreen(this));
+		this.dispose();
 	}
 	
 	public void render() {
@@ -21,8 +23,7 @@ public class DevMaze extends Game {
 	}
 	
 	public void dispose() {
-		batch.dispose();
-		font.dispose();
+		
 	}
 
 }

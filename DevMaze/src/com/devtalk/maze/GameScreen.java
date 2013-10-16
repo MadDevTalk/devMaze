@@ -1,10 +1,13 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 	final DevMaze game;
@@ -32,6 +35,11 @@ public class GameScreen implements Screen {
 		player = new Player((int)camera.position.x, (int)camera.position.y, maze);
 		
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
+
+		// Load assets
+		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
+		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
+		PLAYER = new Texture(Gdx.files.internal("char.png"));
 
 		openTile:
 		for (int i = 0; i < maze.tiles.length; i ++)
