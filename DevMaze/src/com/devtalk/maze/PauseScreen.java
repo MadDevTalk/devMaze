@@ -17,7 +17,7 @@ public class PauseScreen implements Screen {
 	
 	public PauseScreen(final DevMaze game, GameScreen gamestate) {
 		this.game = game;
-		//this.gamestate = gamestate;
+		this.gamestate = gamestate;
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
@@ -30,16 +30,13 @@ public class PauseScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		
-//		game.batch.setProjectionMatrix(camera.combined);
-//		game.batch.begin();
-//		
-//		//game.batch.draw();
-//		
-//		game.batch.end();
+		game.batch.setProjectionMatrix(camera.combined);
+		game.batch.begin();
+		game.font.draw(game.batch, "Resume", 100, 150);
+		game.batch.end();
 	
 		if (Gdx.input.isTouched()) {
-			//game.setScreen(gamestate);
-			System.out.println("Pause");
+			game.setScreen(gamestate);
 		}
 	}
 

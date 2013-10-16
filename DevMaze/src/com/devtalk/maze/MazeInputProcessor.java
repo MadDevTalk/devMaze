@@ -19,7 +19,7 @@ public class MazeInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 	    
-		return keycode == Keys.SPACE;
+		return false;
 	}
 
 	@Override

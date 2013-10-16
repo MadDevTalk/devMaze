@@ -2,6 +2,7 @@ package com.devtalk.maze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -48,7 +49,7 @@ public class GameScreen implements Screen {
 	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
-		System.out.println("See");
+
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -57,8 +58,6 @@ public class GameScreen implements Screen {
 		
 		handleKeys();
 		
-		// Tell batch to use the same coordinates as the camera
-		game.batch.setProjectionMatrix(camera.combined);
 		// Draw everything
 		game.batch.begin();
 		for (int i = 0; i < maze.tiles.length; i ++)
@@ -66,20 +65,20 @@ public class GameScreen implements Screen {
 			for (int j = 0; j < maze.tiles[0].length; j++)
 			{
 				if (maze.tiles[i][j].inMaze()) {
-					//game.batch.draw(IN_MAZE, i*32, j*32);
-				//else
-					//game.batch.draw(NOT_IN_MAZE, i*32, j*32);
+					game.batch.draw(IN_MAZE, i*32, j*32);
+				}
+				else {
+					game.batch.draw(NOT_IN_MAZE, i*32, j*32);
 				}
 			}
 		}
-		//game.batch.draw(PLAYER, camera.position.x, camera.position.y);
+		game.batch.draw(PLAYER, camera.position.x, camera.position.y);
 		game.batch.end();
 		
-		//System.out.println(Input.Keys.SPACE);
-//		if (!inputProcessor.keyDown(Input.Keys.SPACE)) {
-//			game.setScreen(new PauseScreen(game, this));
-//			this.dispose();
-//		}
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			game.setScreen(new PauseScreen(game, this));
+			this.dispose();
+		}
 	}
 	
 	private boolean handleKeys()

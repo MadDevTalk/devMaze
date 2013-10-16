@@ -24,8 +24,8 @@ public class MainMenuScreen implements Screen {
 		
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-//		game.font.draw(game.batch, "Welcome to DevMaze! ", 100, 150);
-//		game.font.draw(game.batch, "This screen is your first challenge.", 100, 100);
+		game.font.draw(game.batch, "Welcome to DevMaze! ", 100, 150);
+		game.font.draw(game.batch, "This screen is your first challenge.", 100, 100);
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
