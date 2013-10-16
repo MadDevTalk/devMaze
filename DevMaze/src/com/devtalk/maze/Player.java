@@ -27,12 +27,12 @@ public class Player extends GameFrame {
 	
 	public void updatePos(int xOffset, int yOffset)
 	{
-		//boolean collision = false;
-		//for (Tile wall : walls)
-		//	if (wall.rectangle().overlaps(new Rectangle(position.x + xOffset, position.y + yOffset, PLAYER_SIZE_PX, PLAYER_SIZE_PX)))
-		//		collision = true;
-		//
-		//if (!collision)
+		boolean collision = false;
+		for (Tile wall : walls)
+			if (wall.rectangle().overlaps(new Rectangle(position.x + xOffset, position.y + yOffset, PLAYER_SIZE_PX, PLAYER_SIZE_PX)))
+				collision = true;
+		
+		if (!collision)
 			position.add(xOffset, yOffset, 0);
 	}
 	
