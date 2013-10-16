@@ -3,6 +3,7 @@
 *.class
 *.metadata*
 *.pak
+*.cache
 
 # Package Files #
 *.war
