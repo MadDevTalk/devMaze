@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Tile {
+public class Tile extends GameFrame {
 	
 	private boolean inMaze;
 	private static Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));

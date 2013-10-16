@@ -10,7 +10,7 @@ public class GameFrame implements ApplicationListener {
 	
 	public static final int EDGE_SIZE_PX = 64;
 	public static final int PLAYER_SIZE_PX = 32;
-	public static final int KEY_VEL_PxPer60S = 4;
+	public static final int KEY_VEL_PxPer60S = 10;
 	
 	OrthographicCamera camera;
 	SpriteBatch batch;
@@ -29,7 +29,7 @@ public class GameFrame implements ApplicationListener {
 		
 		maze = new Maze(50, 30);
 		
-		player = new Player((int) camera.position.x, (int) camera.position.y, maze.walls);
+		player = new Player(0, 0, maze.walls);
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
 
 		// search for an open tile to place player, this should be change
@@ -39,7 +39,7 @@ public class GameFrame implements ApplicationListener {
 			for (int j = 0; j < maze.tiles[0].length; j ++)
 				if (maze.tiles[i][j].inMaze()) 
 				{
-					player.set(i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
+					player.set(i * EDGE_SIZE_PX + 2, j * EDGE_SIZE_PX + 2);
 					break openTile;
 				}
 	}
