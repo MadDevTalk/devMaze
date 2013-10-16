@@ -1,7 +1,6 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,7 +11,6 @@ public class PauseScreen implements Screen {
 	final DevMaze game;
 	OrthographicCamera camera;
 	TextureAtlas charsheet;
-	MazeInputProcessor inputProcessor; 
 	GameScreen gamestate;
 	
 	public PauseScreen(final DevMaze game, GameScreen gamestate) {
@@ -21,8 +19,6 @@ public class PauseScreen implements Screen {
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
-		inputProcessor = new MazeInputProcessor(camera);
-		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	
 	public void render(float delta) {
