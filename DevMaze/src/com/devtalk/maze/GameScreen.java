@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 	final DevMaze game;
@@ -63,10 +64,15 @@ public class GameScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 		// Draw everything
 		game.batch.begin();
-
+		
 		for (int i = 0; i < maze.tiles.length; i ++)
 			for (int j = 0; j < maze.tiles[0].length; j++)
-				game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+			{
+				Vector3 tile = new Vector3(maze.tiles[i][j].rectangle().x, maze.tiles[i][j].rectangle().y, 0);
+				
+				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
+					game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+			}
 		
 		game.batch.draw(player.texture(), camera.position.x, camera.position.y);
 
