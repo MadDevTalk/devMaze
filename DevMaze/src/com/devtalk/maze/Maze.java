@@ -30,24 +30,17 @@ public class Maze extends GameFrame {
 	public Maze(int width, int height) 
 	{
 		tiles = new Tile[width][height];
-		walls = new ArrayList<Tile>();
 		
 		for (int i = 0; i < tiles.length; i++)
 		{
 			for (int j = 0; j < tiles[0].length; j++)
 			{
-				tiles[i][j] = new Tile(i * EDGE_SIZE_PX, j * EDGE_SIZE_PX, EDGE_SIZE_PX);
+				tiles[i][j] = new Tile(i, j);
 			}
 		}
 		
 		this.generate();
-		
-		for (int i = 0; i < tiles.length; i++)
-			for (int j = 0; j < tiles[0].length; j++)
-				if (!tiles[i][j].inMaze())
-					walls.add(tiles[i][j]);
 	}
-	
 	
 	/**
 	 * Generates a maze within the boundaries using Randomized Prim's Algorithm defined:
@@ -105,7 +98,7 @@ public class Maze extends GameFrame {
 		}
 	}
 	
-	private List<Wall> get_Neighbors(int row, int col)
+	public List<Wall> get_Neighbors(int row, int col)
 	{
 		List<Wall> temp = new ArrayList<Wall>();
 		

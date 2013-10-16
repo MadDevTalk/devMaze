@@ -12,10 +12,10 @@ public class Tile extends GameFrame {
 	
 	private Rectangle rectangle;
 	
-	public Tile(int x, int y, int size)
+	public Tile(int row, int col)
 	{
 		this.inMaze = false;
-		rectangle = new Rectangle(x, y, size, size);
+		rectangle = new Rectangle(col * EDGE_SIZE_PX, row * EDGE_SIZE_PX, EDGE_SIZE_PX, EDGE_SIZE_PX);
 	}
 	
 	public void set_inMaze(boolean inMaze)

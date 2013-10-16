@@ -26,10 +26,9 @@ public class GameFrame implements ApplicationListener {
 		camera.setToOrtho(false, 800, 480);
 		
 		batch = new SpriteBatch();
-		
 		maze = new Maze(50, 30);
 		
-		player = new Player(0, 0, maze.walls);
+		player = new Player(0, 0, maze);
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
 
 		// search for an open tile to place player, this should be change
@@ -39,7 +38,7 @@ public class GameFrame implements ApplicationListener {
 			for (int j = 0; j < maze.tiles[0].length; j ++)
 				if (maze.tiles[i][j].inMaze()) 
 				{
-					player.set(i * EDGE_SIZE_PX + 2, j * EDGE_SIZE_PX + 2);
+					player.set(j * EDGE_SIZE_PX + 5, i * EDGE_SIZE_PX + 5);
 					break openTile;
 				}
 	}
@@ -64,7 +63,7 @@ public class GameFrame implements ApplicationListener {
 		
 		for (int i = 0; i < maze.tiles.length; i ++)
 			for (int j = 0; j < maze.tiles[0].length; j++)
-				batch.draw(maze.tiles[i][j].texture(), i * EDGE_SIZE_PX, j * EDGE_SIZE_PX);
+				batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
 		
 		batch.draw(player.texture(), camera.position.x, camera.position.y);
 		batch.end();
