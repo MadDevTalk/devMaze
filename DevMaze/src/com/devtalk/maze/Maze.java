@@ -22,7 +22,7 @@ public class Maze extends DevMaze {
 
 	public Maze(int width, int height) 
 	{
-		tiles = new Tile[width][height];
+		tiles = new Tile[height][width];
 		
 		for (int i = 0; i < tiles.length; i ++)
 		{

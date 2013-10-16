@@ -9,7 +9,7 @@ import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
 public class DesktopStarter {
 	public static void main(String[] args) throws IOException {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		// TexturePacker2.process("img", "../DevMave-android/assets/", "starters.pak");
+		TexturePacker2.process("img", "../DevMaze-android/assets/", "starters.pak");
 		cfg.title = "DevMaze";
 		cfg.useGL20 = false;
 		cfg.width = 800;
