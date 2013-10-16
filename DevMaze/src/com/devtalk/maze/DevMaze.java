@@ -14,6 +14,7 @@ public class DevMaze extends Game {
 		// Arial font (LibGDX's default)
 		font = new BitmapFont();
 		this.setScreen(new MainMenuScreen(this));
+		this.dispose();
 	}
 	
 	public void render() {

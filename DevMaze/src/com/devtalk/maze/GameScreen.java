@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
 	public GameScreen(final DevMaze g) {
 		this.game = g;
 
-		// Create Camera
+		// Create camera
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 
@@ -74,6 +74,11 @@ public class GameScreen implements Screen {
 		game.batch.draw(PLAYER, camera.position.x, camera.position.y);
 		game.batch.end();
 		
+		//System.out.println(Input.Keys.SPACE);
+//		if (!inputProcessor.keyDown(Input.Keys.SPACE)) {
+//			game.setScreen(new PauseScreen(game, this));
+//			this.dispose();
+//		}
 	}
 	
 	private boolean handleKeys()

@@ -1,6 +1,8 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
@@ -17,7 +19,7 @@ public class MazeInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 	    
-		return false;
+		return keycode == Keys.SPACE;
 	}
 
 	@Override
