@@ -1,4 +1,4 @@
-DevMaze-android/bin/*
+/DevMaze-android/bin/*
 *~
 *.class
 *.metadata*
