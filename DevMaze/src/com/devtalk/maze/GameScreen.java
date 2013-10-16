@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
 	// The main loop, fires @ 60 fps 
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
-		
+		System.out.println("See");
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -65,13 +65,14 @@ public class GameScreen implements Screen {
 		{
 			for (int j = 0; j < maze.tiles[0].length; j++)
 			{
-				if (maze.tiles[i][j].inMaze() )
-					game.batch.draw(IN_MAZE, i*32, j*32);
-				else
-					game.batch.draw(NOT_IN_MAZE, i*32, j*32);
+				if (maze.tiles[i][j].inMaze()) {
+					//game.batch.draw(IN_MAZE, i*32, j*32);
+				//else
+					//game.batch.draw(NOT_IN_MAZE, i*32, j*32);
+				}
 			}
 		}
-		game.batch.draw(PLAYER, camera.position.x, camera.position.y);
+		//game.batch.draw(PLAYER, camera.position.x, camera.position.y);
 		game.batch.end();
 		
 		//System.out.println(Input.Keys.SPACE);

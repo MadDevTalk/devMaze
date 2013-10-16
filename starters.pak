@@ -1,0 +1,12 @@
+
+starters.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+charsheet
+  rotate: false
+  xy: 2, 2
+  size: 500, 518
+  orig: 500, 518
+  offset: 0, 0
+  index: -1
