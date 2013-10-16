@@ -1,28 +1,61 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 
 public class MazeInputProcessor implements InputProcessor {
 
-    Camera camera;
-    Vector3 touch_down = new Vector3();
+    Player player;
+    Vector3 touch_down;
     
-    public MazeInputProcessor(Camera camera) {
-    	this.camera = camera;
+    public MazeInputProcessor(Player player) {
+    	this.player = player;
+    	touch_down = new Vector3();
     }
 
 	@Override
 	public boolean keyDown(int keycode) {
-	    
+	    switch (keycode)
+	    {
+	    case Keys.UP:
+	    	player.start(0, GameScreen.KEY_VEL_PxPer60S);
+	    	break;
+	    case Keys.RIGHT:
+	    	player.start(GameScreen.KEY_VEL_PxPer60S, 0);
+	    	break;
+	    case Keys.DOWN:
+	    	player.start(0, -GameScreen.KEY_VEL_PxPer60S);
+	    	break;
+	    case Keys.LEFT:
+	    	player.start(-GameScreen.KEY_VEL_PxPer60S, 0);
+	    	break;
+	    default:
+	    	break;
+	    }
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
+	    switch (keycode)
+	    {
+	    case Keys.UP:
+	    	player.stop(0, GameScreen.KEY_VEL_PxPer60S);
+	    	break;
+	    case Keys.RIGHT:
+	    	player.stop(GameScreen.KEY_VEL_PxPer60S, 0);
+	    	break;
+	    case Keys.DOWN:
+	    	player.stop(0, -GameScreen.KEY_VEL_PxPer60S);
+	    	break;
+	    case Keys.LEFT:
+	    	player.stop(-GameScreen.KEY_VEL_PxPer60S, 0);
+	    	break;
+	    default:
+	    	break;
+	    }
 		return false;
 	}
 
@@ -48,19 +81,19 @@ public class MazeInputProcessor implements InputProcessor {
 
 	@Override
     public boolean touchDragged(int x, int y, int pointer) {
-        moveCamera( x, y );
+		// the current position of the pointer
+        Vector3 new_position = new Vector3(x, y, 0);
+        
+        // offset of new position from where drag started
+        new_position.sub( touch_down );
+        
+        // move camera by offset, need to invert x
+        player.updatePos( (int)-new_position.x, (int)new_position.y );
+        
+        // move the drag started position to the current position
+        touch_down.add( new_position );
         
         return false;
-    }
-
-    private void moveCamera( int touch_x, int touch_y ) {
-        
-        Vector3 new_position = new Vector3(touch_x, touch_y, 0);
-        
-        new_position.sub( touch_down );
-        camera.translate( -new_position.x, new_position.y, 0 );
-        
-        touch_down.add( new_position );
     }
 
 	@Override

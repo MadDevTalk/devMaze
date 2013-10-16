@@ -1,7 +1,9 @@
-*~
-*.class
-*.metadata*
+DevMaze-android/bin/*
 
 # Package Files #
 *.war
 *.ear
+
+*~
+*.class
+*.metadata*

@@ -8,7 +8,7 @@ import java.util.Random;
  * @author max
  *
  */
-public class Maze {
+public class Maze extends DevMaze {
 
 	private static final int DEFAULT_HEIGHT = 50;
 	private static final int DEFAULT_WIDTH = 20;
@@ -28,7 +28,7 @@ public class Maze {
 		{
 			for (int j = 0; j < tiles[0].length; j++)
 			{
-				tiles[i][j] = new Tile();
+				tiles[i][j] = new Tile(i, j);
 			}
 		}
 		
@@ -40,6 +40,8 @@ public class Maze {
 	 * Generates a maze within the boundaries using Randomized Prim's Algorithm defined:
 	 * 	http://en.wikipedia.org/wiki/Prim's_algorithm
 	 */
+	
+	//TODO: start and end tiles
 	private void generate()
 	{
 		Random gen = new Random();
@@ -47,9 +49,9 @@ public class Maze {
 		
 		// Start with a grid full of walls
 		
-		// Pick a (random) cell 
-		int row = gen.nextInt(tiles.length - 1);
-		int col = gen.nextInt(tiles[0].length - 1);
+		// Pick a (random, but not on edge) cell 
+		int row = gen.nextInt(tiles.length - 2) + 1;
+		int col = gen.nextInt(tiles[0].length - 2) + 1;
 		
 		Tile start = tiles[row][col];
 		
@@ -62,23 +64,25 @@ public class Maze {
 		// While there are walls in the list:
 		while (walls.size() > 1)
 		{
+			
 			// Pick a random wall from the list
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 			
 			// If the cell on the opposite side isn't in the maze yet
 			if (!getOppositeTile(wall).inMaze())
 			{
-				// Mark the edge a passage (Open the wall)
-				tiles[wall.gety2()][wall.getx2()].set_inMaze(true);
+				// Mark the edge a passage
+				tiles[wall.row][wall.col].set_inMaze(true);
 				
 				// Mark the cell on the opposite side a passage
 				getOppositeTile(wall).set_inMaze(true);
 				
-				// Add the walls of the cell to the wall list
-				int xOffset = wall.getx2() - wall.getx1();
-				int yOffset = wall.gety2() - wall.gety1();
+				row = wall.row + wall.rowOffset;
+				col = wall.col + wall.colOffset;
 				
-				walls.addAll(get_Neighbors(wall.gety2() + yOffset, wall.getx2() + xOffset));	
+				// Add the walls of the cell to the wall list
+				walls.addAll(get_Neighbors(row, col));
+				
 			}
 			else
 			{
@@ -89,34 +93,31 @@ public class Maze {
 		}
 	}
 	
-	private List<Wall> get_Neighbors(int y, int x)
+	public List<Wall> get_Neighbors(int row, int col)
 	{
 		List<Wall> temp = new ArrayList<Wall>();
 		
 		// Check top
-		if (tiles.length - y > 2 && !tiles[y + 1][x].inMaze())
-			temp.add(new Wall(y, x, y + 1, x));
+		if (tiles.length - row > 2 && !tiles[row + 1][col].inMaze())
+			temp.add(new Wall(row, col, row + 1, col));
 		
 		// Check right
-		if (tiles[0].length - x > 2 && !tiles[y][x + 1].inMaze())
-			temp.add(new Wall(y, x, y, x + 1));
+		if (tiles[0].length - col > 2 && !tiles[row][col + 1].inMaze())
+			temp.add(new Wall(row, col, row, col + 1));
 		
 		// Check bottom
-		if (y > 2 && !tiles[y - 1][x].inMaze())
-			temp.add(new Wall(y, x, y - 1, x));
+		if (row > 2 && !tiles[row - 1][col].inMaze())
+			temp.add(new Wall(row, col, row - 1, col));
 		
 		// Check left
-		if (x > 2 && !tiles[y][x - 1].inMaze())
-			temp.add(new Wall(y, x, y, x - 1));
+		if (col > 2 && !tiles[row][col - 1].inMaze())
+			temp.add(new Wall(row, col, row, col - 1));
 		
 		return temp;
 	}
 	
 	private Tile getOppositeTile(Wall wall)
-	{
-		int xOffset = wall.getx2() - wall.getx1();
-		int yOffset = wall.gety2() - wall.gety1();
-		
-		return tiles[wall.gety2() + yOffset][wall.getx2() + xOffset];
+	{	
+		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
 	}
 }
