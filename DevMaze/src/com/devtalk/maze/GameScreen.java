@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
@@ -79,7 +80,10 @@ public class GameScreen implements Screen {
 					game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
 			}
 		
-		game.batch.draw(player.texture(), camera.position.x, camera.position.y);
+		TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
+		game.batch.draw(tmp, camera.position.x, camera.position.y,
+				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, player.angle());
 
 		game.batch.end();
 		

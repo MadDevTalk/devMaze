@@ -5,22 +5,49 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
 	
-	private static Texture image = new Texture(Gdx.files.internal("char.png"));
+	//private static Texture image = new Texture(Gdx.files.internal("char.png"));
+	
+    private static final int        FRAME_COLS = 4;
+    private static final int        FRAME_ROWS = 4;
+    
+    Animation                       walkAnimation;        
+    Texture                         walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
+    TextureRegion[]                 walkFrames; 
+    
+    float stateTime;
 	
 	Vector3 velocity;
 	Vector3 position;
+	Vector3 prevPosition;
 	
 	Maze maze;
 	
 	public Player(int xPos, int yPos, Maze maze) {
 		this.position = new Vector3(xPos, yPos, 0);
+		this.prevPosition = new Vector3(position);
 		this.velocity = new Vector3();
 		this.maze = maze;
+		
+        walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		
+		TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / 
+				FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
+        int index = 0;
+        for (int i = 0; i < FRAME_ROWS; i++) {
+                for (int j = 0; j < FRAME_COLS; j++) {
+                        walkFrames[index++] = tmp[i][j];
+                }
+        }
+        
+        walkAnimation = new Animation(0.025f, walkFrames);
+        stateTime = 0.0f;
 	}
 
 	public void set(int x, int y) {
@@ -43,6 +70,7 @@ public class Player {
 				yOffset = 0;
 		}
 		
+		prevPosition = new Vector3(position);
 		position.add(xOffset, yOffset, 0);
 	}
 	
@@ -51,7 +79,7 @@ public class Player {
 	}
 	
 	public int col() {
-			return (int) ((position.x + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		return (int) ((position.x + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
 	}
 	
 	public void start(int xVel, int yVel) {
@@ -116,9 +144,17 @@ public class Player {
 		return neighbors;
 	}
 	
-	public Texture texture()
+	public TextureRegion texture(float stateTime)
 	{
-		return image;
+		this.stateTime += stateTime;
+		return walkAnimation.getKeyFrame(this.stateTime, true);
+	}
+	
+	public float angle() {
+		float x = -(position.x - prevPosition.x);
+		float y = position.y - prevPosition.y;
+		
+		return (float) (Math.toDegrees(Math.atan2(x, y)));
 	}
 	
 }
