@@ -22,6 +22,8 @@ public class GameScreen implements Screen {
 	Maze maze;
 	MazeInputProcessor inputProcessor;
 	Player player;
+	float a, b;
+	int x, y;
 
 	public GameScreen(final DevMaze g) {
 		this.game = g;
@@ -69,7 +71,9 @@ public class GameScreen implements Screen {
 		for (int i = 0; i < maze.tiles.length; i ++)
 			for (int j = 0; j < maze.tiles[0].length; j++)
 			{
-				Vector3 tile = new Vector3(maze.tiles[i][j].rectangle().x, maze.tiles[i][j].rectangle().y, 0);
+				a = maze.tiles[i][j].rectangle().x;
+				b = maze.tiles[i][j].rectangle().y;
+				Vector3 tile = new Vector3(a, b, 0);
 				
 				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
 					game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
@@ -79,10 +83,16 @@ public class GameScreen implements Screen {
 
 		game.batch.end();
 		
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			game.setScreen(new PauseScreen(game, this));
+		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
+		if (Gdx.input.justTouched()) {
+			x = Gdx.input.getX();
+			y = Gdx.input.getY();
+			
+			if ((x < 50 && y < 50) || space) {
+				game.setScreen(new PauseScreen(game, this));
+				this.dispose();
+			}
 		}
-		
 	}
 	
 	public void resize(int width, int height) {
