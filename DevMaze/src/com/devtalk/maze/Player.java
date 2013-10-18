@@ -26,6 +26,7 @@ public class Player {
 	Vector3 velocity;
 	Vector3 position;
 	Vector3 prevPosition;
+	float prevAngle;
 	
 	Maze maze;
 	
@@ -70,7 +71,7 @@ public class Player {
 				yOffset = 0;
 		}
 		
-		prevPosition = new Vector3(position);
+		prevPosition = position.cpy();
 		position.add(xOffset, yOffset, 0);
 	}
 	
@@ -147,14 +148,27 @@ public class Player {
 	public TextureRegion texture(float stateTime)
 	{
 		this.stateTime += stateTime;
-		return walkAnimation.getKeyFrame(this.stateTime, true);
+		
+		if (isMoving())
+			return walkAnimation.getKeyFrame(this.stateTime, true);
+		else 
+			return walkFrames[4];
 	}
 	
 	public float angle() {
+		
+		if (!isMoving())
+			return prevAngle;
+		
+		return prevAngle = (float) (Math.toDegrees(Math.atan2(-(position.x - prevPosition.x), position.y - prevPosition.y))); 
+		//return prevAngle;
+	}
+	
+	public boolean isMoving() {
 		float x = -(position.x - prevPosition.x);
 		float y = position.y - prevPosition.y;
 		
-		return (float) (Math.toDegrees(Math.atan2(x, y)));
+		return !(x == 0 && y == 0);
 	}
 	
 }
