@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class DevMaze extends Game {
-	
+
 	SpriteBatch batch;
 	BitmapFont font;
 
@@ -16,13 +16,13 @@ public class DevMaze extends Game {
 		this.setScreen(new LoadingScreen(this));
 		this.dispose();
 	}
-	
+
 	public void render() {
 		super.render();
 	}
-	
+
 	public void dispose() {
-		
+
 	}
 
 }

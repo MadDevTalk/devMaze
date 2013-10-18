@@ -11,11 +11,11 @@ import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 	final DevMaze game;
-	
+
 	public static final int EDGE_SIZE_PX = 64;
 	public static final int PLAYER_SIZE_PX = 32;
-	public static final int KEY_VEL_PxPer60S = 10;
-	
+	public static final int KEY_VEL_PxPer60S = 5;
+
 	OrthographicCamera camera;
 	Texture IN_MAZE;
 	Texture NOT_IN_MAZE;
@@ -29,13 +29,14 @@ public class GameScreen implements Screen {
 	public GameScreen(final DevMaze g) {
 		this.game = g;
 		maze = new Maze(53, 31); // must be prime
-		
+
 		// Create Camera
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
-		
-		player = new Player((int)camera.position.x, (int)camera.position.y, maze);
-		
+
+		player = new Player((int) camera.position.x, (int) camera.position.y,
+				maze);
+
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
 
 		// Load assets
@@ -43,79 +44,78 @@ public class GameScreen implements Screen {
 		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
 		PLAYER = new Texture(Gdx.files.internal("char.png"));
 
-		openTile:
-		for (int i = 0; i < maze.tiles.length; i ++)
-			for (int j = 0; j < maze.tiles[0].length; j ++)
-				if (maze.tiles[i][j].inMaze()) 
-				{
+		openTile: for (int i = 0; i < maze.tiles.length; i++)
+			for (int j = 0; j < maze.tiles[0].length; j++)
+				if (maze.tiles[i][j].inMaze()) {
 					player.set(j * EDGE_SIZE_PX + 5, i * EDGE_SIZE_PX + 5);
 					break openTile;
 				}
 	}
-	
-	// The main loop, fires @ 60 fps 
+
+	// The main loop, fires @ 60 fps
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
 		player.updatePos();
 		camera.position.set(player.position);
-		
+
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
-		
+
 		// Tell batch to use the same coordinates as the camera
 		game.batch.setProjectionMatrix(camera.combined);
 		// Draw everything
 		game.batch.begin();
-		
-		for (int i = 0; i < maze.tiles.length; i ++)
-			for (int j = 0; j < maze.tiles[0].length; j++)
-			{
+
+		for (int i = 0; i < maze.tiles.length; i++)
+			for (int j = 0; j < maze.tiles[0].length; j++) {
 				a = maze.tiles[i][j].rectangle().x;
 				b = maze.tiles[i][j].rectangle().y;
 				Vector3 tile = new Vector3(a, b, 0);
-				
+
 				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-					game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+					game.batch.draw(maze.tiles[i][j].texture(), j
+							* EDGE_SIZE_PX, i * EDGE_SIZE_PX);
 			}
-		
+
 		TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
 		game.batch.draw(tmp, camera.position.x, camera.position.y,
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, player.angle());
+				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+				player.angle());
 
 		game.batch.end();
-		
+
 		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
 		if (Gdx.input.justTouched()) {
 			x = Gdx.input.getX();
 			y = Gdx.input.getY();
-			
+
 			if ((x < 50 && y < 50) || space) {
 				game.setScreen(new PauseScreen(game, this));
 				this.dispose();
 			}
 		}
 	}
-	
+
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	// Save user app information
 	public void pause() {
-		
+
 	}
-	
+
 	// Return from pause
 	public void resume() {
-		
+
 	}
-	
+
 	// Kills the app. Calls a pause first
 	public void dispose() {
-		
+
 	}
 
 	@Override
