@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 
 	public GameScreen(final DevMaze g) {
 		this.game = g;
-		maze = new Maze(50, 30);
+		maze = new Maze(53, 31); // must be prime
 		
 		// Create Camera
 		camera = new OrthographicCamera();

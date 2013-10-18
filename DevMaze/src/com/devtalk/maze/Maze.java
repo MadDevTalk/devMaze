@@ -48,10 +48,20 @@ public class Maze extends DevMaze {
 		List<Wall> walls = new ArrayList<Wall>();
 		
 		// Start with a grid full of walls
-		
+	
+		// There are certain places an initial tile could be such that the maze could 
+		// go the the edge of the 2d array. Therefor, I'm just starting at 1,1 for now
+		// which should work as long as the grid coords are prime (or just odd maybe).
+		// This makes choosing a maze "start" pretty easy, but is also kind of shit.
+		// 
+		int row, col;
+		//do {
 		// Pick a (random, but not on edge) cell 
-		int row = gen.nextInt(tiles.length - 2) + 1;
-		int col = gen.nextInt(tiles[0].length - 2) + 1;
+		//row = gen.nextInt(tiles.length - 2) + 1;
+		//col = gen.nextInt(tiles[0].length - 2) + 1;
+		//} while ();
+	
+		row = col = 1;
 		
 		Tile start = tiles[row][col];
 		
@@ -98,11 +108,11 @@ public class Maze extends DevMaze {
 		List<Wall> temp = new ArrayList<Wall>();
 		
 		// Check top
-		if (tiles.length - row > 2 && !tiles[row + 1][col].inMaze())
+		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze())
 			temp.add(new Wall(row, col, row + 1, col));
 		
 		// Check right
-		if (tiles[0].length - col > 2 && !tiles[row][col + 1].inMaze())
+		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze())
 			temp.add(new Wall(row, col, row, col + 1));
 		
 		// Check bottom
