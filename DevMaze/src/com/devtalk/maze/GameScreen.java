@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 
@@ -17,9 +16,6 @@ public class GameScreen implements Screen {
 	public static final int KEY_VEL_PxPer60S = 5;
 
 	OrthographicCamera camera;
-	Texture IN_MAZE;
-	Texture NOT_IN_MAZE;
-	Texture PLAYER;
 	Maze maze;
 	MazeInputProcessor inputProcessor;
 	Player player;
@@ -27,6 +23,8 @@ public class GameScreen implements Screen {
 	int x, y;
 
 	public GameScreen(final DevMaze g) {
+		
+		// Create game
 		this.game = g;
 		maze = new Maze(53, 31); // must be prime
 
@@ -34,27 +32,21 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 
-		player = new Player((int) camera.position.x, (int) camera.position.y,
-				maze);
+		// Create player 		
+		// Find an open tile (currently default to 1, 1)
+		//TODO: we want this to be the start of the maze initially
+		player = new Player(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, maze);
 
+		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
-
-		// Load assets
-		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
-		NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
-		PLAYER = new Texture(Gdx.files.internal("char.png"));
-
-		openTile: for (int i = 0; i < maze.tiles.length; i++)
-			for (int j = 0; j < maze.tiles[0].length; j++)
-				if (maze.tiles[i][j].inMaze()) {
-					player.set(j * EDGE_SIZE_PX + 5, i * EDGE_SIZE_PX + 5);
-					break openTile;
-				}
+		
 	}
 
 	// The main loop, fires @ 60 fps
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
+		
+		// Set the camera on the player's current position
 		player.updatePos();
 		camera.position.set(player.position);
 
@@ -65,26 +57,35 @@ public class GameScreen implements Screen {
 
 		// Tell batch to use the same coordinates as the camera
 		game.batch.setProjectionMatrix(camera.combined);
+		
 		// Draw everything
 		game.batch.begin();
-
-		for (int i = 0; i < maze.tiles.length; i++)
-			for (int j = 0; j < maze.tiles[0].length; j++) {
-				a = maze.tiles[i][j].rectangle().x;
-				b = maze.tiles[i][j].rectangle().y;
-				Vector3 tile = new Vector3(a, b, 0);
-
-				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-					game.batch.draw(maze.tiles[i][j].texture(), j
-							* EDGE_SIZE_PX, i * EDGE_SIZE_PX);
-			}
-
-		TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
-		game.batch.draw(tmp, camera.position.x, camera.position.y,
-				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-				player.angle());
-
+		{
+			
+			// **DRAW MAZE** //
+			for (int i = 0; i < maze.tiles.length; i++)
+				for (int j = 0; j < maze.tiles[0].length; j++) {
+					a = maze.tiles[i][j].rectangle().x;
+					b = maze.tiles[i][j].rectangle().y;
+					Vector3 tile = new Vector3(a, b, 0);
+		
+					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
+						game.batch.draw(maze.tiles[i][j].texture(), j
+								* EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+				}
+		
+			// **DRAW PLAYER** //
+			TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
+			game.batch.draw(tmp, camera.position.x, camera.position.y,
+					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+					player.angle());
+		
+			// **DRAW ITEMS** //
+			
+			// **DRAW MONSTERS** //
+			
+		}
 		game.batch.end();
 
 		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
