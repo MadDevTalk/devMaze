@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
 		// Create player 		
 		// Find an open tile (currently default to 1, 1)
 		//TODO: we want this to be the start of the maze initially
-		player = new Player(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, maze);
+		player = new Player(2, EDGE_SIZE_PX + 2, maze);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));

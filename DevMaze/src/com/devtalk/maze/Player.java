@@ -79,7 +79,10 @@ public class Player {
 		}
 
 		if (xOffset != 0 || yOffset != 0)
+		{
+			walking = true;
 			prevPosition = position.cpy();
+		}	
 
 		position.add(xOffset, yOffset, 0);
 	}
@@ -98,6 +101,9 @@ public class Player {
 
 	public void stop(int xVel, int yVel) {
 		velocity.sub(xVel, yVel, 0);
+		
+		if (velocity.isZero())
+			walking = false;
 	}
 
 	public Tile tileLocation() {

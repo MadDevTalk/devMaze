@@ -44,13 +44,10 @@ public class Maze extends DevMaze {
 		// Start with a grid full of walls
 
 		// There are certain places an initial tile could be such that the maze
-		// could
-		// go the the edge of the 2d array. Therefor, I'm just starting at 1,1
-		// for now
-		// which should work as long as the grid coords are prime (or just odd
-		// maybe).
-		// This makes choosing a maze "start" pretty easy, but is also kind of
-		// shit.
+		// could go the the edge of the 2d array. Therefor, I'm just starting 
+		// at 1,1 for now which should work as long as the grid coords are 
+		// prime (or just odd maybe). This makes choosing a maze "start" 
+		// pretty easy, but is also kind of shit.
 		//
 		int row, col;
 		// do {
@@ -95,6 +92,10 @@ public class Maze extends DevMaze {
 			}
 
 		}
+		
+		// Mark beginning and end tiles.
+		tiles[1][0].set_inMaze(true);
+		tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
 	}
 
 	public List<Wall> get_Neighbors(int row, int col) {
