@@ -69,8 +69,9 @@ public class GameScreen implements Screen {
 					Vector3 tile = new Vector3(a, b, 0);
 		
 					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-						game.batch.draw(maze.tiles[i][j].texture(), 
-								j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+						if (!maze.tiles[i][j].inMaze())
+							game.batch.draw(maze.tiles[i][j].texture(), 
+									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
 				}
 		
 			// **DRAW PLAYER** //

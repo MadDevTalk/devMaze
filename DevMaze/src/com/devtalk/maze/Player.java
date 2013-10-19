@@ -15,6 +15,8 @@ public class Player {
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
 
+	private static final int MAX_SPEED_PX = 50;
+	
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
 	TextureRegion[] walkFrames;
@@ -64,6 +66,15 @@ public class Player {
 
 	public void updatePos(int xOffset, int yOffset) {
 
+		if (xOffset != 0 || yOffset != 0)
+		{
+			walking = true;
+			prevPosition = position.cpy();
+
+			xOffset = Math.min(MAX_SPEED_PX, xOffset);
+			yOffset = Math.min(MAX_SPEED_PX, yOffset);
+		}
+
 		for (Tile wall : getNeighborWalls()) {
 			if (wall.rectangle().overlaps(
 					new Rectangle(position.x + xOffset, position.y,
@@ -76,12 +87,6 @@ public class Player {
 							GameScreen.PLAYER_SIZE_PX,
 							GameScreen.PLAYER_SIZE_PX)))
 				yOffset = 0;
-		}
-
-		if (xOffset != 0 || yOffset != 0)
-		{
-			walking = true;
-			prevPosition = position.cpy();
 		}
 
 		position.add(xOffset, yOffset, 0);
@@ -117,8 +122,8 @@ public class Player {
 		int col = col();
 		int radius = 2;
 		
-		for (int i = -radius; i < radius; i ++)
-			for (int j = -radius; j < radius; j++)
+		for (int i = -radius; i <= radius; i ++)
+			for (int j = -radius; j <= radius; j++)
 				try {
 					if (!maze.tiles[row + i][col + j].inMaze())
 						neighbors.add(maze.tiles[row + i][col + j]);
