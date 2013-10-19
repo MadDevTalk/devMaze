@@ -33,8 +33,7 @@ public class GameScreen implements Screen {
 		camera.setToOrtho(false, 800, 480);
 
 		// Create player 		
-		// Find an open tile (currently default to 1, 1)
-		//TODO: we want this to be the start of the maze initially
+		// Find an open tile (currently default to 0, 1)
 		player = new Player(2, EDGE_SIZE_PX + 2, maze);
 
 		// Set our input processor
@@ -70,8 +69,8 @@ public class GameScreen implements Screen {
 					Vector3 tile = new Vector3(a, b, 0);
 		
 					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-						game.batch.draw(maze.tiles[i][j].texture(), j
-								* EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+						game.batch.draw(maze.tiles[i][j].texture(), 
+								j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
 				}
 		
 			// **DRAW PLAYER** //

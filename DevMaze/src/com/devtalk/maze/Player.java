@@ -82,7 +82,7 @@ public class Player {
 		{
 			walking = true;
 			prevPosition = position.cpy();
-		}	
+		}
 
 		position.add(xOffset, yOffset, 0);
 	}
@@ -115,47 +115,14 @@ public class Player {
 
 		int row = row();
 		int col = col();
-
-		if (row >= 0 && col >= 0)
-		{
+		int radius = 2;
 		
-			// Check top
-			if (maze.tiles.length - row > 1 && !maze.tiles[row + 1][col].inMaze())
-				neighbors.add(maze.tiles[row + 1][col]);
-	
-			// Check right
-			if (maze.tiles[0].length - col > 1
-					&& !maze.tiles[row][col + 1].inMaze())
-				neighbors.add(maze.tiles[row][col + 1]);
-	
-			// Check bottom
-			if (row > 0 && !maze.tiles[row - 1][col].inMaze())
-				neighbors.add(maze.tiles[row - 1][col]);
-	
-			// Check left
-			if (col > 0 && !maze.tiles[row][col - 1].inMaze())
-				neighbors.add(maze.tiles[row][col - 1]);
-	
-			// Check top right
-			if (maze.tiles.length - row > 1 && maze.tiles[0].length - col > 1
-					&& !maze.tiles[row + 1][col + 1].inMaze())
-				neighbors.add(maze.tiles[row + 1][col + 1]);
-	
-			// Check bottom right
-			if (row > 0 && maze.tiles[0].length - col > 1
-					&& !maze.tiles[row - 1][col + 1].inMaze())
-				neighbors.add(maze.tiles[row - 1][col + 1]);
-	
-			// Check bottom left
-			if (row > 0 && col > 0 && !maze.tiles[row - 1][col - 1].inMaze())
-				neighbors.add(maze.tiles[row - 1][col - 1]);
-	
-			// Check top left
-			if (maze.tiles.length - row > 1 && col > 0
-					&& !maze.tiles[row + 1][col - 1].inMaze())
-				neighbors.add(maze.tiles[row + 1][col - 1]);
-		
-		}
+		for (int i = -radius; i < radius; i ++)
+			for (int j = -radius; j < radius; j++)
+				try {
+					if (!maze.tiles[row + i][col + j].inMaze())
+						neighbors.add(maze.tiles[row + i][col + j]);
+				} catch (IndexOutOfBoundsException e) {};
 
 		return neighbors;
 	}
