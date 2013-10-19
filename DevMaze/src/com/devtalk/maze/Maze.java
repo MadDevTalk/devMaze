@@ -10,13 +10,13 @@ import java.util.Random;
  */
 public class Maze extends DevMaze {
 
-	private static final int DEFAULT_HEIGHT = 50;
-	private static final int DEFAULT_WIDTH = 20;
+	private static final int DEFAULT_HEIGHT = 51;
+	private static final int DEFAULT_WIDTH = 31;
 
 	public Tile[][] tiles;
 
 	public Maze() {
-		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
 	}
 
 	public Maze(int row, int col) {

@@ -16,8 +16,8 @@ public class Tile {
 
 	public Tile(int row, int col) {
 		this.inMaze = false;
-		rectangle = new Rectangle(col * GameScreen.EDGE_SIZE_PX, row
-				* GameScreen.EDGE_SIZE_PX, GameScreen.EDGE_SIZE_PX,
+		rectangle = new Rectangle(col * GameScreen.EDGE_SIZE_PX, 
+				row * GameScreen.EDGE_SIZE_PX, GameScreen.EDGE_SIZE_PX,
 				GameScreen.EDGE_SIZE_PX);
 	}
 

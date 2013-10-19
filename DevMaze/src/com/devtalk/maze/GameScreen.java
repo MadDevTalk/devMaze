@@ -3,6 +3,7 @@ package com.devtalk.maze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,18 +15,20 @@ public class GameScreen implements Screen {
 	public static final int EDGE_SIZE_PX = 64;
 	public static final int PLAYER_SIZE_PX = 32;
 	public static final int KEY_VEL_PxPer60S = 5;
-	public static final int SPEED_LATCH_PX = 50;
+	public static final int SPEED_LATCH_PX = 32;
 
 	OrthographicCamera camera;
 	Maze maze;
 	MazeInputProcessor inputProcessor;
 	Player player;
+	
+	FPSLogger test;
 
 	public GameScreen(final DevMaze g) {
 		
 		// Create game
 		this.game = g;
-		maze = new Maze(31, 53); // must be odd
+		maze = new Maze(53, 83); // must be odd
 
 		// Create Camera
 		camera = new OrthographicCamera();
@@ -37,12 +40,16 @@ public class GameScreen implements Screen {
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
-		
+	
+		test = new FPSLogger();
 	}
 
 	// The main loop, fires @ 60 fps
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
+		
+		// log fps
+		test.log();
 		
 		// Set the camera on the player's current position
 		player.updatePos();
