@@ -19,8 +19,8 @@ public class Maze extends DevMaze {
 		this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 
-	public Maze(int width, int height) {
-		tiles = new Tile[height][width];
+	public Maze(int row, int col) {
+		tiles = new Tile[row][col];
 
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {

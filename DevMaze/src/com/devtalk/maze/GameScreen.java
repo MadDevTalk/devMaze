@@ -14,19 +14,18 @@ public class GameScreen implements Screen {
 	public static final int EDGE_SIZE_PX = 64;
 	public static final int PLAYER_SIZE_PX = 32;
 	public static final int KEY_VEL_PxPer60S = 5;
+	public static final int SPEED_LATCH_PX = 50;
 
 	OrthographicCamera camera;
 	Maze maze;
 	MazeInputProcessor inputProcessor;
 	Player player;
-	float a, b;
-	int x, y;
 
 	public GameScreen(final DevMaze g) {
 		
 		// Create game
 		this.game = g;
-		maze = new Maze(53, 31); // must be prime
+		maze = new Maze(31, 53); // must be odd
 
 		// Create Camera
 		camera = new OrthographicCamera();
@@ -64,9 +63,9 @@ public class GameScreen implements Screen {
 			// **DRAW MAZE** //
 			for (int i = 0; i < maze.tiles.length; i++)
 				for (int j = 0; j < maze.tiles[0].length; j++) {
-					a = maze.tiles[i][j].rectangle().x;
-					b = maze.tiles[i][j].rectangle().y;
-					Vector3 tile = new Vector3(a, b, 0);
+					float x = maze.tiles[i][j].rectangle().x;
+					float y = maze.tiles[i][j].rectangle().y;
+					Vector3 tile = new Vector3(x, y, 0);
 		
 					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
 						if (!maze.tiles[i][j].inMaze())
@@ -90,8 +89,8 @@ public class GameScreen implements Screen {
 
 		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
 		if (Gdx.input.justTouched()) {
-			x = Gdx.input.getX();
-			y = Gdx.input.getY();
+			int x = Gdx.input.getX();
+			int y = Gdx.input.getY();
 
 			if ((x < 50 && y < 50) || space) {
 				game.setScreen(new PauseScreen(game, this));

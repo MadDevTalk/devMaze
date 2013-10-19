@@ -14,8 +14,6 @@ public class Player {
 
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
-
-	private static final int MAX_SPEED_PX = 50;
 	
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
@@ -71,8 +69,8 @@ public class Player {
 			walking = true;
 			prevPosition = position.cpy();
 
-			xOffset = Math.min(MAX_SPEED_PX, xOffset);
-			yOffset = Math.min(MAX_SPEED_PX, yOffset);
+			xOffset = Math.min(GameScreen.SPEED_LATCH_PX, xOffset);
+			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
 		}
 
 		for (Tile wall : getNeighborWalls()) {
