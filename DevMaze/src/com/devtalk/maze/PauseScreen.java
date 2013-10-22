@@ -4,19 +4,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 
 public class PauseScreen implements Screen {
 
 	final DevMaze game;
 	OrthographicCamera camera;
-	TextureAtlas charsheet;
+	Texture menuColor, resumeColor;
 	GameScreen gamestate;
+	Rectangle menu, resume;
+	int x, y;
 
 	public PauseScreen(final DevMaze game, GameScreen gamestate) {
 		this.game = game;
 		this.gamestate = gamestate;
-
+		
+		menuColor = new Texture(Gdx.files.internal("MENU.png"));
+		resumeColor = new Texture(Gdx.files.internal("RESUME.png"));
+		
+		// Place the buttons
+		x = 800/2 - 192/2;
+		y = 480/2 + 64/2 + 32;
+		menu = new Rectangle(x, y, 128, 64);
+		y = 480/2 - 64/2 - 32;
+		resume = new Rectangle(x, y, 128, 64);
+		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 	}
@@ -28,12 +41,24 @@ public class PauseScreen implements Screen {
 
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-		game.font.draw(game.batch, "Resume", 100, 150);
+		game.batch.draw(menuColor, menu.x, menu.y);
+		game.batch.draw(resumeColor, resume.x, resume.y);
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
-			game.setScreen(gamestate);
-			this.dispose();
+			x = Gdx.input.getX();
+			y = Gdx.input.getY();
+			
+			if(x < 64) {
+				if(y < 64) {
+					game.setScreen(new MainMenuScreen(game));
+					this.dispose();
+				}
+				else if(y > 64*4 && y < 64*5) {
+					game.setScreen(gamestate);
+					this.dispose();
+				}
+			}
 		}
 	}
 
