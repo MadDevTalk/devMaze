@@ -24,11 +24,11 @@ public class PauseScreen implements Screen {
 		resumeColor = new Texture(Gdx.files.internal("RESUME.png"));
 		
 		// Place the buttons
-		x = 800/2 - 192/2;
-		y = 480/2 + 64/2 + 32;
-		menu = new Rectangle(x, y, 128, 64);
-		y = 480/2 - 64/2 - 32;
-		resume = new Rectangle(x, y, 128, 64);
+		x = 100;
+		y = 75;
+		menu = new Rectangle(x, y, 192, 64);
+		y = 155;
+		resume = new Rectangle(x, y, 192, 64);
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
@@ -41,23 +41,25 @@ public class PauseScreen implements Screen {
 
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-		game.batch.draw(menuColor, menu.x, menu.y);
-		game.batch.draw(resumeColor, resume.x, resume.y);
+		game.batch.draw(menuColor, 100, 75);
+		game.batch.draw(menuColor, 164, 75);
+		game.batch.draw(resumeColor, 100, 155);
+		game.batch.draw(resumeColor, 164, 155);
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
 			x = Gdx.input.getX();
 			y = Gdx.input.getY();
 			
-			if(x < 64) {
-				if(y < 64) {
-					game.setScreen(new MainMenuScreen(game));
-					this.dispose();
-				}
-				else if(y > 64*4 && y < 64*5) {
-					game.setScreen(gamestate);
-					this.dispose();
-				}
+			if(menu.contains(x, 480 - y)) {
+				//System.out.println("Boom");
+				game.setScreen(new MainMenuScreen(game));
+				this.dispose();
+			}
+			else if(resume.contains(x, 480 - y)) {
+				//System.out.println("Pow");
+				game.setScreen(gamestate);
+				this.dispose();
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,7 +30,7 @@ public class MainMenuScreen implements Screen {
 				100);
 		game.batch.end();
 
-		if (Gdx.input.isTouched()) {
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			game.setScreen(new GameScreen(game));
 			this.dispose();
 		}
