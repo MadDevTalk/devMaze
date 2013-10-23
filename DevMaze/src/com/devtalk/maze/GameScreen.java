@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
 		
 		// Create game
 		this.game = g;
-		maze = new Maze(53, 83); // must be odd
+		maze = new Maze(11, 11); // must be odd
 
 		// Create Camera
 		camera = new OrthographicCamera();
@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 
 		// Clear the screen to deep blue and update the camera
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
@@ -74,7 +74,7 @@ public class GameScreen implements Screen {
 				Vector3 tile = new Vector3(x, y, 0);
 	
 				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-					if (!maze.tiles[i][j].inMaze())
+					if (maze.tiles[i][j].inMaze())
 						game.batch.draw(maze.tiles[i][j].texture(), 
 								j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
 			}

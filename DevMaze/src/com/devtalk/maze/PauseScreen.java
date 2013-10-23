@@ -35,16 +35,21 @@ public class PauseScreen implements Screen {
 	}
 
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
+		
 		game.batch.draw(menuColor, 100, 75);
 		game.batch.draw(menuColor, 164, 75);
+		game.font.draw(game.batch, "MENU", 125, 100);
+		
 		game.batch.draw(resumeColor, 100, 155);
 		game.batch.draw(resumeColor, 164, 155);
+		game.font.draw(game.batch, "RESUME", 125, 180);
+		
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
