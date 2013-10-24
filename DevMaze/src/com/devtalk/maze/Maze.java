@@ -96,6 +96,23 @@ public class Maze extends DevMaze {
 		// Mark beginning and end tiles.
 		tiles[1][0].set_inMaze(true);
 		tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
+		
+		analyze();
+	}
+	
+	private void analyze() {
+		for (int row = 0; row < tiles.length; row++)
+			for (int col = 0; col < tiles[0].length; col++)
+				setNeighbors(row, col);
+	}
+	
+	private void setNeighbors(int row, int col) {
+		for (int i = -1; i <= 1; i++)
+			for (int j = -1; j <= 1; j++)
+				try {
+					if (i + j != 0 && tiles[row + i][col + j].inMaze())
+						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
+				} catch (IndexOutOfBoundsException e) {};
 	}
 
 	public List<Wall> get_Neighbors(int row, int col) {

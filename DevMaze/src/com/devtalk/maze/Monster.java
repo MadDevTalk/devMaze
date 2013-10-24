@@ -31,9 +31,11 @@ public class Monster {
 		HARD,
 	};
 	
-	public Monster(Maze maze, MonsterType type) {
+	public Monster(float xPos, float yPos, Maze maze, MonsterType type) {
 		this.maze = maze;
 		this.alive = true;
+		this.position = new Vector2(xPos, yPos);
+		this.velocity = new Vector2();
 		
 		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 

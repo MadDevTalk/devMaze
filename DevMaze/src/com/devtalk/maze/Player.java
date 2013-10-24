@@ -123,8 +123,9 @@ public class Player {
 		for (int i = -radius; i <= radius; i ++)
 			for (int j = -radius; j <= radius; j++)
 				try {
-					if (!maze.tiles[row + i][col + j].inMaze())
-						neighbors.add(maze.tiles[row + i][col + j]);
+					if (i + j != 0)
+						if (!maze.tiles[row + i][col + j].inMaze())
+							neighbors.add(maze.tiles[row + i][col + j]);
 				} catch (IndexOutOfBoundsException e) {};
 
 		return neighbors;
