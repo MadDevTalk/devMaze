@@ -26,11 +26,8 @@ public class LoadingScreen implements Screen {
 		game.font.draw(game.batch, "Loading...", 100, 150);
 		game.batch.end();
 
-		if (i > 5) {
-			game.setScreen(new MainMenuScreen(game));
-			this.dispose();
-		}
-		i++;
+		game.setScreen(new MainMenuScreen(game, null));
+		this.dispose();
 	}
 
 	@Override
@@ -39,10 +36,8 @@ public class LoadingScreen implements Screen {
 
 	}
 
-	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
+		 
 	}
 
 	@Override

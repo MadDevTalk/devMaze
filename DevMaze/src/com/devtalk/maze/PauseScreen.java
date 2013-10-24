@@ -42,8 +42,8 @@ public class PauseScreen implements Screen {
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
 		
-		game.batch.draw(menuColor, 100, 75);
-		game.batch.draw(menuColor, 164, 75);
+		game.batch.draw(menuColor, 100, 75);   // Double draw is a hack 
+		game.batch.draw(menuColor, 164, 75);   // around the ^2 rule
 		game.font.draw(game.batch, "MENU", 125, 100);
 		
 		game.batch.draw(resumeColor, 100, 155);
@@ -54,15 +54,13 @@ public class PauseScreen implements Screen {
 
 		if (Gdx.input.justTouched()) {
 			x = Gdx.input.getX();
-			y = Gdx.input.getY();
+			y = 480 - Gdx.input.getY();   // Translate to Camera coordinates
 			
-			if(menu.contains(x, 480 - y)) {
-				//System.out.println("Boom");
-				game.setScreen(new MainMenuScreen(game));
+			if(menu.contains(x, y)) {
+				game.setScreen(new MainMenuScreen(game, gamestate));
 				this.dispose();
 			}
-			else if(resume.contains(x, 480 - y)) {
-				//System.out.println("Pow");
+			else if(resume.contains(x, y)) {
 				game.setScreen(gamestate);
 				this.dispose();
 			}
