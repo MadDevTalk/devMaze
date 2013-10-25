@@ -35,8 +35,6 @@ public class Maze extends DevMaze {
 	 * Generates a maze within the boundaries using Randomized Prim's Algorithm
 	 * defined: http://en.wikipedia.org/wiki/Prim's_algorithm
 	 */
-
-	// TODO: start and end tiles
 	private void generate() {
 		Random gen = new Random();
 		List<Wall> walls = new ArrayList<Wall>();
@@ -103,7 +101,8 @@ public class Maze extends DevMaze {
 	private void analyze() {
 		for (int row = 0; row < tiles.length; row++)
 			for (int col = 0; col < tiles[0].length; col++)
-				setNeighbors(row, col);
+				if (tiles[row][col].inMaze())
+					setNeighbors(row, col);
 	}
 	
 	private void setNeighbors(int row, int col) {

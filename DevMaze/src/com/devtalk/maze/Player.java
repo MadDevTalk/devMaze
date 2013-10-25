@@ -1,6 +1,5 @@
 package com.devtalk.maze;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -73,21 +72,29 @@ public class Player {
 			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
 		}
 
-		for (Tile wall : getNeighborWalls()) {
-			if (wall.rectangle().overlaps(
+		List<Tile> paths = maze.tiles[row()][col()].getNeighbors();
+		paths.add(maze.tiles[row()][col()]);
+		
+		boolean xFlag = false;
+		boolean yFlag = false;
+		for (Tile path : paths) {
+			Rectangle temp = new Rectangle(path.rectangle());
+			temp.merge(maze.tiles[row()][col()].rectangle());
+			
+			if (temp.contains(
 					new Rectangle(position.x + xOffset, position.y,
 							GameScreen.PLAYER_SIZE_PX,
 							GameScreen.PLAYER_SIZE_PX)))
-				xOffset = 0;
+				xFlag = true;
 
-			if (wall.rectangle().overlaps(
+			if (temp.contains(
 					new Rectangle(position.x, position.y + yOffset,
 							GameScreen.PLAYER_SIZE_PX,
 							GameScreen.PLAYER_SIZE_PX)))
-				yOffset = 0;
+				yFlag = true;
 		}
 
-		position.add(xOffset, yOffset, 0);
+		position.add(xFlag ? xOffset : 0, yFlag ? yOffset : 0, 0);
 	}
 
 	public int row() {
@@ -111,24 +118,6 @@ public class Player {
 
 	public Tile tileLocation() {
 		return maze.tiles[row()][col()];
-	}
-
-	public List<Tile> getNeighborWalls() {
-		List<Tile> neighbors = new ArrayList<Tile>();
-
-		int row = row();
-		int col = col();
-		int radius = 2;
-		
-		for (int i = -radius; i <= radius; i ++)
-			for (int j = -radius; j <= radius; j++)
-				try {
-					if (i + j != 0)
-						if (!maze.tiles[row + i][col + j].inMaze())
-							neighbors.add(maze.tiles[row + i][col + j]);
-				} catch (IndexOutOfBoundsException e) {};
-
-		return neighbors;
 	}
 
 	public TextureRegion texture(float stateTime) {
