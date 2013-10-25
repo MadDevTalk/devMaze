@@ -109,7 +109,7 @@ public class Maze extends DevMaze {
 		for (int i = -1; i <= 1; i++)
 			for (int j = -1; j <= 1; j++)
 				try {
-					if (i + j != 0)
+					if (i != 0 || j != 0)
 						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
 				} catch (IndexOutOfBoundsException e) {};
 	}
