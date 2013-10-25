@@ -70,39 +70,55 @@ public class Player {
 
 			xOffset = Math.min(GameScreen.SPEED_LATCH_PX, xOffset);
 			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
+		} else {
+			return;
 		}
 
-		List<Tile> paths = maze.tiles[row()][col()].getNeighbors();
-		paths.add(maze.tiles[row()][col()]);
+		List<Tile> neighbors = maze.tiles[row()][col()].getNeighbors();
 		
-		boolean xFlag = false;
-		boolean yFlag = false;
-		for (Tile path : paths) {
-			Rectangle temp = new Rectangle(path.rectangle());
-			temp.merge(maze.tiles[row()][col()].rectangle());
-			
-			if (temp.contains(
-					new Rectangle(position.x + xOffset, position.y,
-							GameScreen.PLAYER_SIZE_PX,
-							GameScreen.PLAYER_SIZE_PX)))
-				xFlag = true;
-
-			if (temp.contains(
-					new Rectangle(position.x, position.y + yOffset,
-							GameScreen.PLAYER_SIZE_PX,
-							GameScreen.PLAYER_SIZE_PX)))
-				yFlag = true;
+		// FIXME: 
+		// The problem with collision detection that I can see:
+		// There is some disparity between the coords that row/col use to calculate
+		// and what where the rectangles are which lets the player into a wall, and then
+		// will keep the player there until you drag it away fast enough to get past the
+		// wall it is stuck in. This seems tedious/confusing to fix.
+		for (Tile neighbor : neighbors) {
+			if (!neighbor.inMaze()) {
+				if (neighbor.rectangle().overlaps(
+						new Rectangle(position.x + xOffset, position.y,
+								GameScreen.PLAYER_SIZE_PX,
+								GameScreen.PLAYER_SIZE_PX)))
+					xOffset = 0;
+	
+				if (neighbor.rectangle().overlaps(
+						new Rectangle(position.x, position.y + yOffset,
+								GameScreen.PLAYER_SIZE_PX,
+								GameScreen.PLAYER_SIZE_PX)))
+					yOffset = 0;
+			}
 		}
 
-		position.add(xFlag ? xOffset : 0, yFlag ? yOffset : 0, 0);
+		position.add(xOffset, yOffset, 0);
 	}
 
+	// May want to throw a new OutOfMaze exception or something
 	public int row() {
-		return (int) ((position.y + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		int calculated = (int) ((position.y + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		
+		if (calculated > maze.tiles.length - 1 || calculated < 0) 
+			calculated = -1;
+		
+		return calculated;
 	}
 
+	// May want to throw a new OutOfMaze exception or something
 	public int col() {
-		return (int) ((position.x + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		int calculated = (int) ((position.x + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		
+		if (calculated > maze.tiles[0].length - 1 || calculated < 0) 
+			calculated = -1; 
+		
+		return calculated;
 	}
 
 	public void start(int xVel, int yVel) {
