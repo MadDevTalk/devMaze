@@ -17,7 +17,7 @@ public class LoadingScreen implements Screen {
 	}
 
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
@@ -26,11 +26,8 @@ public class LoadingScreen implements Screen {
 		game.font.draw(game.batch, "Loading...", 100, 150);
 		game.batch.end();
 
-		if (i > 5) {
-			game.setScreen(new MainMenuScreen(game));
-			this.dispose();
-		}
-		i++;
+		game.setScreen(new MainMenuScreen(game, null));
+		this.dispose();
 	}
 
 	@Override
@@ -39,10 +36,8 @@ public class LoadingScreen implements Screen {
 
 	}
 
-	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
+		 
 	}
 
 	@Override

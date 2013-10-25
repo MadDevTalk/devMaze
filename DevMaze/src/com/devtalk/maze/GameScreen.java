@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
 		
 		// Create game
 		this.game = g;
-		maze = new Maze(53, 83); // must be odd
+		maze = new Maze(11, 11); // must be odd
 
 		// Create Camera
 		camera = new OrthographicCamera();
@@ -56,7 +56,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 
 		// Clear the screen to deep blue and update the camera
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
@@ -65,41 +65,40 @@ public class GameScreen implements Screen {
 		
 		// Draw everything
 		game.batch.begin();
-		{
-			
-			// **DRAW MAZE** //
-			for (int i = 0; i < maze.tiles.length; i++)
-				for (int j = 0; j < maze.tiles[0].length; j++) {
-					float x = maze.tiles[i][j].rectangle().x;
-					float y = maze.tiles[i][j].rectangle().y;
-					Vector3 tile = new Vector3(x, y, 0);
 		
-					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-						if (!maze.tiles[i][j].inMaze())
-							game.batch.draw(maze.tiles[i][j].texture(), 
-									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
-				}
+		// **DRAW MAZE** //
+		for (int i = 0; i < maze.tiles.length; i++)
+			for (int j = 0; j < maze.tiles[0].length; j++) {
+				float x = maze.tiles[i][j].rectangle().x;
+				float y = maze.tiles[i][j].rectangle().y;
+				Vector3 tile = new Vector3(x, y, 0);
+	
+				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
+					if (maze.tiles[i][j].inMaze())
+						game.batch.draw(maze.tiles[i][j].texture(), 
+								j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+			}
+	
+		// **DRAW PLAYER** //
+		TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
+		game.batch.draw(tmp, camera.position.x, camera.position.y,
+				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+				player.angle());
+	
+		// **DRAW ITEMS** //
 		
-			// **DRAW PLAYER** //
-			TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
-			game.batch.draw(tmp, camera.position.x, camera.position.y,
-					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-					player.angle());
-		
-			// **DRAW ITEMS** //
+		// **DRAW MONSTERS** //
 			
-			// **DRAW MONSTERS** //
-			
-		}
 		game.batch.end();
 
+		// **REGISTER INPUTS** //
 		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
 		if (Gdx.input.justTouched()) {
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 
-			if ((x < 50 && y < 50) || space) {
+			if ((x < 64 && y < 64) || space) {
 				game.setScreen(new PauseScreen(game, this));
 				this.dispose();
 			}
