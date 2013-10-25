@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
 		
 		// Create game
 		this.game = g;
-		maze = new Maze(11, 11); // must be odd
+		maze = new Maze(11, 15); // must be odd
 
 		// Create Camera
 		camera = new OrthographicCamera();
