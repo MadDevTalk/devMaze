@@ -1,6 +1,5 @@
 package com.devtalk.maze;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -71,31 +70,53 @@ public class Player {
 
 			xOffset = Math.min(GameScreen.SPEED_LATCH_PX, xOffset);
 			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
+		} else {
+			return;
 		}
 
-		for (Tile wall : getNeighborWalls()) {
-			if (wall.rectangle().overlaps(
-					new Rectangle(position.x + xOffset, position.y,
-							GameScreen.PLAYER_SIZE_PX,
-							GameScreen.PLAYER_SIZE_PX)))
-				xOffset = 0;
-
-			if (wall.rectangle().overlaps(
-					new Rectangle(position.x, position.y + yOffset,
-							GameScreen.PLAYER_SIZE_PX,
-							GameScreen.PLAYER_SIZE_PX)))
-				yOffset = 0;
+		List<Tile> neighbors = tileLocation().getNeighbors();
+		for(Tile neighbor : neighbors) {
+			System.out.print(neighbor + " ");
+		}
+		System.out.println();
+		
+		for (Tile neighbor : neighbors) {
+			if (!neighbor.inMaze()) {
+				if (neighbor.rectangle().overlaps(
+						new Rectangle(position.x + xOffset, position.y,
+								GameScreen.PLAYER_SIZE_PX,
+								GameScreen.PLAYER_SIZE_PX)))
+					xOffset = 0;
+	
+				if (neighbor.rectangle().overlaps(
+						new Rectangle(position.x, position.y + yOffset,
+								GameScreen.PLAYER_SIZE_PX,
+								GameScreen.PLAYER_SIZE_PX)))
+					yOffset = 0;
+			}
 		}
 
 		position.add(xOffset, yOffset, 0);
 	}
 
+	// May want to throw a new OutOfMaze exception or something
 	public int row() {
-		return (int) ((position.y + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		int calculated = (int) ((position.y + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		
+		if (calculated > maze.tiles.length - 1 || calculated < 0) 
+			calculated = -1;
+		
+		return calculated;
 	}
 
+	// May want to throw a new OutOfMaze exception or something
 	public int col() {
-		return (int) ((position.x + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		int calculated = (int) ((position.x + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		
+		if (calculated > maze.tiles[0].length - 1 || calculated < 0) 
+			calculated = -1; 
+		
+		return calculated;
 	}
 
 	public void start(int xVel, int yVel) {
@@ -111,23 +132,6 @@ public class Player {
 
 	public Tile tileLocation() {
 		return maze.tiles[row()][col()];
-	}
-
-	public List<Tile> getNeighborWalls() {
-		List<Tile> neighbors = new ArrayList<Tile>();
-
-		int row = row();
-		int col = col();
-		int radius = 2;
-		
-		for (int i = -radius; i <= radius; i ++)
-			for (int j = -radius; j <= radius; j++)
-				try {
-					if (!maze.tiles[row + i][col + j].inMaze())
-						neighbors.add(maze.tiles[row + i][col + j]);
-				} catch (IndexOutOfBoundsException e) {};
-
-		return neighbors;
 	}
 
 	public TextureRegion texture(float stateTime) {
