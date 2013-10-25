@@ -60,4 +60,8 @@ public class Tile {
 	public Rectangle rectangle() {
 		return rectangle;
 	}
+	
+	public String toString() {
+		return "(" + (int)position.x + ", "+ (int)position.y + ")";
+	}
 }

@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		
 		// log fps
-		test.log();
+		// test.log();
 		
 		// Set the camera on the player's current position
 		player.updatePos();
@@ -74,9 +74,12 @@ public class GameScreen implements Screen {
 				Vector3 tile = new Vector3(x, y, 0);
 	
 				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-					if (maze.tiles[i][j].inMaze())
-						game.batch.draw(maze.tiles[i][j].texture(), 
-								j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+					if (maze.tiles[i][j].inMaze()) {
+						game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+						
+					}
+				// Wanna see the indices overlaid on the maze? Uncomment this line right here
+				game.font.draw(game.batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 40);
 			}
 	
 		// **DRAW PLAYER** //

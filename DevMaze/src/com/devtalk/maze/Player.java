@@ -74,8 +74,11 @@ public class Player {
 			return;
 		}
 
-		List<Tile> neighbors = maze.tiles[row()][col()].getNeighbors();
-		System.out.println(neighbors);
+		List<Tile> neighbors = tileLocation().getNeighbors();
+		for(Tile neighbor : neighbors) {
+			System.out.print(neighbor + " ");
+		}
+		System.out.println();
 		
 		// FIXME: 
 		// The problem with collision detection that I can see:
