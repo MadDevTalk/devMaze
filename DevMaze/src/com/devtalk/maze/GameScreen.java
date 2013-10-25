@@ -79,7 +79,7 @@ public class GameScreen implements Screen {
 						
 					}
 				// Wanna see the indices overlaid on the maze? Uncomment this line right here
-				game.font.draw(game.batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 40);
+				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 40);
 			}
 	
 		// **DRAW PLAYER** //
