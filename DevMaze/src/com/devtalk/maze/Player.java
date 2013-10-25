@@ -80,12 +80,6 @@ public class Player {
 		}
 		System.out.println();
 		
-		// FIXME: 
-		// The problem with collision detection that I can see:
-		// There is some disparity between the coords that row/col use to calculate
-		// and what where the rectangles are which lets the player into a wall, and then
-		// will keep the player there until you drag it away fast enough to get past the
-		// wall it is stuck in. This seems tedious/confusing to fix.
 		for (Tile neighbor : neighbors) {
 			if (!neighbor.inMaze()) {
 				if (neighbor.rectangle().overlaps(
