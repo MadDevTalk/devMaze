@@ -27,6 +27,7 @@ public class MonsterHandler {
 			case FINDING_DESTINATION:
 				break;
 			case AT_DESTINATION:
+				monster.updatePos();
 				break;
 			default:
 				break;

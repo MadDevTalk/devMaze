@@ -17,6 +17,8 @@ public class Monster {
 	
 	Vector2 position;
 	Vector2 velocity;
+	Vector2 prevPosition;
+	float prevAngle;
 	
 	float stateTime;
 	
@@ -40,7 +42,7 @@ public class Monster {
 	public Monster(float xPos, float yPos, MonsterType type) {
 		this.alive = true;
 		this.position = new Vector2(xPos, yPos);
-		this.velocity = new Vector2();
+		this.velocity = new Vector2(1, 1);
 		this.walkState = WalkState.AT_DESTINATION;
 		
 		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -71,6 +73,15 @@ public class Monster {
 		}
 	}
 	
+	public void updatePos() {
+		if (velocity.x != 0 || velocity.y != 0)
+			prevPosition = position.cpy();
+		else
+			return;
+		
+		position.add(velocity);
+	}
+	
 	public boolean isAlive()
 	{
 		return alive;
@@ -90,9 +101,18 @@ public class Monster {
 			return walkFrames[4];
 	}
 	
+	public float angle() {
+
+		if (!isMoving())
+			return prevAngle;
+
+		return prevAngle = (float) (Math.toDegrees(Math.atan2(
+				-(position.x - prevPosition.x), position.y - prevPosition.y)));
+	}
+	
 	public boolean isMoving()
 	{
-		return velocity.x == 0 && velocity.y == 0;
+		return !(velocity.x == 0 && velocity.y == 0);
 	}
 	
 	public boolean seesPlayer()

@@ -98,8 +98,13 @@ public class GameScreen implements Screen {
 		
 		// **DRAW MONSTERS** //
 		for (Monster monster : monsterHandler.monsters)
-			game.batch.draw(monster.texture(Gdx.graphics.getDeltaTime()), 
-					monster.position.x, monster.position.y);
+		{
+			tmp = monster.texture(Gdx.graphics.getDeltaTime());
+			game.batch.draw(tmp, monster.position.x, monster.position.y,
+					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+					monster.angle());
+		}
 			
 		game.batch.end();
 
