@@ -20,7 +20,17 @@ public class MonsterHandler {
 	}
 
 	public void updateMonsters() {
-		
+		for (Monster monster : monsters) 
+			switch (monster.walkState) {
+			case FOLLOWING_PLAYER:
+				break;
+			case FINDING_DESTINATION:
+				break;
+			case AT_DESTINATION:
+				break;
+			default:
+				break;
+			}
 	}
 	
 }

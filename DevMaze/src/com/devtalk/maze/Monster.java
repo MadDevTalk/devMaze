@@ -23,10 +23,18 @@ public class Monster {
 	private boolean alive;
 	private int health;
 	
+	public WalkState walkState;
+	
 	public static enum MonsterType {
 		EASY,
 		MEDIUM,
 		HARD,
+	};
+	
+	public static enum WalkState {
+		FOLLOWING_PLAYER,
+		FINDING_DESTINATION,
+		AT_DESTINATION,
 	};
 	
 	public Monster(float xPos, float yPos, MonsterType type) {
@@ -82,6 +90,11 @@ public class Monster {
 	}
 	
 	public boolean isMoving()
+	{
+		return velocity.x == 0 && velocity.y == 0;
+	}
+	
+	public boolean seesPlayer()
 	{
 		return false;
 	}
