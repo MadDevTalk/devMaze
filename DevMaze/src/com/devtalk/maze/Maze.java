@@ -13,7 +13,7 @@ public class Maze extends DevMaze {
 	private static final int DEFAULT_HEIGHT = 51;
 	private static final int DEFAULT_WIDTH = 31;
 
-	public Tile[][] tiles;
+	public static Tile[][] tiles;
 
 	public Maze() {
 		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);

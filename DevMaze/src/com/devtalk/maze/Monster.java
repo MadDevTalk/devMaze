@@ -18,8 +18,6 @@ public class Monster {
 	Vector2 position;
 	Vector2 velocity;
 	
-	Maze maze;
-	
 	float stateTime;
 	
 	private boolean alive;
@@ -31,8 +29,7 @@ public class Monster {
 		HARD,
 	};
 	
-	public Monster(float xPos, float yPos, Maze maze, MonsterType type) {
-		this.maze = maze;
+	public Monster(float xPos, float yPos, MonsterType type) {
 		this.alive = true;
 		this.position = new Vector2(xPos, yPos);
 		this.velocity = new Vector2();
@@ -88,4 +85,5 @@ public class Monster {
 	{
 		return false;
 	}
+	
 }

@@ -74,9 +74,9 @@ public class Player {
 			return;
 		}
 
-		List<Tile> neighbors = maze.tiles[row()][col()].getNeighbors();
-		System.out.println(neighbors);
+		List<Tile> neighbors = Utils.tileLocation(position.x, position.y).getNeighbors();
 		
+		// TODO: fine tune collision detection to allow player to get closer to walls.
 		for (Tile neighbor : neighbors) {
 			if (!neighbor.inMaze()) {
 				if (neighbor.rectangle().overlaps(
@@ -96,26 +96,6 @@ public class Player {
 		position.add(xOffset, yOffset, 0);
 	}
 
-	// May want to throw a new OutOfMaze exception or something
-	public int row() {
-		int calculated = (int) ((position.y + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
-		
-		if (calculated > maze.tiles.length - 1 || calculated < 0) 
-			calculated = -1;
-		
-		return calculated;
-	}
-
-	// May want to throw a new OutOfMaze exception or something
-	public int col() {
-		int calculated = (int) ((position.x + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
-		
-		if (calculated > maze.tiles[0].length - 1 || calculated < 0) 
-			calculated = -1; 
-		
-		return calculated;
-	}
-
 	public void start(int xVel, int yVel) {
 		velocity.add(xVel, yVel, 0);
 	}
@@ -125,10 +105,6 @@ public class Player {
 		
 		if (velocity.isZero())
 			walking = false;
-	}
-
-	public Tile tileLocation() {
-		return maze.tiles[row()][col()];
 	}
 
 	public TextureRegion texture(float stateTime) {
