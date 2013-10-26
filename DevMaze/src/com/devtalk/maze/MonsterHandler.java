@@ -30,13 +30,13 @@ public class MonsterHandler {
 		{
 			switch (monster.walkState) {
 			case FOLLOWING_PLAYER:
-				followPlayer(monster);
+				//followPlayer(monster);
 				break;
 			case FINDING_DESTINATION:
-				seekDestination(monster);
+				//seekDestination(monster);
 				break;
 			case AT_DESTINATION:
-				setDestination(monster);
+				//setDestination(monster);
 				break;
 			default:
 				// OH NOOOOOOOOOO
