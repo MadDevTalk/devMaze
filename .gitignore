@@ -4,6 +4,7 @@
 *.metadata*
 *.pak
 *.cache
+.classpath
 
 # Package Files #
 *.war
