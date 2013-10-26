@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 		
 		// Create Monsters
-		monsterHandler = new MonsterHandler(4, MonsterType.EASY);
+		monsterHandler = new MonsterHandler(5, MonsterType.EASY);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));

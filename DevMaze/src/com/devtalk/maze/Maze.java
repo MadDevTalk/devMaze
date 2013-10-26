@@ -14,6 +14,8 @@ public class Maze extends DevMaze {
 	private static final int DEFAULT_WIDTH = 31;
 
 	public static Tile[][] tiles;
+	
+	public static List<Tile> openTiles;
 
 	public Maze() {
 		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
@@ -21,6 +23,7 @@ public class Maze extends DevMaze {
 
 	public Maze(int row, int col) {
 		tiles = new Tile[row][col];
+		openTiles = new ArrayList<Tile>();
 
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
@@ -101,8 +104,10 @@ public class Maze extends DevMaze {
 	private void analyze() {
 		for (int row = 0; row < tiles.length; row++)
 			for (int col = 0; col < tiles[0].length; col++)
-				if (tiles[row][col].inMaze())
+				if (tiles[row][col].inMaze()) {
+					openTiles.add(tiles[row][col]);
 					setNeighbors(row, col);
+				}
 	}
 	
 	private void setNeighbors(int row, int col) {
