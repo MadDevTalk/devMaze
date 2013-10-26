@@ -41,6 +41,7 @@ public class Monster {
 		this.alive = true;
 		this.position = new Vector2(xPos, yPos);
 		this.velocity = new Vector2();
+		this.walkState = WalkState.AT_DESTINATION;
 		
 		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 
