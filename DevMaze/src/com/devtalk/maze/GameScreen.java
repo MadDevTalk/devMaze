@@ -39,6 +39,7 @@ public class GameScreen implements Screen {
 		// Create player 		
 		// Find an open tile (currently default to 0, 1)
 		player = new Player(2, EDGE_SIZE_PX + 2, maze);
+		camera.position.set(player.position);
 		
 		// Create Monsters
 		monsterHandler = new MonsterHandler(4, MonsterType.EASY);
@@ -73,39 +74,39 @@ public class GameScreen implements Screen {
 		
 		// Draw everything
 		game.batch.begin();
-		
-		// **DRAW MAZE** //
-		for (int i = 0; i < Maze.tiles.length; i++)
-			for (int j = 0; j < Maze.tiles[0].length; j++) {
-				float x = Maze.tiles[i][j].rectangle().x;
-				float y = Maze.tiles[i][j].rectangle().y;
-				Vector3 tile = new Vector3(x, y, 0);
-	
-				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-					if (Maze.tiles[i][j].inMaze())
-						game.batch.draw(Maze.tiles[i][j].texture(), 
-								j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
-			}
-	
-		// **DRAW PLAYER** //
-		TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
-		game.batch.draw(tmp, camera.position.x, camera.position.y,
-				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-				player.angle());
-	
-		// **DRAW ITEMS** //
-		
-		// **DRAW MONSTERS** //
-		for (Monster monster : monsterHandler.monsters)
 		{
-			tmp = monster.texture(Gdx.graphics.getDeltaTime());
-			game.batch.draw(tmp, monster.position.x, monster.position.y,
+			// **DRAW MAZE** //
+			for (int i = 0; i < Maze.tiles.length; i++)
+				for (int j = 0; j < Maze.tiles[0].length; j++) {
+					float x = Maze.tiles[i][j].rectangle().x;
+					float y = Maze.tiles[i][j].rectangle().y;
+					Vector3 tile = new Vector3(x, y, 0);
+		
+					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
+						if (Maze.tiles[i][j].inMaze())
+							game.batch.draw(Maze.tiles[i][j].texture(), 
+									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+				}
+		
+			// **DRAW PLAYER** //
+			TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
+			game.batch.draw(tmp, camera.position.x, camera.position.y,
 					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-					monster.angle());
-		}
+					player.angle());
+		
+			// **DRAW ITEMS** //
 			
+			// **DRAW MONSTERS** //
+			for (Monster monster : monsterHandler.monsters)
+			{
+				tmp = monster.texture(Gdx.graphics.getDeltaTime());
+				game.batch.draw(tmp, monster.position.x, monster.position.y,
+						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+						monster.angle());
+			}
+		}
 		game.batch.end();
 
 		// **REGISTER INPUTS** //

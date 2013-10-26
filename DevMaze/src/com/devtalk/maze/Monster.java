@@ -107,7 +107,7 @@ public class Monster {
 			return prevAngle;
 
 		return prevAngle = (float) (Math.toDegrees(Math.atan2(
-				-(position.x - prevPosition.x), position.y - prevPosition.y)));
+				-velocity.x, velocity.y)));
 	}
 	
 	public boolean isMoving()
