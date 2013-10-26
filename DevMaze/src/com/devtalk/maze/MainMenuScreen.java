@@ -6,10 +6,12 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 public class MainMenuScreen implements Screen {
 
 	final DevMaze game;
+	Tile[][] paths;
 	GameScreen gamestate;
 	OrthographicCamera camera;
 	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg;
@@ -32,6 +34,8 @@ public class MainMenuScreen implements Screen {
 		settingsImg = new Texture(Gdx.files.internal("SETTINGS.png"));
 		quitImg = new Texture(Gdx.files.internal("QUIT.png"));
 		
+		// Make Maze
+		paths = new Tile[5][10];
 		
 		// Place the buttons
 		x = 800 - 100 - 128;
@@ -77,6 +81,22 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(quitImg, quit.x, quit.y);   // Double draw is a hack 
 		game.batch.draw(quitImg, quit.x, quit.y);   // around the ^2 rule
 		game.font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
+		
+		// **DRAW SYMBOL** //
+		for (int i = 0; i < paths.length; i++) {
+			for (int j = 0; j < paths[0].length; j++) {
+				
+				if(i = 5 || j == 5) {
+					game.batch.draw(region, j, j, originX, originY, width, height, scaleX, scaleY, rotation)
+					game.batch.draw(region, j, j, originX, originY, width, height, scaleX, scaleY, rotation)
+				}
+				
+				
+				
+				// Wanna see the indices overlaid on the maze? Uncomment this line right here
+				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 40);
+			}
+	}
 
 		game.batch.end();
 
