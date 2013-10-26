@@ -1,5 +1,8 @@
 package com.devtalk.maze;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -26,6 +29,7 @@ public class Monster {
 	private int health;
 	
 	public WalkState walkState;
+	public List<Tile> path;
 	
 	public static enum MonsterType {
 		EASY,
@@ -44,6 +48,7 @@ public class Monster {
 		this.position = new Vector2(xPos, yPos);
 		this.velocity = new Vector2(1, 1);
 		this.walkState = WalkState.AT_DESTINATION;
+		this.path = new ArrayList<Tile>();
 		
 		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 
