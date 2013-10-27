@@ -54,15 +54,14 @@ public class MonsterHandler {
 	
 	private void setDestination(Monster monster) {
 		
-		do {
-			
-		} while(monster.path.isEmpty());
+		// pick random maze tile within radius of monster position, set as end
+		// find path from monster position to end
 		
 		monster.walkState = WalkState.FINDING_DESTINATION;
 	}
 	
 	private void seekDestination(Monster monster) {
-		Tile currentPosition = Utils.tileLocation(monster.position.y, monster.position.x);
+		Tile currentPosition = Utils.tileAtLocation(monster.position.y, monster.position.x);
 		Tile destination = monster.path.get(monster.path.size() - 1);
 		
 		if (currentPosition == destination) {
@@ -92,6 +91,12 @@ public class MonsterHandler {
 			// Switch it to the closed list
 			closedList.add(openList.remove(openList.indexOf(currentNode)));
 			
+			// If the path has been found
+			if (closedList.contains(end)) {
+				monster.path = readPath(closedList.get(end));
+				return true;
+			}
+			
 			// For each of the adjacent nodes...
 			List<Tile> neighbors = currentNode.tile.getNeighbors();
 			for (Tile neighbor : neighbors) {
@@ -103,12 +108,12 @@ public class MonsterHandler {
 						// Check to see if this path is better using G cost
 						PathNode node = openList.get(neighbor);
 						if (node.G <= currentNode.G) {
-							node.parent = currentNode.tile;
-							//
+							node.parent = currentNode;
+							node.G = currentNode.G;
 						}
 						
 					} else
-						openList.add(new PathNode(neighbor, currentNode.tile, 
+						openList.add(new PathNode(neighbor, currentNode, 
 								currentNode.G + G_WEIGHT, heuristic(neighbor, end)));
 					
 				}
@@ -117,11 +122,22 @@ public class MonsterHandler {
 			
 		}
 		
-		return true;
+		return false;
 	}
 	
 	private int heuristic(Tile current, Tile destination) {
 		return 0;
+	}
+	
+	private List<Tile> readPath(PathNode path) {
+		List<Tile> tmp = new ArrayList<Tile>();
+		
+		do {
+			tmp.add(path.tile);
+			path = path.parent;
+		} while (path.parent != null);
+		
+		return tmp;
 	}
 	
 }

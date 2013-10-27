@@ -2,7 +2,7 @@ package com.devtalk.maze;
 
 public class Utils extends Maze {
 	
-	public static Tile tileLocation(float xPos, float yPos) {
+	public static Tile tileAtLocation(float xPos, float yPos) {
 		return Maze.tiles[row(yPos)][col(xPos)];
 	}
 	
