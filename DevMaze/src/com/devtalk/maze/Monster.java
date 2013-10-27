@@ -30,6 +30,7 @@ public class Monster {
 	
 	public WalkState walkState;
 	public List<Tile> path;
+	public Tile destination;
 	
 	public static enum MonsterType {
 		EASY,
@@ -46,7 +47,7 @@ public class Monster {
 	public Monster(float xPos, float yPos, MonsterType type) {
 		this.alive = true;
 		this.position = new Vector2(xPos, yPos);
-		this.velocity = new Vector2(1, 1);
+		this.velocity = new Vector2();
 		this.walkState = WalkState.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
 		
