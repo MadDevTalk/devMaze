@@ -3,11 +3,12 @@ package com.devtalk.maze;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import com.devtalk.maze.Monster.MonsterType;
 import com.devtalk.maze.Monster.WalkState;
 
 public class MonsterHandler {
+	
+	private static final int G_WEIGHT = 10;;
 	
 	public List<Monster> monsters;
 	
@@ -68,6 +69,59 @@ public class MonsterHandler {
 			monster.walkState = WalkState.AT_DESTINATION;
 			monster.path.clear();
 		}
+	}
+	
+	/**
+	 * A* pathing implemented as per http://www.policyalmanac.org/games/aStarTutorial.htm
+	 */
+	private boolean findPath(Monster monster, Tile start, Tile end) {
+		PathList openList = new PathList();
+		PathList closedList = new PathList();
+		PathNode currentNode = new PathNode(start, null, 0, 0);
+		
+		// Add the starting node to the open list
+		openList.add(currentNode);
+		
+		while (!openList.isEmpty()) {
+			
+			// Look for lowest cost node in the open list
+			for (PathNode node : openList)
+				if (node.F() <= currentNode.F())
+					currentNode = node;
+			
+			// Switch it to the closed list
+			closedList.add(openList.remove(openList.indexOf(currentNode)));
+			
+			// For each of the adjacent nodes...
+			List<Tile> neighbors = currentNode.tile.getNeighbors();
+			for (Tile neighbor : neighbors) {
+				
+				// If the tile is in the maze and not already in the path
+				if (neighbor.inMaze() && !closedList.contains(neighbor)) {
+					if (openList.contains(neighbor)) {
+						
+						// Check to see if this path is better using G cost
+						PathNode node = openList.get(neighbor);
+						if (node.G <= currentNode.G) {
+							node.parent = currentNode.tile;
+							//
+						}
+						
+					} else
+						openList.add(new PathNode(neighbor, currentNode.tile, 
+								currentNode.G + G_WEIGHT, heuristic(neighbor, end)));
+					
+				}
+				
+			}
+			
+		}
+		
+		return true;
+	}
+	
+	private int heuristic(Tile current, Tile destination) {
+		return 0;
 	}
 	
 }
