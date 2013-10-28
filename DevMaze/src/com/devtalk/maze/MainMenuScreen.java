@@ -18,7 +18,7 @@ public class MainMenuScreen implements Screen {
 	
 	final DevMaze game;
 	private static Texture IN_MAZE;
-	public static final int camCenter = (5 * GameScreen.EDGE_SIZE_PX)/2;
+	public static final int camCenter = (8 * GameScreen.EDGE_SIZE_PX);
 	
 	int i, x, y;
 	
@@ -65,7 +65,20 @@ public class MainMenuScreen implements Screen {
 
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-		game.font.draw(game.batch, "Welcome to DevMaze! ", 100, 150);
+		
+		// **DRAW SYMBOL** //
+		for (int i = 0; i < paths.length; i++) {
+			for (int j = 0; j < paths[0].length; j++) {
+				
+				if(i == 2 || j == 2) {
+					game.batch.draw(IN_MAZE, j * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX), 
+							i * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX));
+				}
+				
+				// Wanna see the indices overlaid on the maze? Uncomment this line right here
+				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * GameScreen.EDGE_SIZE_PX + 15, i * GameScreen.EDGE_SIZE_PX + 40);
+			}
+		}
 		
 		// **DRAW BUTTONS** //
 		game.batch.draw(gameImg, newGame.x, newGame.y);
@@ -83,19 +96,6 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(quitImg, quit.x, quit.y);
 		game.font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
 		
-		// **DRAW SYMBOL** //
-		for (int i = 0; i < paths.length; i++) {
-			for (int j = 0; j < paths[0].length; j++) {
-				
-				if(i == 2 || j == 2) {
-					game.batch.draw(IN_MAZE, j * GameScreen.EDGE_SIZE_PX, i * GameScreen.EDGE_SIZE_PX);
-				}
-				
-				// Wanna see the indices overlaid on the maze? Uncomment this line right here
-				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * GameScreen.EDGE_SIZE_PX + 15, i * GameScreen.EDGE_SIZE_PX + 40);
-			}
-	}
-
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
