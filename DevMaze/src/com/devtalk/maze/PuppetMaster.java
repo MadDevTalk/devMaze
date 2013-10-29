@@ -35,13 +35,15 @@ public class PuppetMaster {
 		{
 			switch (monster.state) {
 			case FOLLOWING_PLAYER:
+				System.out.println("saw player");
 				setDestination(monster, player);
 			case FINDING_DESTINATION:
-				if (!seekDestination(monster))
+				if (!seekDestination(monster)) {
 					if (monster.sawPlayer)
 						;
 					else
 						monster.state = State.AT_DESTINATION;
+				}
 				
 				if (monster.sawPlayer)
 					monster.state = State.FOLLOWING_PLAYER;
@@ -57,7 +59,7 @@ public class PuppetMaster {
 				break;
 			}
 			
-			monster.updatePos();
+			monster.updatePos(player);
 		}
 	}
 	

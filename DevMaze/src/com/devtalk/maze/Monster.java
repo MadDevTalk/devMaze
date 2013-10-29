@@ -99,11 +99,25 @@ public class Monster {
 		this.sawPlayer = false;
 	}
 	
-	public void updatePos() {
+	public void updatePos(Player player) {
 		this.prevPosition = this.position.cpy();
 		this.position.add(this.velocity);
 		this.rectangle.set(this.position.x, this.position.y, 
 				GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+		
+		float xPos = this.position.x; 
+		float yPos = this.position.y;
+		
+		if (this.velocity.x != 0 || this.velocity.y != 0)
+			while (Utils.tileAtLocation(xPos, yPos) != null) {
+				if (player.rectangle.contains(xPos, yPos)) {
+					this.sawPlayer = true;
+					break;
+				}
+				
+				xPos += (velocity.x * (GameScreen.PLAYER_SIZE_PX / 2));
+				xPos += (velocity.y * (GameScreen.PLAYER_SIZE_PX / 2));
+			}
 	}
 	
 	public boolean isAlive()

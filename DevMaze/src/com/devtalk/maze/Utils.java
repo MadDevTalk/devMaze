@@ -3,6 +3,12 @@ package com.devtalk.maze;
 public class Utils extends Maze {
 	
 	public static Tile tileAtLocation(float xPos, float yPos) {
+		int row = row(yPos);
+		int col = col(xPos);
+		
+		if (row < 0 || col < 0)
+			return null;
+					
 		return Maze.tiles[row(yPos)][col(xPos)];
 	}
 	

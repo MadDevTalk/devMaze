@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.devtalk.maze.Monster.MonsterType;
 
 public class GameScreen implements Screen {
+	
 	final DevMaze game;
 
 	public static final int EDGE_SIZE_PX = 64;
@@ -42,7 +43,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 		
 		// Create Monsters
-		monsterHandler = new PuppetMaster(50, MonsterType.EASY);
+		monsterHandler = new PuppetMaster(5, MonsterType.EASY);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player, monsterHandler));
