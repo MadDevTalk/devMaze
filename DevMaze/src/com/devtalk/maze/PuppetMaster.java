@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import com.badlogic.gdx.math.Vector2;
 import com.devtalk.maze.Monster.MonsterType;
 import com.devtalk.maze.Monster.State;
 
 public class PuppetMaster {
 	
 	private static final int G_WEIGHT_AXIAL = 10;
-	float xLatch, yLatch;
 
 	public List<Monster> monsters;
 	
 	public PuppetMaster(int monsterCount, MonsterType difficulty) {
 		monsters = new ArrayList<Monster>();
-		xLatch = yLatch = 0;
 		
 		Random r = new Random();
 		
@@ -29,18 +29,27 @@ public class PuppetMaster {
 		}
 	}
 
-	public void updateMonsters() {
+	public void updateMonsters(Player player) {
 		for (Monster monster : monsters) 
 		{
-			switch (monster.walkState) {
+			switch (monster.state) {
 			case FOLLOWING_PLAYER:
-				followPlayer(monster);
-				break;
+				setDestination(monster, player);
 			case FINDING_DESTINATION:
-				seekDestination(monster);
+				if (!seekDestination(monster))
+					if (monster.sawPlayer)
+						;
+					else
+						monster.state = State.AT_DESTINATION;
+				
+				if (monster.sawPlayer)
+					monster.state = State.FOLLOWING_PLAYER;
 				break;
 			case AT_DESTINATION:
-				setDestination(monster);
+				if (setDestination(monster, null))
+					monster.state = State.FINDING_DESTINATION;
+				break;
+			case IN_COMBAT:
 				break;
 			default:
 				// OH NOOOOOOOOOO
@@ -51,22 +60,24 @@ public class PuppetMaster {
 		}
 	}
 	
-	private void followPlayer(Monster monster) {
+	private boolean setDestination(Monster monster, Player player) {
+		Tile end;
 		
-	}
-	
-	private void setDestination(Monster monster) {
-		
-		Random r = new Random();
-		Tile end = Maze.openTiles.get(r.nextInt(Maze.openTiles.size() - 1));
+		if (player == null) {
+			Random r = new Random();
+			end = Maze.openTiles.get(r.nextInt(Maze.openTiles.size() - 1));
+		} else if (monster.destination == Utils.tileAtLocation(player.position.x, player.position.y)) {
+			return true;
+		} else {
+			end = Utils.tileAtLocation(player.position.x, player.position.y);
+		}
 		
 		// find path from monster position to end
-		if (findPath(monster, Utils.tileAtLocation(monster.position.x, monster.position.y), end))
-			monster.walkState = State.FINDING_DESTINATION;
+		return findPath(monster, Utils.tileAtLocation(monster.position.x, monster.position.y), end);
 		
 	}
 	
-	private void seekDestination(Monster monster) {
+	private boolean seekDestination(Monster monster) {
 		
 		Tile currentPosition = Utils.tileAtLocation(monster.position.x, monster.position.y);
 		Tile lastPosition = Utils.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
@@ -86,15 +97,15 @@ public class PuppetMaster {
 				monster.velocity.set(monster.velocityLatch);
 				monster.count --;
 			} else {
-
 				monster.velocity.set(x, y);
 				monster.velocityLatch = monster.velocity.cpy();
 			}
+			
+			return true;
 		} else {
-			monster.walkState = State.AT_DESTINATION;
-			monster.velocity = monster.velocity.Zero.cpy();
+			monster.velocity = new Vector2();
 			monster.path.clear();
-			return;
+			return false;
 		}
 	}
 	

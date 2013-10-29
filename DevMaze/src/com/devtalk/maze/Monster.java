@@ -29,8 +29,9 @@ public class Monster {
 	int totalHealth;
 	int hitRadius;
 	int hitDamage;
+	boolean sawPlayer;
 	
-	State walkState;
+	State state;
 	List<Tile> path;
 	Tile destination;
 	int count;
@@ -49,7 +50,7 @@ public class Monster {
 	};
 	
 	public Monster(float xPos, float yPos, MonsterType type) {
-		this.walkState = State.AT_DESTINATION;
+		this.state = State.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 		
@@ -92,6 +93,7 @@ public class Monster {
 		
 		// Start with full health
 		this.currentHealth = this.totalHealth;
+		this.sawPlayer = false;
 	}
 	
 	public void updatePos() {
@@ -125,11 +127,6 @@ public class Monster {
 	public boolean isMoving()
 	{
 		return !(this.velocity.x == 0 && this.velocity.y == 0);
-	}
-	
-	public boolean seesPlayer()
-	{
-		return false;
 	}
 	
 	public String toString() {

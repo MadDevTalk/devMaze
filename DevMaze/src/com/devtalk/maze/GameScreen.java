@@ -62,7 +62,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 		
 		// Update the monsters' current position
-		monsterHandler.updateMonsters();
+		monsterHandler.updateMonsters(player);
 
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
