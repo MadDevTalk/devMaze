@@ -35,12 +35,11 @@ public class PuppetMaster {
 		{
 			switch (monster.state) {
 			case FOLLOWING_PLAYER:
-				System.out.println("saw player");
 				setDestination(monster, player);
 			case FINDING_DESTINATION:
 				if (!seekDestination(monster)) {
 					if (monster.sawPlayer)
-						;
+						; // Enter into combat mode?
 					else
 						monster.state = State.AT_DESTINATION;
 				}
@@ -195,7 +194,6 @@ public class PuppetMaster {
 		List<Monster> deadMonsters = new ArrayList<Monster>();
 		for (Monster monster : monsters) 
 			if (hitArea.overlaps(monster.rectangle)) {
-				System.out.println("collision detected");
 				monster.currentHealth -= 1;
 				if (!monster.isAlive())
 					deadMonsters.add(monster);
