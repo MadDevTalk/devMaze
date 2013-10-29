@@ -106,7 +106,8 @@ public class GameScreen implements Screen {
 						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
 						monster.angle());
 				
-				game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
+				// TODO: one debug bool that toggles all debug drawing
+				// game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
 			}
 		}
 		game.batch.end();
