@@ -1,5 +1,8 @@
 package com.devtalk.maze;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -17,13 +20,17 @@ public class Monster {
 	
 	Vector2 position;
 	Vector2 velocity;
-	
-	Maze maze;
+	Vector2 prevPosition;
+	float prevAngle;
 	
 	float stateTime;
 	
 	private boolean alive;
 	private int health;
+	
+	public WalkState walkState;
+	public List<Tile> path;
+	public Tile destination;
 	
 	public static enum MonsterType {
 		EASY,
@@ -31,11 +38,18 @@ public class Monster {
 		HARD,
 	};
 	
-	public Monster(float xPos, float yPos, Maze maze, MonsterType type) {
-		this.maze = maze;
+	public static enum WalkState {
+		FOLLOWING_PLAYER,
+		FINDING_DESTINATION,
+		AT_DESTINATION,
+	};
+	
+	public Monster(float xPos, float yPos, MonsterType type) {
 		this.alive = true;
 		this.position = new Vector2(xPos, yPos);
 		this.velocity = new Vector2();
+		this.walkState = WalkState.AT_DESTINATION;
+		this.path = new ArrayList<Tile>();
 		
 		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 
@@ -65,6 +79,15 @@ public class Monster {
 		}
 	}
 	
+	public void updatePos() {
+		if (velocity.x != 0 || velocity.y != 0)
+			prevPosition = position.cpy();
+		else
+			return;
+		
+		position.add(velocity);
+	}
+	
 	public boolean isAlive()
 	{
 		return alive;
@@ -84,8 +107,23 @@ public class Monster {
 			return walkFrames[4];
 	}
 	
+	public float angle() {
+
+		if (!isMoving())
+			return prevAngle;
+
+		return prevAngle = (float) (Math.toDegrees(Math.atan2(
+				-velocity.x, velocity.y)));
+	}
+	
 	public boolean isMoving()
+	{
+		return !(velocity.x == 0 && velocity.y == 0);
+	}
+	
+	public boolean seesPlayer()
 	{
 		return false;
 	}
+	
 }

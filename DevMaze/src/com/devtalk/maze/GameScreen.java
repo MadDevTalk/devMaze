@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.devtalk.maze.Monster.MonsterType;
 
 public class GameScreen implements Screen {
 	final DevMaze game;
@@ -21,6 +22,7 @@ public class GameScreen implements Screen {
 	Maze maze;
 	MazeInputProcessor inputProcessor;
 	Player player;
+	MonsterHandler monsterHandler;
 	
 	FPSLogger test;
 
@@ -37,6 +39,10 @@ public class GameScreen implements Screen {
 		// Create player 		
 		// Find an open tile (currently default to 0, 1)
 		player = new Player(2, EDGE_SIZE_PX + 2, maze);
+		camera.position.set(player.position);
+		
+		// Create Monsters
+		monsterHandler = new MonsterHandler(1, MonsterType.EASY);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
@@ -54,6 +60,9 @@ public class GameScreen implements Screen {
 		// Set the camera on the player's current position
 		player.updatePos();
 		camera.position.set(player.position);
+		
+		// Update the monsters' current position
+		monsterHandler.updateMonsters();
 
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
@@ -65,34 +74,39 @@ public class GameScreen implements Screen {
 		
 		// Draw everything
 		game.batch.begin();
+		{
+			// **DRAW MAZE** //
+			for (int i = 0; i < Maze.tiles.length; i++)
+				for (int j = 0; j < Maze.tiles[0].length; j++) {
+					float x = Maze.tiles[i][j].rectangle().x;
+					float y = Maze.tiles[i][j].rectangle().y;
+					Vector3 tile = new Vector3(x, y, 0);
 		
-		// **DRAW MAZE** //
-		for (int i = 0; i < maze.tiles.length; i++)
-			for (int j = 0; j < maze.tiles[0].length; j++) {
-				float x = maze.tiles[i][j].rectangle().x;
-				float y = maze.tiles[i][j].rectangle().y;
-				Vector3 tile = new Vector3(x, y, 0);
-	
-				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-					if (maze.tiles[i][j].inMaze()) {
-						game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
-						
-					}
-				// Wanna see the indices overlaid on the maze? Uncomment this line right here
-				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 40);
-			}
-	
-		// **DRAW PLAYER** //
-		TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
-		game.batch.draw(tmp, camera.position.x, camera.position.y,
-				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-				player.angle());
-	
-		// **DRAW ITEMS** //
+					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
+						if (Maze.tiles[i][j].inMaze())
+							game.batch.draw(Maze.tiles[i][j].texture(), 
+									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+				}
 		
-		// **DRAW MONSTERS** //
+			// **DRAW PLAYER** //
+			TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
+			game.batch.draw(tmp, camera.position.x, camera.position.y,
+					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+					player.angle());
+		
+			// **DRAW ITEMS** //
 			
+			// **DRAW MONSTERS** //
+			for (Monster monster : monsterHandler.monsters)
+			{
+				tmp = monster.texture(Gdx.graphics.getDeltaTime());
+				game.batch.draw(tmp, monster.position.x, monster.position.y,
+						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+						monster.angle());
+			}
+		}
 		game.batch.end();
 
 		// **REGISTER INPUTS** //
