@@ -86,17 +86,15 @@ public class PuppetMaster {
 				monster.velocity.set(monster.velocityLatch);
 				monster.count --;
 			} else {
-	
-				if (currentPosition == monster.destination) {
-					monster.walkState = WalkState.AT_DESTINATION;
-					monster.velocity = monster.velocity.Zero.cpy();
-					monster.path.clear();
-					return;
-				}
 
 				monster.velocity.set(x, y);
 				monster.velocityLatch = monster.velocity.cpy();
 			}
+		} else {
+			monster.walkState = WalkState.AT_DESTINATION;
+			monster.velocity = monster.velocity.Zero.cpy();
+			monster.path.clear();
+			return;
 		}
 	}
 	
@@ -133,18 +131,24 @@ public class PuppetMaster {
 			for (Tile neighbor : neighbors)
 				// If the tile is in the maze and not already in the path
 				if (neighbor.inMaze() && !closedList.contains(neighbor)) {
-					if (openList.contains(neighbor)) {
-						
-						// Check to see if this path is better using G cost
-						PathNode node = openList.get(neighbor);
-						if (node.G <= currentNode.G) {
-							node.parent = currentNode;
-							node.G = currentNode.G + G_WEIGHT_AXIAL;
-						}
-						
-					} else
-						openList.add(new PathNode(neighbor, currentNode, 
-								currentNode.G + G_WEIGHT_AXIAL, heuristic(neighbor, end)));
+
+					float horizontal = Math.abs(neighbor.getPosition().x - currentNode.tile.getPosition().x);
+					float vertical = Math.abs(neighbor.getPosition().y - currentNode.tile.getPosition().y);
+					
+					if (horizontal + vertical == 1) {
+						if (openList.contains(neighbor)) {
+							
+							// Check to see if this path is better using G cost
+							PathNode node = openList.get(neighbor);
+							if (node.G <= currentNode.G) {
+								node.parent = currentNode;
+								node.G = currentNode.G + G_WEIGHT_AXIAL;
+							}
+							
+						} else
+							openList.add(new PathNode(neighbor, currentNode, 
+									currentNode.G + G_WEIGHT_AXIAL, heuristic(neighbor, end)));
+					}
 				}
 			
 		}
