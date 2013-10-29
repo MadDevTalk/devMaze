@@ -13,25 +13,26 @@ public class Monster {
 	
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
-	
+
+	float stateTime;
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
 	TextureRegion[] walkFrames;
 	
+	float prevAngle;
 	Vector2 position;
 	Vector2 velocity;
 	Vector2 velocityLatch;
 	Vector2 prevPosition;
-	float prevAngle;
 	
-	float stateTime;
+	int currentHealth;
+	int totalHealth;
+	int hitRadius;
+	int hitDamage;
 	
-	private int currentHealth;
-	private int totalHealth;
-	
-	public WalkState walkState;
-	public List<Tile> path;
-	public Tile destination;
+	State walkState;
+	List<Tile> path;
+	Tile destination;
 	int count;
 	
 	public static enum MonsterType {
@@ -40,78 +41,76 @@ public class Monster {
 		HARD,
 	};
 	
-	public static enum WalkState {
+	public static enum State {
 		FOLLOWING_PLAYER,
 		FINDING_DESTINATION,
 		AT_DESTINATION,
+		IN_COMBAT,
 	};
 	
 	public Monster(float xPos, float yPos, MonsterType type) {
-		this.position = new Vector2(xPos, yPos);
-		this.prevPosition = position.cpy();
-		this.velocity = new Vector2();
-		this.velocityLatch = new Vector2();
-		this.walkState = WalkState.AT_DESTINATION;
+		this.walkState = State.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 		
-		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-
+		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
 						/ FRAME_ROWS);
 		int index = 0;
 		for (int i = 0; i < FRAME_ROWS; i++) {
 			for (int j = 0; j < FRAME_COLS; j++) {
-				walkFrames[index++] = tmp[i][j];
+				this.walkFrames[index++] = tmp[i][j];
 			}
 		}
-		
-		walkAnimation = new Animation(0.025f, walkFrames);
-		stateTime = 0.0f;
+
+		this.stateTime = 0.0f;
+		this.walkAnimation = new Animation(0.025f, walkFrames);
+
+		this.position = new Vector2(xPos, yPos);
+		this.prevPosition = position.cpy();
+		this.velocity = new Vector2();
+		this.velocityLatch = new Vector2();
 		
 		switch (type) {
 		case EASY:
-			totalHealth = 5;
+			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 8;
+			this.totalHealth = 5;
+			this.hitDamage = 1;
 			break;
 		case MEDIUM:
-			totalHealth = 10;
+			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 6;
+			this.totalHealth = 10;
+			this.hitDamage = 2;
 			break;
 		case HARD:
-			totalHealth = 15;
+			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 4;
+			this.totalHealth = 15;
+			this.hitDamage = 4;
 			break;
 		}
 		
 		// Start with full health
-		currentHealth = totalHealth;
+		this.currentHealth = this.totalHealth;
 	}
 	
 	public void updatePos() {
-		prevPosition = position.cpy();
-		position.add(velocity);
+		this.prevPosition = this.position.cpy();
+		this.position.add(this.velocity);
 	}
 	
 	public boolean isAlive()
 	{
-		return currentHealth == 0;
-	}
-	
-	public int getCurrentHealth() {
-		return currentHealth;
-	}
-	
-	public int getTotalHealth()
-	{
-		return totalHealth;
+		return this.currentHealth == 0;
 	}
 	
 	public TextureRegion texture(float stateTime) {
 		this.stateTime += stateTime;
 
 		if (isMoving())
-			return walkAnimation.getKeyFrame(this.stateTime, true);
+			return this.walkAnimation.getKeyFrame(this.stateTime, true);
 		else
-			return walkFrames[4];
+			return this.walkFrames[4];
 	}
 	
 	public float angle() {
@@ -125,7 +124,7 @@ public class Monster {
 	
 	public boolean isMoving()
 	{
-		return !(velocity.x == 0 && velocity.y == 0);
+		return !(this.velocity.x == 0 && this.velocity.y == 0);
 	}
 	
 	public boolean seesPlayer()
@@ -134,8 +133,8 @@ public class Monster {
 	}
 	
 	public String toString() {
-		return ": " + position + " v: " + velocity + "\n" + 
-				"lV: " + velocityLatch;
+		return ": " + this.position + " v: " + this.velocity + "\n" + 
+				"lV: " + this.velocityLatch;
 	}
 	
 }

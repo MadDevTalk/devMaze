@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import com.devtalk.maze.Monster.MonsterType;
-import com.devtalk.maze.Monster.WalkState;
+import com.devtalk.maze.Monster.State;
 
 public class PuppetMaster {
 	
@@ -62,7 +62,7 @@ public class PuppetMaster {
 		
 		// find path from monster position to end
 		if (findPath(monster, Utils.tileAtLocation(monster.position.x, monster.position.y), end))
-			monster.walkState = WalkState.FINDING_DESTINATION;
+			monster.walkState = State.FINDING_DESTINATION;
 		
 	}
 	
@@ -91,7 +91,7 @@ public class PuppetMaster {
 				monster.velocityLatch = monster.velocity.cpy();
 			}
 		} else {
-			monster.walkState = WalkState.AT_DESTINATION;
+			monster.walkState = State.AT_DESTINATION;
 			monster.velocity = monster.velocity.Zero.cpy();
 			monster.path.clear();
 			return;

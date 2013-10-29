@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
 
 		// Create player 		
 		// Find an open tile (currently default to 0, 1)
-		player = new Player(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, maze);
+		player = new Player(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2);
 		camera.position.set(player.position);
 		
 		// Create Monsters
@@ -90,10 +90,12 @@ public class GameScreen implements Screen {
 		
 			// **DRAW PLAYER** //
 			TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
-			game.batch.draw(tmp, camera.position.x, camera.position.y,
+			game.batch.draw(tmp, player.position.x, player.position.y,
 					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
 					player.angle());
+			game.font.draw(game.batch, "HP: " + player.currentHealth + "/" + player.totalHealth,
+					player.position.x, player.position.y);
 		
 			// **DRAW ITEMS** //
 			
@@ -108,6 +110,8 @@ public class GameScreen implements Screen {
 				
 				// TODO: one debug bool that toggles all debug drawing
 				// game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
+				game.font.draw(game.batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
+						monster.position.x, monster.position.y);
 			}
 		}
 		game.batch.end();
