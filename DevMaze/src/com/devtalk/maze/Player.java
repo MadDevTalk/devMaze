@@ -22,6 +22,7 @@ public class Player {
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
 	TextureRegion[] walkFrames;
+	Rectangle rectangle;
 
 	public boolean walking;
 	float prevAngle;
@@ -39,6 +40,7 @@ public class Player {
 
 	public Player(int xPos, int yPos) {
 
+		this.rectangle = new Rectangle(xPos, yPos, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
@@ -107,6 +109,8 @@ public class Player {
 		}
 
 		this.position.add(xOffset, yOffset, 0);
+		this.rectangle.set(this.position.x, this.position.y, 
+				GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 	}
 
 	public void start(int xVel, int yVel) {
@@ -145,6 +149,13 @@ public class Player {
 	public boolean isAlive()
 	{
 		return this.currentHealth == 0;
+	}
+	
+	public Rectangle getHitRectangle() {
+		return new Rectangle(this.position.x - hitRadius,
+				this.position.y - hitRadius,
+				this.rectangle.width + (2 * hitRadius),
+				this.rectangle.height + (2 * hitRadius));
 	}
 
 }

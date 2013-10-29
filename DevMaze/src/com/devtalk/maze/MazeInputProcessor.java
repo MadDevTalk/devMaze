@@ -8,11 +8,13 @@ import com.badlogic.gdx.math.Vector3;
 public class MazeInputProcessor implements InputProcessor {
 
 	Player player;
+	PuppetMaster monsters;
 	Vector3 touch_down;
 
-	public MazeInputProcessor(Player player) {
+	public MazeInputProcessor(Player player, PuppetMaster monsters) {
 		this.player = player;
-		touch_down = new Vector3();
+		this.monsters = monsters;
+		this.touch_down = new Vector3();
 	}
 
 	@Override
@@ -68,6 +70,8 @@ public class MazeInputProcessor implements InputProcessor {
 		if (button == Buttons.LEFT)
 			touch_down = new Vector3(screenX, screenY, 0);
 
+		// Check area of player hit radius for monster hit
+		monsters.detectHit(player.getHitRectangle());
 		return true;
 	}
 

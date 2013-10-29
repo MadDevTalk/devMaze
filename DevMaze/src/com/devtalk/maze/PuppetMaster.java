@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.devtalk.maze.Monster.MonsterType;
 import com.devtalk.maze.Monster.State;
@@ -186,6 +187,20 @@ public class PuppetMaster {
 		Collections.reverse(tmp);
 		
 		return tmp;
+	}
+	
+	public void detectHit(Rectangle hitArea) {
+		List<Monster> deadMonsters = new ArrayList<Monster>();
+		for (Monster monster : monsters) 
+			if (hitArea.overlaps(monster.rectangle)) {
+				System.out.println("collision detected");
+				monster.currentHealth -= 1;
+				if (!monster.isAlive())
+					deadMonsters.add(monster);
+			}
+		
+		monsters.removeAll(deadMonsters);
+		
 	}
 	
 }

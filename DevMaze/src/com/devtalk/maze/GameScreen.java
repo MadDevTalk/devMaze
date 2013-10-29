@@ -45,7 +45,7 @@ public class GameScreen implements Screen {
 		monsterHandler = new PuppetMaster(50, MonsterType.EASY);
 
 		// Set our input processor
-		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
+		Gdx.input.setInputProcessor(new MazeInputProcessor(player, monsterHandler));
 	
 		test = new FPSLogger();
 	}

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Monster {
@@ -18,6 +19,7 @@ public class Monster {
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
 	TextureRegion[] walkFrames;
+	Rectangle rectangle;
 	
 	float prevAngle;
 	Vector2 position;
@@ -54,6 +56,7 @@ public class Monster {
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 		
+		this.rectangle = new Rectangle(xPos, yPos, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
@@ -99,11 +102,13 @@ public class Monster {
 	public void updatePos() {
 		this.prevPosition = this.position.cpy();
 		this.position.add(this.velocity);
+		this.rectangle.set(this.position.x, this.position.y, 
+				GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 	}
 	
 	public boolean isAlive()
 	{
-		return this.currentHealth == 0;
+		return this.currentHealth > 0;
 	}
 	
 	public TextureRegion texture(float stateTime) {
