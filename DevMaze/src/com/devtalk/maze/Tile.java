@@ -67,4 +67,8 @@ public class Tile {
 	public Vector2 getCenter() {
 		return center;
 	}
+	
+	public String toString() {
+		return "(" + (int)position.x + ", "+ (int)position.y + ")";
+	}
 }

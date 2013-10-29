@@ -55,7 +55,7 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		
 		// log fps
-		test.log();
+		// test.log();
 		
 		// Set the camera on the player's current position
 		player.updatePos();

@@ -6,16 +6,22 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 public class MainMenuScreen implements Screen {
 
-	final DevMaze game;
+	Tile[][] paths;
 	GameScreen gamestate;
 	OrthographicCamera camera;
 	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg;
 	Rectangle newGame, resume, player, settings, quit;
+	
+	final DevMaze game;
+	private static Texture IN_MAZE;
+	public static final int camCenter = (8 * GameScreen.EDGE_SIZE_PX);
+	
 	int i, x, y;
-
+	
 	public MainMenuScreen(final DevMaze game, GameScreen gamestate) {
 		this.game = game;
 		if(gamestate != null) {
@@ -31,7 +37,10 @@ public class MainMenuScreen implements Screen {
 		playerImg = new Texture(Gdx.files.internal("PLAYER.png"));
 		settingsImg = new Texture(Gdx.files.internal("SETTINGS.png"));
 		quitImg = new Texture(Gdx.files.internal("QUIT.png"));
+		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 		
+		// Make Maze
+		paths = new Tile[5][5];
 		
 		// Place the buttons
 		x = 800 - 100 - 128;
@@ -45,39 +54,50 @@ public class MainMenuScreen implements Screen {
 		player = new Rectangle(x, y, 192, 64);
 		y = 395;
 		quit = new Rectangle(x, y, 192, 64);
-		
+
 	}
 
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		//camera.position.set(camCenter, camCenter, 0);
 		camera.update();
 
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-		game.font.draw(game.batch, "Welcome to DevMaze! ", 100, 150);
+		
+		// **DRAW SYMBOL** //
+		/**
+		for (int i = 0; i < paths.length; i++) {
+			for (int j = 0; j < paths[0].length; j++) {
+				
+				if(i == 2 || j == 2) {
+					game.batch.draw(IN_MAZE, j * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX), 
+							i * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX));
+				}
+				
+				// Wanna see the indices overlaid on the maze? Uncomment this line right here
+				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * GameScreen.EDGE_SIZE_PX + 15, i * GameScreen.EDGE_SIZE_PX + 40);
+			}
+		}
+		**/
 		
 		// **DRAW BUTTONS** //
-		game.batch.draw(gameImg, newGame.x, newGame.y);   // Double draw is a hack 
-		game.batch.draw(gameImg, newGame.x, newGame.y);   // around the ^2 rule
+		game.batch.draw(gameImg, newGame.x, newGame.y);
 		game.font.draw(game.batch, "NEW GAME", newGame.x + 25, newGame.y + 25);
 		
-		game.batch.draw(resumeImg, resume.x, resume.y);   // Double draw is a hack 
-		game.batch.draw(resumeImg, resume.x, resume.y);   // around the ^2 rule
+		game.batch.draw(resumeImg, resume.x, resume.y);
 		game.font.draw(game.batch, "RESUME", resume.x + 25, resume.y + 25);
 		
-		game.batch.draw(playerImg, player.x, player.y);   // Double draw is a hack 
-		game.batch.draw(playerImg, player.x, player.y);   // around the ^2 rule
+		game.batch.draw(playerImg, player.x, player.y);
 		game.font.draw(game.batch, "PLAYER", player.x + 25, player.y + 25);
 		
-		game.batch.draw(settingsImg, settings.x, settings.y);   // Double draw is a hack 
-		game.batch.draw(settingsImg, settings.x, settings.y);   // around the ^2 rule
+		game.batch.draw(settingsImg, settings.x, settings.y);
 		game.font.draw(game.batch, "SETTINGS", settings.x + 25, settings.y + 25);
 		
-		game.batch.draw(quitImg, quit.x, quit.y);   // Double draw is a hack 
-		game.batch.draw(quitImg, quit.x, quit.y);   // around the ^2 rule
+		game.batch.draw(quitImg, quit.x, quit.y);
 		game.font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
-
+		
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
