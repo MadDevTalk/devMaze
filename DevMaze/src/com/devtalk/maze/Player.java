@@ -13,7 +13,7 @@ public class Player {
 
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
-	
+	private static final int INIT_HEALTH = 10;
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
 	TextureRegion[] walkFrames;
@@ -24,6 +24,12 @@ public class Player {
 	Vector3 position;
 	Vector3 prevPosition;
 	float prevAngle;
+	
+	int currentHealth;
+	int totalHealth;
+	
+	Item equippedItem;
+	
 
 	public boolean walking;
 
@@ -34,6 +40,8 @@ public class Player {
 		this.prevPosition = new Vector3(position);
 		this.velocity = new Vector3();
 		this.maze = maze;
+		totalHealth = INIT_HEALTH;
+		currentHealth = totalHealth;
 
 		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 
@@ -137,6 +145,20 @@ public class Player {
 
 	public boolean isMoving() {
 		return walking || !velocity.isZero();
+	}
+	
+	public boolean isAlive()
+	{
+		return currentHealth == 0;
+	}
+	
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+	
+	public int getTotalHealth()
+	{
+		return totalHealth;
 	}
 
 }

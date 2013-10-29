@@ -26,8 +26,8 @@ public class Monster {
 	
 	float stateTime;
 	
-	private boolean alive;
-	private int health;
+	private int currentHealth;
+	private int totalHealth;
 	
 	public WalkState walkState;
 	public List<Tile> path;
@@ -47,7 +47,6 @@ public class Monster {
 	};
 	
 	public Monster(float xPos, float yPos, MonsterType type) {
-		this.alive = true;
 		this.position = new Vector2(xPos, yPos);
 		this.prevPosition = position.cpy();
 		this.velocity = new Vector2();
@@ -73,15 +72,18 @@ public class Monster {
 		
 		switch (type) {
 		case EASY:
-			this.health = 5;
+			totalHealth = 5;
 			break;
 		case MEDIUM:
-			this.health = 10;
+			totalHealth = 10;
 			break;
 		case HARD:
-			this.health = 15;
+			totalHealth = 15;
 			break;
 		}
+		
+		// Start with full health
+		currentHealth = totalHealth;
 	}
 	
 	public void updatePos() {
@@ -91,12 +93,16 @@ public class Monster {
 	
 	public boolean isAlive()
 	{
-		return alive;
+		return currentHealth == 0;
 	}
 	
-	public int getHealth()
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+	
+	public int getTotalHealth()
 	{
-		return health;
+		return totalHealth;
 	}
 	
 	public TextureRegion texture(float stateTime) {

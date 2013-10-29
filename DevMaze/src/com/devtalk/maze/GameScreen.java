@@ -112,6 +112,7 @@ public class GameScreen implements Screen {
 		}
 		game.batch.end();
 
+		// TODO: Put in game screen input processor
 		// **REGISTER INPUTS** //
 		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
 		if (Gdx.input.justTouched()) {
