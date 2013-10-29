@@ -20,6 +20,7 @@ public class Monster {
 	
 	Vector2 position;
 	Vector2 velocity;
+	Vector2 velocityLatch;
 	Vector2 prevPosition;
 	float prevAngle;
 	
@@ -31,6 +32,7 @@ public class Monster {
 	public WalkState walkState;
 	public List<Tile> path;
 	public Tile destination;
+	int count;
 	
 	public static enum MonsterType {
 		EASY,
@@ -47,9 +49,12 @@ public class Monster {
 	public Monster(float xPos, float yPos, MonsterType type) {
 		this.alive = true;
 		this.position = new Vector2(xPos, yPos);
+		this.prevPosition = position.cpy();
 		this.velocity = new Vector2();
+		this.velocityLatch = new Vector2();
 		this.walkState = WalkState.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
+		this.count = 0;
 		
 		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 
@@ -80,11 +85,7 @@ public class Monster {
 	}
 	
 	public void updatePos() {
-		if (velocity.x != 0 || velocity.y != 0)
-			prevPosition = position.cpy();
-		else
-			return;
-		
+		prevPosition = position.cpy();
 		position.add(velocity);
 	}
 	
@@ -124,6 +125,11 @@ public class Monster {
 	public boolean seesPlayer()
 	{
 		return false;
+	}
+	
+	public String toString() {
+		return ": " + position + " v: " + velocity + "\n" + 
+				"lV: " + velocityLatch;
 	}
 	
 }

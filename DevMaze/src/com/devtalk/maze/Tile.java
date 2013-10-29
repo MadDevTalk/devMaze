@@ -17,6 +17,7 @@ public class Tile {
 			Gdx.files.internal("NOT_IN_MAZE.png"));
 	
 	private Vector2 position;
+	private Vector2 center;
 	private List<Tile> neighbors;
 
 	private Rectangle rectangle;
@@ -28,6 +29,8 @@ public class Tile {
 		rectangle = new Rectangle(col * GameScreen.EDGE_SIZE_PX, 
 				row * GameScreen.EDGE_SIZE_PX, GameScreen.EDGE_SIZE_PX,
 				GameScreen.EDGE_SIZE_PX);
+		center = new Vector2(col * GameScreen.EDGE_SIZE_PX + (GameScreen.EDGE_SIZE_PX / 2), 
+				row * GameScreen.EDGE_SIZE_PX + (GameScreen.EDGE_SIZE_PX / 2));
 	}
 
 	public void set_inMaze(boolean inMaze) {
@@ -59,5 +62,9 @@ public class Tile {
 
 	public Rectangle rectangle() {
 		return rectangle;
+	}
+
+	public Vector2 getCenter() {
+		return center;
 	}
 }

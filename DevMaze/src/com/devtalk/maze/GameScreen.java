@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
 	Maze maze;
 	MazeInputProcessor inputProcessor;
 	Player player;
-	MonsterHandler monsterHandler;
+	PuppetMaster monsterHandler;
 	
 	FPSLogger test;
 
@@ -38,11 +38,11 @@ public class GameScreen implements Screen {
 
 		// Create player 		
 		// Find an open tile (currently default to 0, 1)
-		player = new Player(2, EDGE_SIZE_PX + 2, maze);
+		player = new Player(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, maze);
 		camera.position.set(player.position);
 		
 		// Create Monsters
-		monsterHandler = new MonsterHandler(1, MonsterType.EASY);
+		monsterHandler = new PuppetMaster(1, MonsterType.EASY);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
@@ -105,6 +105,8 @@ public class GameScreen implements Screen {
 						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
 						monster.angle());
+				
+				game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
 			}
 		}
 		game.batch.end();

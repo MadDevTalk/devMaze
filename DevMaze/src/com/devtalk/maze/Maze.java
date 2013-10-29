@@ -95,8 +95,8 @@ public class Maze extends DevMaze {
 		}
 		
 		// Mark beginning and end tiles.
-		tiles[1][0].set_inMaze(true);
-		tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
+		//tiles[1][0].set_inMaze(true);
+		//tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
 		
 		analyze();
 	}

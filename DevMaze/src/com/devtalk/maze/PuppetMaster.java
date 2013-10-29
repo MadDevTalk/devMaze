@@ -7,14 +7,16 @@ import java.util.Random;
 import com.devtalk.maze.Monster.MonsterType;
 import com.devtalk.maze.Monster.WalkState;
 
-public class MonsterHandler {
+public class PuppetMaster {
 	
 	private static final int G_WEIGHT_AXIAL = 10;
-	
+	float xLatch, yLatch;
+
 	public List<Monster> monsters;
 	
-	public MonsterHandler(int monsterCount, MonsterType difficulty) {
+	public PuppetMaster(int monsterCount, MonsterType difficulty) {
 		monsters = new ArrayList<Monster>();
+		xLatch = yLatch = 0;
 		
 		Random r = new Random();
 		
@@ -65,21 +67,37 @@ public class MonsterHandler {
 	}
 	
 	private void seekDestination(Monster monster) {
+		
 		Tile currentPosition = Utils.tileAtLocation(monster.position.x, monster.position.y);
-		
-		if (currentPosition == monster.destination) {
-			monster.walkState = WalkState.AT_DESTINATION;
-			monster.path.clear();
-			return;
+		Tile lastPosition = Utils.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
+		if (lastPosition != currentPosition)
+		{
+			monster.count = GameScreen.EDGE_SIZE_PX / 2;
 		}
-		
-		monster.path.remove(currentPosition);
-		Tile next = monster.path.get(0);
-		
-		float x = next.getPosition().x - currentPosition.getPosition().x;
-		float y = next.getPosition().y - currentPosition.getPosition().y;
-		
-		monster.velocity.set(x, y);
+	
+		if (monster.path.size() > 1) {
+			monster.path.remove(currentPosition);
+			Tile next = monster.path.get(0);
+			
+			float x = next.getPosition().x - currentPosition.getPosition().x;
+			float y = next.getPosition().y - currentPosition.getPosition().y;
+			
+			if (monster.count > 0) {
+				monster.velocity.set(monster.velocityLatch);
+				monster.count --;
+			} else {
+	
+				if (currentPosition == monster.destination) {
+					monster.walkState = WalkState.AT_DESTINATION;
+					monster.velocity = monster.velocity.Zero.cpy();
+					monster.path.clear();
+					return;
+				}
+
+				monster.velocity.set(x, y);
+				monster.velocityLatch = monster.velocity.cpy();
+			}
+		}
 	}
 	
 	/**
@@ -143,10 +161,11 @@ public class MonsterHandler {
 	private List<Tile> readPath(PathNode path) {
 		List<Tile> tmp = new ArrayList<Tile>();
 		
-		do {
+		// Works backwards through list 
+		while (path.parent != null) {
 			tmp.add(path.tile);
 			path = path.parent;
-		} while (path.parent != null);
+		}
 		
 		// Return in correct order
 		Collections.reverse(tmp);
