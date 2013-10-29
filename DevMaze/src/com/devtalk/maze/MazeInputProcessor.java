@@ -68,7 +68,7 @@ public class MazeInputProcessor implements InputProcessor {
 		if (button == Buttons.LEFT)
 			touch_down = new Vector3(screenX, screenY, 0);
 
-		return false;
+		return true;
 	}
 
 	@Override

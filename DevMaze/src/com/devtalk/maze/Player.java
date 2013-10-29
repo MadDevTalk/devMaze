@@ -74,7 +74,15 @@ public class Player {
 			return;
 		}
 
-		List<Tile> neighbors = Utils.tileAtLocation(position.x, position.y).getNeighbors();
+		// DEBUG: A printout of the players neighbors
+		List<Tile> neighbors = tileLocation().getNeighbors();
+		if(!neighbors.equals(previous)) {
+			for(Tile neighbor : neighbors) {
+				System.out.print(neighbor + " ");
+			}
+			System.out.println();
+			previous = neighbors;
+		}
 		
 		// TODO: fine tune collision detection to allow player to get closer to walls.
 		for (Tile neighbor : neighbors) {
