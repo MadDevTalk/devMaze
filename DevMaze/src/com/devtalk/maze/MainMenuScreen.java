@@ -60,13 +60,14 @@ public class MainMenuScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.position.set(camCenter, camCenter, 0);
+		//camera.position.set(camCenter, camCenter, 0);
 		camera.update();
 
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
 		
 		// **DRAW SYMBOL** //
+		/**
 		for (int i = 0; i < paths.length; i++) {
 			for (int j = 0; j < paths[0].length; j++) {
 				
@@ -79,6 +80,7 @@ public class MainMenuScreen implements Screen {
 				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * GameScreen.EDGE_SIZE_PX + 15, i * GameScreen.EDGE_SIZE_PX + 40);
 			}
 		}
+		**/
 		
 		// **DRAW BUTTONS** //
 		game.batch.draw(gameImg, newGame.x, newGame.y);
