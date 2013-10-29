@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 
 // Use gesture listener in order to detect taps, flings, etc.
 // http://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/input/GestureDetector.GestureListener.html
+//
 public class MazeInputProcessor implements InputProcessor {
 
 	Player player;
