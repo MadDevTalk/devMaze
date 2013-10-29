@@ -19,15 +19,16 @@ public class Player {
 	TextureRegion[] walkFrames;
 
 	float stateTime;
+	float prevAngle;
 
 	Vector3 velocity;
 	Vector3 position;
 	Vector3 prevPosition;
-	float prevAngle;
 
 	public boolean walking;
 
 	Maze maze;
+	List<Tile> previous;
 
 	public Player(int xPos, int yPos, Maze maze) {
 		this.position = new Vector3(xPos, yPos, 0);
@@ -74,11 +75,16 @@ public class Player {
 			return;
 		}
 
+		//List<Tile> neighbors = tileLocation().getNeighbors();
+		// DEBUG: A printout of the players neighbors
 		List<Tile> neighbors = tileLocation().getNeighbors();
-		for(Tile neighbor : neighbors) {
-			System.out.print(neighbor + " ");
+		if(!neighbors.equals(previous)) {
+			for(Tile neighbor : neighbors) {
+				System.out.print(neighbor + " ");
+			}
+			System.out.println();
+			previous = neighbors;
 		}
-		System.out.println();
 		
 		for (Tile neighbor : neighbors) {
 			if (!neighbor.inMaze()) {
