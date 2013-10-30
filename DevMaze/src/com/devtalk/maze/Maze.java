@@ -10,20 +10,17 @@ import java.util.Random;
  */
 public class Maze {
 
-	private static final int DEFAULT_HEIGHT = 51;
-	private static final int DEFAULT_WIDTH = 31;
-
 	public Tile[][] tiles;
-	
 	public List<Tile> openTiles;
 
 	public Maze() {
-		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
+		this.tiles = new Tile[0][0];
+		this.openTiles = new ArrayList<Tile>();
 	}
-
-	public Maze(int row, int col) {
+	
+	public void create(int row, int col) {
 		tiles = new Tile[row][col];
-		openTiles = new ArrayList<Tile>();
+		openTiles.clear();
 
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {

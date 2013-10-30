@@ -14,12 +14,14 @@ public class PuppetMaster {
 	
 	private static final int G_WEIGHT_AXIAL = 10;
 
-	private DevMaze game;
+	private Maze maze;
+	private Player player;
 	
 	public List<Monster> monsters;
 	
 	public PuppetMaster(int monsterCount, MonsterType difficulty, DevMaze g) {
-		this.game = g;
+		this.maze = g.maze;
+		this.player = g.player;
 		
 		monsters = new ArrayList<Monster>();
 		
@@ -27,7 +29,7 @@ public class PuppetMaster {
 		
 		for (int i = 0; i < monsterCount; i++)
 		{
-			Tile openTile = game.maze.openTiles.get(r.nextInt(game.maze.openTiles.size()));
+			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
 			monsters.add(new Monster((float) ((openTile.getPosition().x * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
 					(float) ((openTile.getPosition().y * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
 					difficulty, g));
@@ -39,7 +41,7 @@ public class PuppetMaster {
 		{
 			switch (monster.state) {
 			case FOLLOWING_PLAYER:
-				setDestination(monster, game.player);
+				setDestination(monster, player);
 			case FINDING_DESTINATION:
 				if (!seekDestination(monster)) {
 					if (monster.sawPlayer)
@@ -64,7 +66,7 @@ public class PuppetMaster {
 				break;
 			}
 			
-			monster.updatePos(game.player);
+			monster.updatePos();
 		}
 	}
 	
@@ -73,11 +75,11 @@ public class PuppetMaster {
 		
 		if (player == null) {
 			Random r = new Random();
-			end = game.maze.openTiles.get(r.nextInt(game.maze.openTiles.size() - 1));
-		} else if (monster.destination == game.maze.tileAtLocation(player.position.x, player.position.y)) {
+			end = maze.openTiles.get(r.nextInt(maze.openTiles.size() - 1));
+		} else if (monster.destination == maze.tileAtLocation(player.position.x, player.position.y)) {
 			return true;
 		} else {
-			end = game.maze.tileAtLocation(player.position.x, player.position.y);
+			end = maze.tileAtLocation(player.position.x, player.position.y);
 		}
 		
 		// find path from monster position to end
@@ -87,8 +89,8 @@ public class PuppetMaster {
 	
 	private boolean seekDestination(Monster monster) {
 		
-		Tile currentPosition = game.maze.tileAtLocation(monster.position.x, monster.position.y);
-		Tile lastPosition = game.maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
+		Tile currentPosition = maze.tileAtLocation(monster.position.x, monster.position.y);
+		Tile lastPosition = maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
 		
 		if (lastPosition != currentPosition)
 			monster.count = GameScreen.EDGE_SIZE_PX / 2;
@@ -120,7 +122,7 @@ public class PuppetMaster {
 	 * A* pathing implemented as per http://www.policyalmanac.org/games/aStarTutorial.htm
 	 */
 	private boolean findPath(Monster monster, Tile end) {
-		Tile start = game.maze.tileAtLocation(monster.position.x, monster.position.y);
+		Tile start = maze.tileAtLocation(monster.position.x, monster.position.y);
 		PathList openList = new PathList();
 		PathList closedList = new PathList();
 		PathNode currentNode = new PathNode(start, null, 0, heuristic(start, end));

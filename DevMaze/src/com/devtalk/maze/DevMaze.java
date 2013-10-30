@@ -30,11 +30,8 @@ public class DevMaze extends Game {
 		camera.setToOrtho(false, 800, 480);
 		
 		// Create game objects
-		// TODO: these constructors should not take params,
-		// instead, these params should be set when necessary,
-		// with some kind of reset function
-		maze = new Maze(11, 15);// must be odd
-		player = new Player(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2, this);
+		maze = new Maze();
+		player = new Player(this);
 		monsterHandler = new PuppetMaster(50, MonsterType.EASY, this);
 		
 		// Create screens

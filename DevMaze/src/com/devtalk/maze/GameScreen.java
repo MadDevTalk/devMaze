@@ -36,8 +36,8 @@ public class GameScreen implements Screen {
 		this.monsterHandler = g.monsterHandler;
 		
 		// Reset game elements based on current level
-		maze.reset();
-		player.reset();
+		maze.create(11, 15);
+		player.set(EDGE_SIZE_PX * (3 / 2), EDGE_SIZE_PX * (3 / 2));
 		monsterHandler.reset();
 
 		// Set our input processor

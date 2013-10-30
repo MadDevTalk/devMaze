@@ -11,14 +11,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
-
+	
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
 	private static final int INIT_HEALTH = 10;
 	private static final int INIT_HIT_RAD = GameScreen.PLAYER_SIZE_PX / 2;
 	private static final int INIT_HIT_DMG = 1;
+	private static final int INIT_X = GameScreen.EDGE_SIZE_PX * (3/2);
+	private static final int INIT_Y = GameScreen.EDGE_SIZE_PX * (3/2);
 	
-	private DevMaze game;
+	private Maze maze;
 
 	float stateTime;
 	Animation walkAnimation;
@@ -26,7 +28,7 @@ public class Player {
 	TextureRegion[] walkFrames;
 	Rectangle rectangle;
 
-	public boolean walking;
+	boolean walking;
 	float prevAngle;
 	Vector3 velocity;
 	Vector3 position;
@@ -39,11 +41,12 @@ public class Player {
 	
 	List<Item> pack;
 	Item equippedItem;
+	
+	public Player(DevMaze g) {
 
-	public Player(int xPos, int yPos, DevMaze g) {
-		this.game = g;
+		this.maze = g.maze;
 
-		this.rectangle = new Rectangle(xPos, yPos, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+		this.rectangle = new Rectangle(INIT_X, INIT_Y, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
@@ -58,7 +61,7 @@ public class Player {
 		this.walkAnimation = new Animation(0.025f, walkFrames);
 		
 		this.walking = false;
-		this.position = new Vector3(xPos, yPos, 0);
+		this.position = new Vector3(INIT_X, INIT_Y, 0);
 		this.prevPosition = new Vector3(position);
 		this.velocity = new Vector3();
 		
@@ -73,7 +76,7 @@ public class Player {
 	}
 
 	public void set(int x, int y) {
-		this.position = new Vector3(x, y, 0);
+		this.position.set(x, y, 0);
 	}
 
 	public void updatePos() {
@@ -85,14 +88,14 @@ public class Player {
 		if (xOffset != 0 || yOffset != 0)
 		{
 			this.walking = true;
-			this.prevPosition = position.cpy();
+			this.prevPosition.set(position.cpy());
 
 			xOffset = Math.min(GameScreen.SPEED_LATCH_PX, xOffset);
 			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
 		} else
 			return;
 
-		List<Tile> neighbors = game.maze.tileAtLocation(position.x, position.y).getNeighbors();
+		List<Tile> neighbors = maze.tileAtLocation(position.x, position.y).getNeighbors();
 		
 		// TODO: fine tune collision detection to allow player to get closer to walls.
 		for (Tile neighbor : neighbors) {
