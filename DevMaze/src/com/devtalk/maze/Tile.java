@@ -9,12 +9,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Tile {
-
-	private boolean inMaze;
+	
+	private boolean inMaze, inSwatch, isPortal;
+	
 	private static Texture IN_MAZE = new Texture(
 			Gdx.files.internal("IN_MAZE.png"));
 	private static Texture NOT_IN_MAZE = new Texture(
 			Gdx.files.internal("NOT_IN_MAZE.png"));
+	//private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
 	
 	private Vector2 position;
 	private Vector2 center;
@@ -24,6 +26,9 @@ public class Tile {
 
 	public Tile(int row, int col) {
 		this.inMaze = false;
+		this.inSwatch = false;
+		this.isPortal = false;
+		
 		neighbors = new ArrayList<Tile>();
 		position = new Vector2(col, row);
 		rectangle = new Rectangle(col * GameScreen.EDGE_SIZE_PX, 
@@ -42,10 +47,15 @@ public class Tile {
 	}
 
 	public Texture texture() {
-		if (inMaze)
+		if (inSwatch) {
+			return null; //SWATCH;
+		}
+		else if (inMaze) {
 			return IN_MAZE;
-		else
+		}
+		else {
 			return NOT_IN_MAZE;
+		}
 	}
 	
 	public Vector2 getPosition() {
@@ -66,6 +76,10 @@ public class Tile {
 
 	public Vector2 getCenter() {
 		return center;
+	}
+	
+	public void put() {
+		this.inSwatch = true;
 	}
 	
 	public String toString() {

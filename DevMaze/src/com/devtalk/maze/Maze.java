@@ -13,8 +13,8 @@ public class Maze {
 	private static final int DEFAULT_HEIGHT = 51;
 	private static final int DEFAULT_WIDTH = 31;
 
+
 	public Tile[][] tiles;
-	
 	public List<Tile> openTiles;
 
 	public Maze() {
@@ -30,8 +30,9 @@ public class Maze {
 				tiles[i][j] = new Tile(i, j);
 			}
 		}
-
-		this.generate();
+		
+		this.analyze();		// Fills openTiles and sets neighbors
+		this.generate();	// Fill tiles with Maze logic
 	}
 
 	/**
@@ -143,6 +144,14 @@ public class Maze {
 
 	private Tile getOppositeTile(Wall wall) {
 		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
+	}
+	
+	public void makeSwatch(int topX, int topY) {
+		for (int i = 0; i < 5; i++) {
+			for(int j = 0; j < 5; j++) {
+				this.tiles[i][j].put();   // Puts the tile into a swatch
+			}
+		}
 	}
 	
 	public Tile tileAtLocation(float xPos, float yPos) {

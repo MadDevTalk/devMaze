@@ -42,7 +42,6 @@ public class GameScreen implements Screen {
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
-		
 	}
 
 	// The main loop, fires @ 60 fps
@@ -74,10 +73,11 @@ public class GameScreen implements Screen {
 					float y = maze.tiles[i][j].rectangle().y;
 					Vector3 tile = new Vector3(x, y, 0);
 		
-					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
+					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX)) {
 						if (maze.tiles[i][j].inMaze())
 							batch.draw(maze.tiles[i][j].texture(), 
 									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+					}
 				}
 		
 			// **DRAW PLAYER** //
@@ -116,7 +116,7 @@ public class GameScreen implements Screen {
 			int y = Gdx.input.getY();
 
 			if ((x < 64 && y < 64) || space) {
-				//
+				// Pause?
 			}
 		}
 	}

@@ -1,13 +1,17 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devtalk.maze.Monster.MonsterType;
 
 public class DevMaze extends Game {
 
+	//private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
+	
 	protected SpriteBatch batch;
 	protected BitmapFont font;
 	protected OrthographicCamera camera;
@@ -42,8 +46,7 @@ public class DevMaze extends Game {
 		gameScreen = new GameScreen(this);
 		
 		// Start at menu
-		this.setScreen(mainMenuScreen);
-		
+		this.setScreen(mainMenuScreen);	
 	}
 
 	public void render() {

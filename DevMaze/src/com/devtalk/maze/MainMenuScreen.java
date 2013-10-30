@@ -16,7 +16,7 @@ public class MainMenuScreen implements Screen {
 	Rectangle newGame, resume, player, settings, quit;
 	
 	final DevMaze game;
-	public static final int camCenter = (8 * GameScreen.EDGE_SIZE_PX);
+	//public static final int camCenter = (8 * GameScreen.EDGE_SIZE_PX);
 	
 	int i, x, y;
 	
@@ -42,12 +42,12 @@ public class MainMenuScreen implements Screen {
 		newGame = new Rectangle(x, y, 192, 64);
 		y = 155;
 		resume = new Rectangle(x, y, 192, 64);
-		y = 235;
-		settings = new Rectangle(x, y, 192, 64);
-		y = 315;
-		player = new Rectangle(x, y, 192, 64);
-		y = 395;
-		quit = new Rectangle(x, y, 192, 64);
+//		y = 235;
+//		settings = new Rectangle(x, y, 192, 64);
+//		y = 315;
+//		player = new Rectangle(x, y, 192, 64);
+//		y = 395;
+//		quit = new Rectangle(x, y, 192, 64);
 
 	}
 
@@ -83,14 +83,14 @@ public class MainMenuScreen implements Screen {
 		game.batch.draw(resumeImg, resume.x, resume.y);
 		game.font.draw(game.batch, "RESUME", resume.x + 25, resume.y + 25);
 		
-		game.batch.draw(playerImg, player.x, player.y);
-		game.font.draw(game.batch, "PLAYER", player.x + 25, player.y + 25);
-		
-		game.batch.draw(settingsImg, settings.x, settings.y);
-		game.font.draw(game.batch, "SETTINGS", settings.x + 25, settings.y + 25);
-		
-		game.batch.draw(quitImg, quit.x, quit.y);
-		game.font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
+//		game.batch.draw(playerImg, player.x, player.y);
+//		game.font.draw(game.batch, "PLAYER", player.x + 25, player.y + 25);
+//		
+//		game.batch.draw(settingsImg, settings.x, settings.y);
+//		game.font.draw(game.batch, "SETTINGS", settings.x + 25, settings.y + 25);
+//		
+//		game.batch.draw(quitImg, quit.x, quit.y);
+//		game.font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
 		
 		game.batch.end();
 
@@ -98,7 +98,9 @@ public class MainMenuScreen implements Screen {
 			x = Gdx.input.getX();
 			y = 480 - Gdx.input.getY();   // Translate to Camera coordinates
 			
-			if(newGame.contains(x, y)) { game.setScreen(new GameScreen(game)); }
+			if(newGame.contains(x, y)) { 
+				game.setScreen(new GameScreen(game)); 
+			}
 			else if(resume.contains(x, y)) { 
 				if(gamestate != null) {
 				game.setScreen(gamestate);
