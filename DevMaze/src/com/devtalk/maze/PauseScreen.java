@@ -57,7 +57,7 @@ public class PauseScreen implements Screen {
 			y = 480 - Gdx.input.getY();   // Translate to Camera coordinates
 			
 			if(menu.contains(x, y)) {
-				game.setScreen(new MainMenuScreen(game, gamestate));
+				game.setScreen(new MainMenuScreen(game));
 				this.dispose();
 			}
 			else if(resume.contains(x, y)) {

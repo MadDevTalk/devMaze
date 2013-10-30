@@ -216,5 +216,10 @@ public class PuppetMaster {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

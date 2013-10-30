@@ -179,4 +179,9 @@ public class Maze {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
 }

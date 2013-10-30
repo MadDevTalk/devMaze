@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 
 public class MainMenuScreen implements Screen {
 
@@ -17,16 +16,12 @@ public class MainMenuScreen implements Screen {
 	Rectangle newGame, resume, player, settings, quit;
 	
 	final DevMaze game;
-	private static Texture IN_MAZE;
 	public static final int camCenter = (8 * GameScreen.EDGE_SIZE_PX);
 	
 	int i, x, y;
 	
-	public MainMenuScreen(final DevMaze game, GameScreen gamestate) {
+	public MainMenuScreen(final DevMaze game) {
 		this.game = game;
-		if(gamestate != null) {
-			this.gamestate = gamestate;
-		}
 		i = 0;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
@@ -37,7 +32,6 @@ public class MainMenuScreen implements Screen {
 		playerImg = new Texture(Gdx.files.internal("PLAYER.png"));
 		settingsImg = new Texture(Gdx.files.internal("SETTINGS.png"));
 		quitImg = new Texture(Gdx.files.internal("QUIT.png"));
-		IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 		
 		// Make Maze
 		paths = new Tile[5][5];

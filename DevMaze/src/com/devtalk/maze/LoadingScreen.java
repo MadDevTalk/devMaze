@@ -26,7 +26,7 @@ public class LoadingScreen implements Screen {
 		game.font.draw(game.batch, "Loading...", 100, 150);
 		game.batch.end();
 
-		game.setScreen(new MainMenuScreen(game, null));
+		game.setScreen(new MainMenuScreen(game));
 		this.dispose();
 	}
 

@@ -166,4 +166,9 @@ public class Player {
 		
 	}
 
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
