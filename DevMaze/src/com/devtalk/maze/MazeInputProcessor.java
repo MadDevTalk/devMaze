@@ -10,13 +10,14 @@ import com.badlogic.gdx.math.Vector3;
 //
 public class MazeInputProcessor implements InputProcessor {
 
-	Player player;
-	PuppetMaster monsters;
-	Vector3 touch_down;
+	private Player player;
+	private PuppetMaster monsterHandler;
+	
+	private Vector3 touch_down;
 
-	public MazeInputProcessor(Player player, PuppetMaster monsters) {
-		this.player = player;
-		this.monsters = monsters;
+	public MazeInputProcessor(DevMaze game) {
+		this.player = game.player;
+		this.monsterHandler = game.monsterHandler;
 		this.touch_down = new Vector3();
 	}
 
@@ -74,7 +75,7 @@ public class MazeInputProcessor implements InputProcessor {
 			touch_down = new Vector3(screenX, screenY, 0);
 
 		// Check area of player hit radius for monster hit
-		monsters.detectHit(player.getHitRectangle());
+		monsterHandler.detectHit(player.getHitRectangle());
 		return true;
 	}
 

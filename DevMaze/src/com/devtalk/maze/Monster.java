@@ -14,6 +14,8 @@ public class Monster {
 	
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
+	
+	DevMaze game;
 
 	float stateTime;
 	Animation walkAnimation;
@@ -51,7 +53,9 @@ public class Monster {
 		IN_COMBAT,
 	};
 	
-	public Monster(float xPos, float yPos, MonsterType type) {
+	public Monster(float xPos, float yPos, MonsterType type, DevMaze g) {
+		this.game = g;
+		
 		this.state = State.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
@@ -109,7 +113,7 @@ public class Monster {
 		float yPos = this.position.y;
 		
 		if (this.velocity.x != 0 || this.velocity.y != 0)
-			while (Utils.tileAtLocation(xPos, yPos) != null) {
+			while (game.maze.tileAtLocation(xPos, yPos) != null) {
 				if (player.rectangle.contains(xPos, yPos)) {
 					this.sawPlayer = true;
 					break;

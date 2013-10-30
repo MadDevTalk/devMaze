@@ -8,14 +8,14 @@ import java.util.Random;
  * @author max
  * 
  */
-public class Maze extends DevMaze {
+public class Maze {
 
 	private static final int DEFAULT_HEIGHT = 51;
 	private static final int DEFAULT_WIDTH = 31;
 
-	public static Tile[][] tiles;
+	public Tile[][] tiles;
 	
-	public static List<Tile> openTiles;
+	public List<Tile> openTiles;
 
 	public Maze() {
 		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
@@ -143,5 +143,40 @@ public class Maze extends DevMaze {
 
 	private Tile getOppositeTile(Wall wall) {
 		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
+	}
+	
+	public Tile tileAtLocation(float xPos, float yPos) {
+		int row = row(yPos);
+		int col = col(xPos);
+		
+		if (row < 0 || col < 0)
+			return null;
+					
+		return tiles[row(yPos)][col(xPos)];
+	}
+	
+	// May want to throw a new OutOfMaze exception or something
+	public int row(float yPos) {
+		int calculated = (int) ((yPos + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		
+		if (calculated > tiles.length - 1 || calculated < 0) 
+			calculated = -1;
+		
+		return calculated;
+	}
+
+	// May want to throw a new OutOfMaze exception or something
+	public int col(float xPos) {
+		int calculated = (int) ((xPos + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		
+		if (calculated > tiles[0].length - 1 || calculated < 0) 
+			calculated = -1; 
+		
+		return calculated;
+	}
+
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
 	}
 }

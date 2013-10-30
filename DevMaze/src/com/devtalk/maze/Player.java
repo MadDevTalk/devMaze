@@ -17,6 +17,8 @@ public class Player {
 	private static final int INIT_HEALTH = 10;
 	private static final int INIT_HIT_RAD = GameScreen.PLAYER_SIZE_PX / 2;
 	private static final int INIT_HIT_DMG = 1;
+	
+	private DevMaze game;
 
 	float stateTime;
 	Animation walkAnimation;
@@ -38,7 +40,8 @@ public class Player {
 	List<Item> pack;
 	Item equippedItem;
 
-	public Player(int xPos, int yPos) {
+	public Player(int xPos, int yPos, DevMaze g) {
+		this.game = g;
 
 		this.rectangle = new Rectangle(xPos, yPos, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -89,7 +92,7 @@ public class Player {
 		} else
 			return;
 
-		List<Tile> neighbors = Utils.tileAtLocation(position.x, position.y).getNeighbors();
+		List<Tile> neighbors = game.maze.tileAtLocation(position.x, position.y).getNeighbors();
 		
 		// TODO: fine tune collision detection to allow player to get closer to walls.
 		for (Tile neighbor : neighbors) {
@@ -156,6 +159,11 @@ public class Player {
 				this.position.y - hitRadius,
 				this.rectangle.width + (2 * hitRadius),
 				this.rectangle.height + (2 * hitRadius));
+	}
+
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
