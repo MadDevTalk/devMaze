@@ -16,7 +16,7 @@ public class Tile {
 			Gdx.files.internal("IN_MAZE.png"));
 	private static Texture NOT_IN_MAZE = new Texture(
 			Gdx.files.internal("NOT_IN_MAZE.png"));
-	//private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
+	private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
 	
 	private Vector2 position;
 	private Vector2 center;
@@ -48,7 +48,7 @@ public class Tile {
 
 	public Texture texture() {
 		if (inSwatch) {
-			return null; //SWATCH;
+			return SWATCH;
 		}
 		else if (inMaze) {
 			return IN_MAZE;
