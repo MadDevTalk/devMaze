@@ -39,7 +39,7 @@ public class PuppetMaster {
 			case FINDING_DESTINATION:
 				if (!seekDestination(monster)) {
 					if (monster.sawPlayer)
-						; // Enter into combat mode?
+						monster.state = State.IN_COMBAT;
 					else
 						monster.state = State.AT_DESTINATION;
 				}
@@ -52,6 +52,8 @@ public class PuppetMaster {
 					monster.state = State.FINDING_DESTINATION;
 				break;
 			case IN_COMBAT:
+				// Move towards player if needed - fan out (not all monsters overlap)
+				// Attempt to hit player after count (held in monster)
 				break;
 			default:
 				// OH NOOOOOOOOOO
@@ -75,7 +77,7 @@ public class PuppetMaster {
 		}
 		
 		// find path from monster position to end
-		return findPath(monster, Utils.tileAtLocation(monster.position.x, monster.position.y), end);
+		return findPath(monster, end);
 		
 	}
 	
@@ -83,10 +85,9 @@ public class PuppetMaster {
 		
 		Tile currentPosition = Utils.tileAtLocation(monster.position.x, monster.position.y);
 		Tile lastPosition = Utils.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
+		
 		if (lastPosition != currentPosition)
-		{
 			monster.count = GameScreen.EDGE_SIZE_PX / 2;
-		}
 	
 		if (monster.path.size() > 1) {
 			monster.path.remove(currentPosition);
@@ -114,7 +115,8 @@ public class PuppetMaster {
 	/**
 	 * A* pathing implemented as per http://www.policyalmanac.org/games/aStarTutorial.htm
 	 */
-	private boolean findPath(Monster monster, Tile start, Tile end) {
+	private boolean findPath(Monster monster, Tile end) {
+		Tile start = Utils.tileAtLocation(monster.position.x, monster.position.y);
 		PathList openList = new PathList();
 		PathList closedList = new PathList();
 		PathNode currentNode = new PathNode(start, null, 0, heuristic(start, end));
@@ -177,6 +179,9 @@ public class PuppetMaster {
 	
 	private List<Tile> readPath(PathNode path) {
 		List<Tile> tmp = new ArrayList<Tile>();
+		
+		// add ending tile
+		tmp.add(path.tile);
 		
 		// Works backwards through list 
 		while (path.parent != null) {

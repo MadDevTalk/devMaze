@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
 		
 		// Create game
 		this.game = g;
-		maze = new Maze(11, 15); // must be odd
+		maze = new Maze(51, 55); // must be odd
 
 		// Create Camera
 		camera = new OrthographicCamera();
@@ -43,7 +43,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 		
 		// Create Monsters
-		monsterHandler = new PuppetMaster(10, MonsterType.EASY);
+		monsterHandler = new PuppetMaster(50, MonsterType.EASY);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(player, monsterHandler));
