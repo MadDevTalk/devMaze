@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.devtalk.maze.Monster.MonsterType;
 
 public class GameScreen implements Screen {
 
@@ -26,6 +27,7 @@ public class GameScreen implements Screen {
 	private PuppetMaster monsterHandler;
 
 	public GameScreen(DevMaze g) {
+		
 		// Get reference to our game objects
 		this.camera = g.camera;
 		this.batch = g.batch;
@@ -37,8 +39,8 @@ public class GameScreen implements Screen {
 		
 		// Reset game elements based on current level
 		maze.create(11, 15);
-		player.set(EDGE_SIZE_PX * (3 / 2), EDGE_SIZE_PX * (3 / 2));
-		monsterHandler.reset();
+		player.set(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2);
+		monsterHandler.set(50, MonsterType.EASY);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));

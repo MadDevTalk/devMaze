@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.devtalk.maze.Monster.MonsterType;
 
 public class DevMaze extends Game {
 
@@ -32,7 +31,7 @@ public class DevMaze extends Game {
 		// Create game objects
 		maze = new Maze();
 		player = new Player(this);
-		monsterHandler = new PuppetMaster(50, MonsterType.EASY, this);
+		monsterHandler = new PuppetMaster(this);
 		
 		// Create screens
 		mainMenuScreen = new MainMenuScreen(this);
@@ -48,11 +47,18 @@ public class DevMaze extends Game {
 	}
 
 	public void dispose() {
+		// Dispose LibGDX stuff
 		batch.dispose();
 		font.dispose();
+		
+		// Dispose game objects
 		maze.dispose();
 		player.dispose();
 		monsterHandler.dispose();
+		
+		// Dispose Screens
+		mainMenuScreen.dispose();
+	    gameScreen.dispose();
 	}
 
 }

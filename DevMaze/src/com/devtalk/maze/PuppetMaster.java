@@ -14,25 +14,30 @@ public class PuppetMaster {
 	
 	private static final int G_WEIGHT_AXIAL = 10;
 
+	private DevMaze game;
 	private Maze maze;
 	private Player player;
 	
 	public List<Monster> monsters;
 	
-	public PuppetMaster(int monsterCount, MonsterType difficulty, DevMaze g) {
+	public PuppetMaster(DevMaze g) {
+		
+		this.game = g;
 		this.maze = g.maze;
 		this.player = g.player;
+		this.monsters = new ArrayList<Monster>();
 		
-		monsters = new ArrayList<Monster>();
-		
+	}
+	
+	public void set(int monsterCount, MonsterType difficulty) {
+		monsters.clear();
 		Random r = new Random();
-		
 		for (int i = 0; i < monsterCount; i++)
 		{
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
 			monsters.add(new Monster((float) ((openTile.getPosition().x * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
 					(float) ((openTile.getPosition().y * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
-					difficulty, g));
+					difficulty, game));
 		}
 	}
 
@@ -215,11 +220,6 @@ public class PuppetMaster {
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void reset() {
 		// TODO Auto-generated method stub
 		
 	}
