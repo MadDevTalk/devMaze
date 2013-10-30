@@ -220,7 +220,9 @@ public class PuppetMaster {
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
+		for (Monster monster : monsters) {
+			monster.dispose();
+		}
 		
 	}
 	

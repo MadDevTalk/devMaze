@@ -158,5 +158,9 @@ public class Monster {
 		return ": " + this.position + " v: " + this.velocity + "\n" + 
 				"lV: " + this.velocityLatch;
 	}
+
+	public void dispose() {
+		walkSheet.dispose();
+	}
 	
 }

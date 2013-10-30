@@ -49,26 +49,31 @@ public class Tile {
 	}
 	
 	public Vector2 getPosition() {
-		return position;
+		return this.position;
 	}
 	
 	public List<Tile> getNeighbors() {
-		return neighbors;
+		return this.neighbors;
 	}
 	
 	public void addNeighbor(Tile neighbor) {
-		neighbors.add(neighbor);
+		this.neighbors.add(neighbor);
 	}
 
 	public Rectangle rectangle() {
-		return rectangle;
+		return this.rectangle;
 	}
 
 	public Vector2 getCenter() {
-		return center;
+		return this.center;
 	}
 	
 	public String toString() {
-		return "(" + (int)position.x + ", "+ (int)position.y + ")";
+		return "(" + (int)this.position.x + ", "+ (int)this.position.y + ")";
+	}
+
+	public void dispose() {
+		IN_MAZE.dispose();
+		NOT_IN_MAZE.dispose();
 	}
 }

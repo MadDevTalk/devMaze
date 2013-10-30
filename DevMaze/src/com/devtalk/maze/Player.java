@@ -165,13 +165,7 @@ public class Player {
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+		walkSheet.dispose();
 	}
 
 }

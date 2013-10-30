@@ -173,8 +173,9 @@ public class Maze {
 	}
 
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[0].length; j++)
+				tiles[i][j].dispose();
 	}
 
 	public void reset() {
