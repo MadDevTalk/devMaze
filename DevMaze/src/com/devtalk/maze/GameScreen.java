@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
-import com.devtalk.maze.Monster.MonsterType;
 
 public class GameScreen implements Screen {
 
@@ -18,6 +17,7 @@ public class GameScreen implements Screen {
 	public static final int KEY_VEL_PxPer60S = 5;
 	public static final int SPEED_LATCH_PX = 32;
 	
+	private DevMaze game;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private BitmapFont font;
@@ -29,18 +29,13 @@ public class GameScreen implements Screen {
 	public GameScreen(DevMaze g) {
 		
 		// Get reference to our game objects
+		this.game = g;
 		this.camera = g.camera;
 		this.batch = g.batch;
 		this.font = g.font;
-		
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
-		
-		// Reset game elements based on current level
-		maze.create(11, 15);
-		player.set(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2);
-		monsterHandler.set(50, MonsterType.EASY);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
@@ -118,7 +113,7 @@ public class GameScreen implements Screen {
 			int y = Gdx.input.getY();
 
 			if ((x < 64 && y < 64) || space) {
-				//
+				game.setScreen(game.pauseScreen);
 			}
 		}
 	}
@@ -130,7 +125,6 @@ public class GameScreen implements Screen {
 	// Save user app information
 	public void pause() {
 		// TODO
-		// game.setScreen(new PauseScreen(game, this));
 	}
 
 	// Return from pause

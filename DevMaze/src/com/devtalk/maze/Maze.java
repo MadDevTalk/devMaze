@@ -6,7 +6,6 @@ import java.util.Random;
 
 /**
  * @author max
- * 
  */
 public class Maze {
 
@@ -176,10 +175,5 @@ public class Maze {
 		for (int i = 0; i < tiles.length; i++)
 			for (int j = 0; j < tiles[0].length; j++)
 				tiles[i][j].dispose();
-	}
-
-	public void reset() {
-		// TODO Auto-generated method stub
-		
 	}
 }

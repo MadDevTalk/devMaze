@@ -101,9 +101,10 @@ public class MainMenuScreen implements Screen {
 			int x = Gdx.input.getX();
 			int y = 480 - Gdx.input.getY();   // Translate to Camera coordinates
 			
-			if(newGame.contains(x, y)) 
-				game.setScreen(new GameScreen(game));
-			else if(resume.contains(x, y))
+			if(newGame.contains(x, y)) {
+				game.newGame();
+				game.setScreen(game.gameScreen);
+			} else if(resume.contains(x, y))
 				game.setScreen(game.gameScreen);
 			
 /* Uncomment these once the screens are started
