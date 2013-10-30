@@ -18,13 +18,11 @@ public class MainMenuScreen implements Screen {
 	final DevMaze game;
 	public static final int camCenter = (8 * GameScreen.EDGE_SIZE_PX);
 	
-	int i, x, y;
+	int x, y;
 	
 	public MainMenuScreen(final DevMaze game) {
 		this.game = game;
-		i = 0;
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera = game.camera;
 		
 		// Load Textures
 		gameImg = new Texture(Gdx.files.internal("NEW_GAME.png"));

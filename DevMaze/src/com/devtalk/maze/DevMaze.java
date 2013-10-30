@@ -53,7 +53,6 @@ public class DevMaze extends Game {
 	public void dispose() {
 		batch.dispose();
 		font.dispose();
-		
 		maze.dispose();
 		player.dispose();
 		monsterHandler.dispose();
