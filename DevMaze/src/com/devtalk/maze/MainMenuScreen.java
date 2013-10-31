@@ -19,7 +19,6 @@ public class MainMenuScreen implements Screen {
 	Tile[][] paths;
 	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg;
 	Rectangle newGame, resume, player, settings, quit;
-	public static final int camCenter = (8 * GameScreen.EDGE_SIZE_PX);
 	
 	public MainMenuScreen(DevMaze g) {
 		this.game = g;
@@ -61,9 +60,9 @@ public class MainMenuScreen implements Screen {
 		
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
-		game.batch.setProjectionMatrix(camera.combined);
+		batch.setProjectionMatrix(camera.combined);
 		
-		game.batch.begin();
+		batch.begin();
 		{
 			// **DRAW SYMBOL** //
 			/**
@@ -97,7 +96,7 @@ public class MainMenuScreen implements Screen {
 			batch.draw(quitImg, quit.x, quit.y);
 			font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
 		}
-		game.batch.end();
+		batch.end();
 
 		if (Gdx.input.justTouched()) {
 			int x = Gdx.input.getX();

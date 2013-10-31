@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
 	private Maze maze;
 	private Player player;
 	private PuppetMaster monsterHandler;
+	private HUD hud;
 
 	public GameScreen(DevMaze g) {
 		
@@ -36,6 +37,7 @@ public class GameScreen implements Screen {
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
+		this.hud = new HUD(g);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
@@ -102,6 +104,9 @@ public class GameScreen implements Screen {
 				font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
 						monster.position.x, monster.position.y);
 			}
+			
+			// **DRAW HUD** //
+			hud.render();
 		}
 		batch.end();
 
