@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
 		if (maze.end.rectangle().contains(player.rectangle)) {
 			if (!game.levels.isEmpty()) {
 				game.currentLevel = game.levels.remove(0);
-				game.setScreen(game.mainMenuScreen);
+				game.setScreen(game.levelFinishScreen);
 			}
 		}
 		
