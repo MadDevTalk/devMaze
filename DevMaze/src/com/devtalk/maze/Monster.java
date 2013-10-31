@@ -115,7 +115,8 @@ public class Monster {
 		float yPos = this.position.y;
 		
 		if (this.velocity.x != 0 || this.velocity.y != 0)
-			while (maze.tileAtLocation(xPos, yPos) != null) {
+			while (maze.tileAtLocation(xPos, yPos) != null 
+					&& !maze.tileAtLocation(xPos, yPos).inMaze()) {
 				if (player.rectangle.contains(xPos, yPos)) {
 					this.sawPlayer = true;
 					break;

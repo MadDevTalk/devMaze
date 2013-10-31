@@ -101,7 +101,6 @@ public class PuppetMaster {
 	}
 	
 	private boolean seekDestination(Monster monster) {
-		
 		Tile currentPosition = maze.tileAtLocation(monster.position.x, monster.position.y);
 		Tile lastPosition = maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
 		
@@ -188,6 +187,7 @@ public class PuppetMaster {
 		}
 		
 		return false;
+		
 	}
 	
 	private int heuristic(Tile current, Tile destination) {

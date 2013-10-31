@@ -3,6 +3,10 @@ package com.devtalk.maze;
 import com.badlogic.gdx.Screen;
 
 public class LevelFinishScreen implements Screen {
+	
+	public LevelFinishScreen(DevMaze g) {
+		// TODO
+	}
 
 	@Override
 	public void render(float delta) {
