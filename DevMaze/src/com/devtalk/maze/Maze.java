@@ -4,35 +4,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+
 /**
  * @author max
- * 
  */
 public class Maze {
 
-	private static final int DEFAULT_HEIGHT = 51;
-	private static final int DEFAULT_WIDTH = 31;
-
-
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+	
 	public Tile[][] tiles;
 	public List<Tile> openTiles;
+	public Tile end;
 
-	public Maze() {
-		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
+	public Maze(DevMaze g) {
+		
+		this.camera = g.camera;
+		this.batch = g.batch;
+		this.tiles = new Tile[0][0];
+		this.openTiles = new ArrayList<Tile>();
+		
 	}
-
-	public Maze(int row, int col) {
+	
+	public void create(int row, int col) {
 		tiles = new Tile[row][col];
-		openTiles = new ArrayList<Tile>();
+		openTiles.clear();
 
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j] = new Tile(i, j);
 			}
 		}
-		
-		this.analyze();		// Fills openTiles and sets neighbors
-		this.generate();	// Fill tiles with Maze logic
+
+		this.generate();
 	}
 
 	/**
@@ -95,9 +102,9 @@ public class Maze {
 
 		}
 		
-		// Mark beginning and end tiles.
-		//tiles[1][0].set_inMaze(true);
-		//tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
+		// Mark end tile
+		end = tiles[tiles.length - 2][tiles[0].length - 1];
+		end.set_inMaze(true);
 		
 		analyze();
 	}
@@ -146,14 +153,6 @@ public class Maze {
 		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
 	}
 	
-	public void makeSwatch(int topX, int topY) {
-		for (int i = 0; i < 5; i++) {
-			for(int j = 0; j < 5; j++) {
-				this.tiles[i][j].put();   // Puts the tile into a swatch
-			}
-		}
-	}
-	
 	public Tile tileAtLocation(float xPos, float yPos) {
 		int row = row(yPos);
 		int col = col(xPos);
@@ -184,13 +183,24 @@ public class Maze {
 		return calculated;
 	}
 
-	public void dispose() {
-		// TODO Auto-generated method stub
+	public void render() {
+		for (int i = 0; i < this.tiles.length; i++)
+			for (int j = 0; j < this.tiles[0].length; j++) {
+				float x = this.tiles[i][j].rectangle().x;
+				float y = this.tiles[i][j].rectangle().y;
+				Vector3 tile = new Vector3(x, y, 0);
+	
+				if (camera.frustum.sphereInFrustum(tile, GameScreen.EDGE_SIZE_PX))
+					if (this.tiles[i][j].inMaze())
+						batch.draw(this.tiles[i][j].texture(), 
+								j * GameScreen.EDGE_SIZE_PX, i * GameScreen.EDGE_SIZE_PX);
+			}
 		
 	}
 
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+	public void dispose() {
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[0].length; j++)
+				tiles[i][j].dispose();
 	}
 }

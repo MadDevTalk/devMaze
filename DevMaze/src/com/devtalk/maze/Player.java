@@ -6,19 +6,25 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class Player {
-
+	
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
 	private static final int INIT_HEALTH = 10;
 	private static final int INIT_HIT_RAD = GameScreen.PLAYER_SIZE_PX / 2;
 	private static final int INIT_HIT_DMG = 1;
+	private static final int INIT_X = GameScreen.EDGE_SIZE_PX * (3/2);
+	private static final int INIT_Y = GameScreen.EDGE_SIZE_PX * (3/2);
 	
-	private DevMaze game;
+	private Maze maze;
+	private SpriteBatch batch;
+	private BitmapFont font;
 
 	float stateTime;
 	Animation walkAnimation;
@@ -26,7 +32,7 @@ public class Player {
 	TextureRegion[] walkFrames;
 	Rectangle rectangle;
 
-	public boolean walking;
+	boolean walking;
 	float prevAngle;
 	Vector3 velocity;
 	Vector3 position;
@@ -39,26 +45,28 @@ public class Player {
 	
 	List<Item> pack;
 	Item equippedItem;
+	
+	public Player(DevMaze g) {
 
-	public Player(int xPos, int yPos, DevMaze g) {
-		this.game = g;
+		this.maze = g.maze;
+		this.batch = g.batch;
+		this.font = g.font;
 
-		this.rectangle = new Rectangle(xPos, yPos, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+		this.rectangle = new Rectangle(INIT_X, INIT_Y, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
+		
 		int index = 0;
-		for (int i = 0; i < FRAME_ROWS; i++) {
-			for (int j = 0; j < FRAME_COLS; j++) {
+		for (int i = 0; i < FRAME_ROWS; i++)
+			for (int j = 0; j < FRAME_COLS; j++)
 				this.walkFrames[index++] = tmp[i][j];
-			}
-		}
 
 		this.stateTime = 0.0f;
 		this.walkAnimation = new Animation(0.025f, walkFrames);
 		
 		this.walking = false;
-		this.position = new Vector3(xPos, yPos, 0);
+		this.position = new Vector3(INIT_X, INIT_Y, 0);
 		this.prevPosition = new Vector3(position);
 		this.velocity = new Vector3();
 		
@@ -73,7 +81,7 @@ public class Player {
 	}
 
 	public void set(int x, int y) {
-		this.position = new Vector3(x, y, 0);
+		this.position.set(x, y, 0);
 	}
 
 	public void updatePos() {
@@ -85,14 +93,14 @@ public class Player {
 		if (xOffset != 0 || yOffset != 0)
 		{
 			this.walking = true;
-			this.prevPosition = position.cpy();
+			this.prevPosition.set(position.cpy());
 
 			xOffset = Math.min(GameScreen.SPEED_LATCH_PX, xOffset);
 			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
 		} else
 			return;
 
-		List<Tile> neighbors = game.maze.tileAtLocation(position.x, position.y).getNeighbors();
+		List<Tile> neighbors = maze.tileAtLocation(position.x, position.y).getNeighbors();
 		
 		// TODO: fine tune collision detection to allow player to get closer to walls.
 		for (Tile neighbor : neighbors) {
@@ -161,14 +169,20 @@ public class Player {
 				this.rectangle.height + (2 * hitRadius));
 	}
 
-	public void dispose() {
-		// TODO Auto-generated method stub
+	public void render() {
+
+		TextureRegion tmp = this.texture(Gdx.graphics.getDeltaTime());
+		batch.draw(tmp, this.position.x, this.position.y,
+				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+				this.angle());
+		font.draw(batch, "HP: " + this.currentHealth + "/" + this.totalHealth,
+				this.position.x, this.position.y);
 		
 	}
 
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+	public void dispose() {
+		this.walkSheet.dispose();
 	}
 
 }
