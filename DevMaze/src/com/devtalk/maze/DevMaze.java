@@ -1,10 +1,12 @@
 package com.devtalk.maze;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.devtalk.maze.Monster.MonsterType;
+import com.devtalk.maze.Level.LEVEL;
 
 public class DevMaze extends Game {
 
@@ -19,8 +21,23 @@ public class DevMaze extends Game {
 	protected MainMenuScreen mainMenuScreen;
 	protected GameScreen gameScreen;
 	protected PauseScreen pauseScreen;
+	
+	protected List<Level> levels;
+	protected Level currentLevel;
 
 	public void create() {
+		
+		// Generate levels (populate from xml in future?)
+		this.levels = new ArrayList<Level>();
+		this.levels.add(new Level(LEVEL.LEVEL_1));
+		this.levels.add(new Level(LEVEL.LEVEL_2));
+		this.levels.add(new Level(LEVEL.LEVEL_3));
+		this.levels.add(new Level(LEVEL.LEVEL_4));
+		this.levels.add(new Level(LEVEL.LEVEL_5));
+		this.levels.add(new Level(LEVEL.LEVEL_6));
+		
+		// Start at current level
+		this.currentLevel = this.levels.get(0);
 		
 		// Create batch and font
 		this.batch = new SpriteBatch();
@@ -46,10 +63,9 @@ public class DevMaze extends Game {
 	}
 	
 	public void newGame() {
-		// TODO: Reset game elements based on current level
-		this.maze.create(11, 15);
+		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
 		this.player.set(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
-		this.monsterHandler.set(10, MonsterType.EASY);
+		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
 	}
 
 	public void render() {

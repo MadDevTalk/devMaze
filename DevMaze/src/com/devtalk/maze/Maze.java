@@ -18,6 +18,7 @@ public class Maze {
 	
 	public Tile[][] tiles;
 	public List<Tile> openTiles;
+	public Tile end;
 
 	public Maze(DevMaze g) {
 		
@@ -101,9 +102,9 @@ public class Maze {
 
 		}
 		
-		// Mark beginning and end tiles.
-		//tiles[1][0].set_inMaze(true);
-		//tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
+		// Mark end tile
+		end = tiles[tiles.length - 2][tiles[0].length - 1];
+		end.set_inMaze(true);
 		
 		analyze();
 	}

@@ -47,6 +47,14 @@ public class GameScreen implements Screen {
 		player.updatePos();
 		camera.position.set(player.position);
 		
+		// Check if at end
+		if (maze.end.rectangle().contains(player.rectangle)) {
+			if (!game.levels.isEmpty()) {
+				game.currentLevel = game.levels.remove(0);
+				game.setScreen(game.mainMenuScreen);
+			}
+		}
+		
 		// Update the monsters' current position
 		monsterHandler.updateMonsters();
 
