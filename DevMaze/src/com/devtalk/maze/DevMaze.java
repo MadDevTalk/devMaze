@@ -28,18 +28,6 @@ public class DevMaze extends Game {
 
 	public void create() {
 		
-		// Generate levels (populate from xml in future?)
-		this.levels = new ArrayList<Level>();
-		this.levels.add(new Level(LEVEL.LEVEL_1));
-		this.levels.add(new Level(LEVEL.LEVEL_2));
-		this.levels.add(new Level(LEVEL.LEVEL_3));
-		this.levels.add(new Level(LEVEL.LEVEL_4));
-		this.levels.add(new Level(LEVEL.LEVEL_5));
-		this.levels.add(new Level(LEVEL.LEVEL_6));
-		
-		// Start at current level
-		this.currentLevel = this.levels.remove(0);
-		
 		// Create batch and font
 		this.batch = new SpriteBatch();
 		this.font = new BitmapFont();
@@ -52,6 +40,7 @@ public class DevMaze extends Game {
 		this.maze = new Maze(this);
 		this.player = new Player(this);
 		this.monsterHandler = new PuppetMaster(this);
+		this.levels = new ArrayList<Level>();
 		
 		// Create screens
 		this.mainMenuScreen = new MainMenuScreen(this);
