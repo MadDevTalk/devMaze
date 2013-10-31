@@ -32,9 +32,9 @@ public class PauseScreen implements Screen {
 		// Place the buttons
 		x = 100;
 		y = 75;
-		menu = new Rectangle(x, y, 128, 64);
+		menu = new Rectangle(x, y, menuColor.getWidth() * 2, menuColor.getHeight());
 		y = 155;
-		resume = new Rectangle(x, y, 128, 64);
+		resume = new Rectangle(x, y, resumeColor.getWidth() * 2, resumeColor.getHeight());
 	}
 
 	public void render(float delta) {
