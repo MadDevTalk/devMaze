@@ -32,9 +32,9 @@ public class PauseScreen implements Screen {
 		// Place the buttons
 		x = 100;
 		y = 75;
-		menu = new Rectangle(x, y, 192, 64);
+		menu = new Rectangle(x, y, 128, 64);
 		y = 155;
-		resume = new Rectangle(x, y, 192, 64);
+		resume = new Rectangle(x, y, 128, 64);
 	}
 
 	public void render(float delta) {
@@ -42,30 +42,33 @@ public class PauseScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
+		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+		
 		game.batch.setProjectionMatrix(camera.combined);
 		
 		game.batch.begin();
 		{
-			batch.draw(menuColor, 100, 75);   // Double draw is a hack 
-			batch.draw(menuColor, 164, 75);   // around the ^2 rule
-			font.draw(game.batch, "MENU", 125, 100);
+			batch.draw(menuColor, menu.x, menu.y);   // Double draw is a hack 
+			batch.draw(menuColor, menu.x + menuColor.getWidth(), menu.y);   // around the ^2 rule
+			font.draw(game.batch, "MENU", menu.x + 20, menu.y + 20);
 			
-			batch.draw(resumeColor, 100, 155);
-			batch.draw(resumeColor, 164, 155);
-			font.draw(game.batch, "RESUME", 125, 180);
+			batch.draw(resumeColor, resume.x, resume.y);
+			batch.draw(resumeColor, resume.x + resumeColor.getWidth(), resume.y);
+			font.draw(game.batch, "RESUME", resume.x + 20, resume.y + 20);
 		}
 		game.batch.end();
 
 		if (Gdx.input.justTouched()) {
 			int x = Gdx.input.getX();
-			int y = 480 - Gdx.input.getY();   // Translate to Camera coordinates
+			int y = (int) (camera.viewportHeight - Gdx.input.getY());   // Translate to Camera coordinates
+			
+			System.out.println(x + ", " + y);
+		
 			
 			if(menu.contains(x, y)) {
 				game.setScreen(game.mainMenuScreen);
-			}
-			else if(resume.contains(x, y)) {
+			} else if(resume.contains(x, y))
 				game.setScreen(game.gameScreen);
-			}
 		}
 	}
 
