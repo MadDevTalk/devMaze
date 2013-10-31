@@ -56,12 +56,11 @@ public class Player {
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
+		
 		int index = 0;
-		for (int i = 0; i < FRAME_ROWS; i++) {
-			for (int j = 0; j < FRAME_COLS; j++) {
+		for (int i = 0; i < FRAME_ROWS; i++)
+			for (int j = 0; j < FRAME_COLS; j++)
 				this.walkFrames[index++] = tmp[i][j];
-			}
-		}
 
 		this.stateTime = 0.0f;
 		this.walkAnimation = new Animation(0.025f, walkFrames);
@@ -183,7 +182,7 @@ public class Player {
 	}
 
 	public void dispose() {
-		walkSheet.dispose();
+		this.walkSheet.dispose();
 	}
 
 }

@@ -46,7 +46,7 @@ public class DevMaze extends Game {
 	}
 	
 	public void newGame() {
-		// Reset game elements based on current level
+		// TODO: Reset game elements based on current level
 		this.maze.create(11, 15);
 		this.player.set(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
 		this.monsterHandler.set(10, MonsterType.EASY);
