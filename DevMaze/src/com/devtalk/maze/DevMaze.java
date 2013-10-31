@@ -37,7 +37,7 @@ public class DevMaze extends Game {
 		this.levels.add(new Level(LEVEL.LEVEL_6));
 		
 		// Start at current level
-		this.currentLevel = this.levels.get(0);
+		this.currentLevel = this.levels.remove(0);
 		
 		// Create batch and font
 		this.batch = new SpriteBatch();
