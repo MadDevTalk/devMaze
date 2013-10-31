@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.devtalk.maze.Monster.MonsterType;
@@ -15,6 +19,8 @@ public class PuppetMaster {
 	private static final int G_WEIGHT_AXIAL = 10;
 
 	private DevMaze game;
+	private SpriteBatch batch;
+	private BitmapFont font;
 	private Maze maze;
 	private Player player;
 	
@@ -23,6 +29,8 @@ public class PuppetMaster {
 	public PuppetMaster(DevMaze g) {
 		
 		this.game = g;
+		this.batch = g.batch;
+		this.font = g.font;
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsters = new ArrayList<Monster>();
@@ -216,6 +224,23 @@ public class PuppetMaster {
 			}
 		
 		monsters.removeAll(deadMonsters);
+		
+	}
+
+	public void render() {
+		for (Monster monster : this.monsters)
+		{
+			TextureRegion tmp = monster.texture(Gdx.graphics.getDeltaTime());
+			batch.draw(tmp, monster.position.x, monster.position.y,
+					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+					monster.angle());
+			
+			// TODO: one debug bool that toggles all debug drawing
+			// game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
+			font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
+					monster.position.x, monster.position.y);
+		}
 		
 	}
 

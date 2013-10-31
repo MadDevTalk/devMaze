@@ -4,17 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+
 /**
  * @author max
  */
 public class Maze {
 
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+	
 	public Tile[][] tiles;
 	public List<Tile> openTiles;
 
-	public Maze() {
+	public Maze(DevMaze g) {
+		
+		this.camera = g.camera;
+		this.batch = g.batch;
 		this.tiles = new Tile[0][0];
 		this.openTiles = new ArrayList<Tile>();
+		
 	}
 	
 	public void create(int row, int col) {
@@ -169,6 +180,21 @@ public class Maze {
 			calculated = -1; 
 		
 		return calculated;
+	}
+
+	public void render() {
+		for (int i = 0; i < this.tiles.length; i++)
+			for (int j = 0; j < this.tiles[0].length; j++) {
+				float x = this.tiles[i][j].rectangle().x;
+				float y = this.tiles[i][j].rectangle().y;
+				Vector3 tile = new Vector3(x, y, 0);
+	
+				if (camera.frustum.sphereInFrustum(tile, GameScreen.EDGE_SIZE_PX))
+					if (this.tiles[i][j].inMaze())
+						batch.draw(this.tiles[i][j].texture(), 
+								j * GameScreen.EDGE_SIZE_PX, i * GameScreen.EDGE_SIZE_PX);
+			}
+		
 	}
 
 	public void dispose() {

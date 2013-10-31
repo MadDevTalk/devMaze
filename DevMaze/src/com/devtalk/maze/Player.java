@@ -6,6 +6,8 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -21,6 +23,8 @@ public class Player {
 	private static final int INIT_Y = GameScreen.EDGE_SIZE_PX * (3/2);
 	
 	private Maze maze;
+	private SpriteBatch batch;
+	private BitmapFont font;
 
 	float stateTime;
 	Animation walkAnimation;
@@ -45,6 +49,8 @@ public class Player {
 	public Player(DevMaze g) {
 
 		this.maze = g.maze;
+		this.batch = g.batch;
+		this.font = g.font;
 
 		this.rectangle = new Rectangle(INIT_X, INIT_Y, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
@@ -162,6 +168,18 @@ public class Player {
 				this.position.y - hitRadius,
 				this.rectangle.width + (2 * hitRadius),
 				this.rectangle.height + (2 * hitRadius));
+	}
+
+	public void render() {
+
+		TextureRegion tmp = this.texture(Gdx.graphics.getDeltaTime());
+		batch.draw(tmp, this.position.x, this.position.y,
+				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+				this.angle());
+		font.draw(batch, "HP: " + this.currentHealth + "/" + this.totalHealth,
+				this.position.x, this.position.y);
+		
 	}
 
 	public void dispose() {

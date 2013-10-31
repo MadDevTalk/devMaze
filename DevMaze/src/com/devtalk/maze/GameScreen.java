@@ -5,10 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen implements Screen {
 
@@ -20,7 +17,6 @@ public class GameScreen implements Screen {
 	private DevMaze game;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	private BitmapFont font;
 	
 	private Maze maze;
 	private Player player;
@@ -33,7 +29,6 @@ public class GameScreen implements Screen {
 		this.game = g;
 		this.camera = g.camera;
 		this.batch = g.batch;
-		this.font = g.font;
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
@@ -67,43 +62,15 @@ public class GameScreen implements Screen {
 		batch.begin();
 		{
 			// **DRAW MAZE** //
-			for (int i = 0; i < maze.tiles.length; i++)
-				for (int j = 0; j < maze.tiles[0].length; j++) {
-					float x = maze.tiles[i][j].rectangle().x;
-					float y = maze.tiles[i][j].rectangle().y;
-					Vector3 tile = new Vector3(x, y, 0);
-		
-					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-						if (maze.tiles[i][j].inMaze())
-							batch.draw(maze.tiles[i][j].texture(), 
-									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
-				}
-		
-			// **DRAW PLAYER** //
-			TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
-			batch.draw(tmp, player.position.x, player.position.y,
-					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-					player.angle());
-			font.draw(batch, "HP: " + player.currentHealth + "/" + player.totalHealth,
-					player.position.x, player.position.y);
-		
-			// **DRAW ITEMS** //
+			maze.render();
+			
+			// **DRAW ITEMS** //			
 			
 			// **DRAW MONSTERS** //
-			for (Monster monster : monsterHandler.monsters)
-			{
-				tmp = monster.texture(Gdx.graphics.getDeltaTime());
-				batch.draw(tmp, monster.position.x, monster.position.y,
-						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-						monster.angle());
-				
-				// TODO: one debug bool that toggles all debug drawing
-				// game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
-				font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
-						monster.position.x, monster.position.y);
-			}
+			monsterHandler.render();
+		
+			// **DRAW PLAYER** //
+			player.render();
 			
 			// **DRAW HUD** //
 			hud.render();

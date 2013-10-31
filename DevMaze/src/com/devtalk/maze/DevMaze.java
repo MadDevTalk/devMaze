@@ -23,22 +23,22 @@ public class DevMaze extends Game {
 	public void create() {
 		
 		// Create batch and font
-		batch = new SpriteBatch();
-		font = new BitmapFont();
+		this.batch = new SpriteBatch();
+		this.font = new BitmapFont();
 		
 		// Create Camera
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		this.camera = new OrthographicCamera();
+		this.camera.setToOrtho(false, 800, 480);
 		
 		// Create game objects
-		maze = new Maze();
-		player = new Player(this);
-		monsterHandler = new PuppetMaster(this);
+		this.maze = new Maze(this);
+		this.player = new Player(this);
+		this.monsterHandler = new PuppetMaster(this);
 		
 		// Create screens
-		mainMenuScreen = new MainMenuScreen(this);
-		gameScreen = new GameScreen(this);
-		pauseScreen = new PauseScreen(this);
+		this.mainMenuScreen = new MainMenuScreen(this);
+		this.gameScreen = new GameScreen(this);
+		this.pauseScreen = new PauseScreen(this);
 		
 		// Start at menu
 		this.setScreen(mainMenuScreen);
@@ -47,9 +47,9 @@ public class DevMaze extends Game {
 	
 	public void newGame() {
 		// Reset game elements based on current level
-		maze.create(11, 15);
-		player.set(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
-		monsterHandler.set(10, MonsterType.EASY);
+		this.maze.create(11, 15);
+		this.player.set(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
+		this.monsterHandler.set(10, MonsterType.EASY);
 	}
 
 	public void render() {
@@ -58,17 +58,17 @@ public class DevMaze extends Game {
 
 	public void dispose() {
 		// Dispose LibGDX stuff
-		batch.dispose();
-		font.dispose();
+		this.batch.dispose();
+		this.font.dispose();
 		
 		// Dispose game objects
-		maze.dispose();
-		player.dispose();
-		monsterHandler.dispose();
+		this.maze.dispose();
+		this.player.dispose();
+		this.monsterHandler.dispose();
 		
 		// Dispose Screens
-		mainMenuScreen.dispose();
-	    gameScreen.dispose();
+		this.mainMenuScreen.dispose();
+	    this.gameScreen.dispose();
 	}
 
 }
