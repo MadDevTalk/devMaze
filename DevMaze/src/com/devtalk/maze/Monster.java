@@ -114,17 +114,19 @@ public class Monster {
 		float xPos = this.position.x; 
 		float yPos = this.position.y;
 		
-		if (this.velocity.x != 0 || this.velocity.y != 0)
-			while (maze.tileAtLocation(xPos, yPos) != null 
-					&& !maze.tileAtLocation(xPos, yPos).inMaze()) {
-				if (player.rectangle.contains(xPos, yPos)) {
-					this.sawPlayer = true;
-					break;
+		// TODO this can be more efficient by checking by tile
+		if (!this.sawPlayer)
+			if (this.velocity.x != 0 || this.velocity.y != 0)
+				while (maze.tileAtLocation(xPos, yPos) != null 
+						&& maze.tileAtLocation(xPos, yPos).inMaze()) {
+					if (player.rectangle.contains(xPos, yPos)) {
+						this.sawPlayer = true;
+						break;
+					}
+					
+					xPos += (velocity.x * (GameScreen.PLAYER_SIZE_PX / 2));
+					xPos += (velocity.y * (GameScreen.PLAYER_SIZE_PX / 2));
 				}
-				
-				xPos += (velocity.x * (GameScreen.PLAYER_SIZE_PX / 2));
-				xPos += (velocity.y * (GameScreen.PLAYER_SIZE_PX / 2));
-			}
 	}
 	
 	public boolean isAlive()

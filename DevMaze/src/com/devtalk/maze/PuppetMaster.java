@@ -56,12 +56,11 @@ public class PuppetMaster {
 			case FOLLOWING_PLAYER:
 				setDestination(monster, player);
 			case FINDING_DESTINATION:
-				if (!seekDestination(monster)) {
+				if (!seekDestination(monster))
 					if (monster.sawPlayer)
 						monster.state = State.IN_COMBAT;
 					else
 						monster.state = State.AT_DESTINATION;
-				}
 				
 				if (monster.sawPlayer)
 					monster.state = State.FOLLOWING_PLAYER;
