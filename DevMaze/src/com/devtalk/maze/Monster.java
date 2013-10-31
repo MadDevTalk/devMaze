@@ -34,6 +34,7 @@ public class Monster {
 	int totalHealth;
 	int hitRadius;
 	int hitDamage;
+	int attackFrequency;
 	boolean sawPlayer;
 	
 	State state;
@@ -87,16 +88,19 @@ public class Monster {
 			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 8;
 			this.totalHealth = 5;
 			this.hitDamage = 1;
+			this.attackFrequency = 75;
 			break;
 		case MEDIUM:
 			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 6;
 			this.totalHealth = 10;
 			this.hitDamage = 2;
+			this.attackFrequency = 65;
 			break;
 		case HARD:
 			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 4;
 			this.totalHealth = 15;
 			this.hitDamage = 4;
+			this.attackFrequency = 55;
 			break;
 		}
 		
@@ -155,6 +159,13 @@ public class Monster {
 	public boolean isMoving()
 	{
 		return !(this.velocity.x == 0 && this.velocity.y == 0);
+	}
+	
+	public Rectangle getHitRectangle() {
+		return new Rectangle(this.position.x - hitRadius,
+				this.position.y - hitRadius,
+				this.rectangle.width + (2 * hitRadius),
+				this.rectangle.height + (2 * hitRadius));
 	}
 	
 	public String toString() {

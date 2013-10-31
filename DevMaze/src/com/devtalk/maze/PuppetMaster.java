@@ -53,25 +53,31 @@ public class PuppetMaster {
 		for (Monster monster : monsters) 
 		{
 			switch (monster.state) {
+			case IN_COMBAT:
+				// Move towards player if needed - fan out (not all monsters overlap)
+				// Attempt to hit player after count (held in monster)
+				Random r = new Random();
+				int random = r.nextInt(monster.attackFrequency);
+				if (random == 0) {
+					player.detectHit(monster);
+				}
+				
+				monster.state = State.FOLLOWING_PLAYER;
+				break;
 			case FOLLOWING_PLAYER:
 				setDestination(monster, player);
-			case FINDING_DESTINATION:
 				if (!seekDestination(monster))
-					if (monster.sawPlayer)
-						monster.state = State.IN_COMBAT;
-					else
-						monster.state = State.AT_DESTINATION;
-				
+					monster.state = State.IN_COMBAT;
+				break;
+			case FINDING_DESTINATION:
 				if (monster.sawPlayer)
 					monster.state = State.FOLLOWING_PLAYER;
+				else if (!seekDestination(monster))
+					monster.state = State.AT_DESTINATION;
 				break;
 			case AT_DESTINATION:
 				if (setDestination(monster, null))
 					monster.state = State.FINDING_DESTINATION;
-				break;
-			case IN_COMBAT:
-				// Move towards player if needed - fan out (not all monsters overlap)
-				// Attempt to hit player after count (held in monster)
 				break;
 			default:
 				// OH NOOOOOOOOOO
@@ -217,7 +223,7 @@ public class PuppetMaster {
 		List<Monster> deadMonsters = new ArrayList<Monster>();
 		for (Monster monster : monsters) 
 			if (hitArea.overlaps(monster.rectangle)) {
-				monster.currentHealth -= 1;
+				monster.currentHealth -= player.hitDamage;
 				if (!monster.isAlive())
 					deadMonsters.add(monster);
 			}

@@ -22,6 +22,7 @@ public class Player {
 	private static final int INIT_X = GameScreen.EDGE_SIZE_PX * (3/2);
 	private static final int INIT_Y = GameScreen.EDGE_SIZE_PX * (3/2);
 	
+	private DevMaze game;
 	private Maze maze;
 	private SpriteBatch batch;
 	private BitmapFont font;
@@ -48,6 +49,7 @@ public class Player {
 	
 	public Player(DevMaze g) {
 
+		this.game = g;
 		this.maze = g.maze;
 		this.batch = g.batch;
 		this.font = g.font;
@@ -80,8 +82,16 @@ public class Player {
 		
 	}
 
-	public void set(int x, int y) {
+	public void reset(int x, int y) {
 		this.position.set(x, y, 0);
+		
+		this.totalHealth = INIT_HEALTH;
+		this.currentHealth = totalHealth;
+		this.hitRadius = INIT_HIT_RAD;
+		this.hitDamage = INIT_HIT_DMG;
+		
+		this.equippedItem = null;
+		this.pack = new ArrayList<Item>();
 	}
 
 	public void updatePos() {
@@ -159,7 +169,7 @@ public class Player {
 	
 	public boolean isAlive()
 	{
-		return this.currentHealth == 0;
+		return this.currentHealth > 0;
 	}
 	
 	public Rectangle getHitRectangle() {
@@ -167,6 +177,15 @@ public class Player {
 				this.position.y - hitRadius,
 				this.rectangle.width + (2 * hitRadius),
 				this.rectangle.height + (2 * hitRadius));
+	}
+	
+	public void detectHit(Monster monster) {
+		if (monster.getHitRectangle().overlaps(this.rectangle)) {
+			this.currentHealth -= monster.hitDamage;
+			if (!this.isAlive()) {
+				game.setScreen(game.mainMenuScreen);
+			}
+		}
 	}
 
 	public void render() {
