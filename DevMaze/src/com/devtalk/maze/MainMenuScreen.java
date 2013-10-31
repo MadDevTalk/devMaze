@@ -58,6 +58,8 @@ public class MainMenuScreen implements Screen {
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
+		
+		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
 		game.batch.setProjectionMatrix(camera.combined);
 		
