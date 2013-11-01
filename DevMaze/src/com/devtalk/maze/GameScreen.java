@@ -74,7 +74,6 @@ public class GameScreen implements Screen {
 		
 					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX)) {
 						if (maze.tiles[i][j].inMaze) {
-							//System.out.print(maze.tiles[i][j].inSwatch() + " | ");
 							batch.draw(maze.tiles[i][j].texture(), 
 									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
 							
