@@ -71,8 +71,8 @@ public class MazeInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Buttons.LEFT)
-			touch_down = new Vector3(screenX, screenY, 0);
+		//if (button == Buttons.LEFT)
+			//touch_down = new Vector3(screenX, screenY, 0);
 
 		// Check area of player hit radius for monster hit
 		monsterHandler.detectHit(player.getHitRectangle());
@@ -81,7 +81,7 @@ public class MazeInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		player.walking = false;
+		//player.walking = false;
 		
 		return false;
 	}
@@ -89,16 +89,16 @@ public class MazeInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 		// the current position of the pointer
-		Vector3 new_position = new Vector3(x, y, 0);
+		//Vector3 new_position = new Vector3(x, y, 0);
 
 		// offset of new position from where drag started
-		new_position.sub(touch_down);
+		//new_position.sub(touch_down);
 
 		// move camera by offset, need to invert x
-		player.updatePos((int) -new_position.x, (int) new_position.y);
+		//player.updatePos((int) -new_position.x, (int) new_position.y);
 
 		// move the drag started position to the current position
-		touch_down.add(new_position);
+		//touch_down.add(new_position);
 
 		return false;
 	}

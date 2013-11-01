@@ -1,6 +1,7 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
@@ -43,8 +44,10 @@ public class HUDInputProcessor implements InputProcessor {
 		screenY = (int) (camera.position.y + camera.viewportHeight / 2 - screenY); 
 		
 		for (HUDModule module : hud.modules)
-			if (module.rectangle().contains(screenX, screenY))
+			if (module.rectangle().contains(screenX, screenY)) {
 				module.action();
+				return true;
+			}
 		
 		return false;
 	}

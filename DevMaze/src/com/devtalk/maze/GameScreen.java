@@ -39,8 +39,8 @@ public class GameScreen implements Screen {
 		// Set our input processor
 		inputMultiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(inputMultiplexer);
-		//inputMultiplexer.addProcessor(new MazeInputProcessor(g));
 		inputMultiplexer.addProcessor(new HUDInputProcessor(g, this.hud));
+		inputMultiplexer.addProcessor(new MazeInputProcessor(g));
 	}
 
 	// The main loop, fires @ 60 fps
