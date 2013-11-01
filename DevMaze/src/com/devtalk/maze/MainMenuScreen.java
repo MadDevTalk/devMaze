@@ -99,7 +99,7 @@ public class MainMenuScreen implements Screen {
 			y = 480 - Gdx.input.getY();   // Translate to Camera coordinates
 			
 			if(newGame.contains(x, y)) { 
-				game.setScreen(new GameScreen(game)); 
+				game.setScreen(game.gameScreen); 
 			}
 			else if(resume.contains(x, y)) { 
 				if(gamestate != null) {

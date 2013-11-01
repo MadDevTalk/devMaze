@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
 		this.monsterHandler = g.monsterHandler;
 		
 		// Reset game elements based on current level
-		maze.reset();
+		maze.reset(); maze.makeSwatch(5, 5);
 		player.reset();
 		monsterHandler.reset();
 
@@ -65,18 +65,22 @@ public class GameScreen implements Screen {
 		
 		// Draw everything
 		batch.begin();
-		{
 			// **DRAW MAZE** //
 			for (int i = 0; i < maze.tiles.length; i++)
 				for (int j = 0; j < maze.tiles[0].length; j++) {
-					float x = maze.tiles[i][j].rectangle().x;
-					float y = maze.tiles[i][j].rectangle().y;
+					float x = maze.tiles[i][j].rectangle.x;
+					float y = maze.tiles[i][j].rectangle.y;
 					Vector3 tile = new Vector3(x, y, 0);
 		
 					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX)) {
-						if (maze.tiles[i][j].inMaze())
+						if (maze.tiles[i][j].inMaze) {
+							//System.out.print(maze.tiles[i][j].inSwatch() + " | ");
 							batch.draw(maze.tiles[i][j].texture(), 
 									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+							
+						}
+						// Toggle index overlay
+						font.draw(batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 35);
 					}
 				}
 		
@@ -92,20 +96,19 @@ public class GameScreen implements Screen {
 			// **DRAW ITEMS** //
 			
 			// **DRAW MONSTERS** //
-			for (Monster monster : monsterHandler.monsters)
-			{
-				tmp = monster.texture(Gdx.graphics.getDeltaTime());
-				batch.draw(tmp, monster.position.x, monster.position.y,
-						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-						monster.angle());
-				
-				// TODO: one debug bool that toggles all debug drawing
-				// game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
-				font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
-						monster.position.x, monster.position.y);
-			}
-		}
+//			for (Monster monster : monsterHandler.monsters)
+//			{
+//				tmp = monster.texture(Gdx.graphics.getDeltaTime());
+//				batch.draw(tmp, monster.position.x, monster.position.y,
+//						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+//						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+//						monster.angle());
+//				
+//				// TODO: one debug bool that toggles all debug drawing
+//				font.draw(batch, monster.toString(), monster.position.x, monster.position.y);
+//				font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
+//						monster.position.x, monster.position.y);
+//			}
 		batch.end();
 
 		// TODO: Put in game screen input processor

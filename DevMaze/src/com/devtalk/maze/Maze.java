@@ -46,7 +46,7 @@ public class Maze {
 		// Start with a grid full of walls
 
 		// There are certain places an initial tile could be such that the maze
-		// could go the the edge of the 2d array. Therefor, I'm just starting 
+		// could go the the edge of the 2d array. Therefore, I'm just starting 
 		// at 1,1 for now which should work as long as the grid coords are 
 		// prime (or just odd maybe). This makes choosing a maze "start" 
 		// pretty easy, but is also kind of shit.
@@ -63,7 +63,7 @@ public class Maze {
 		Tile start = tiles[row][col];
 
 		// Mark as part of the maze
-		start.set_inMaze(true);
+		start.inMaze(true);
 
 		// Add the walls of the cell to the wall list
 		walls.addAll(get_Neighbors(row, col));
@@ -75,12 +75,12 @@ public class Maze {
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 
 			// If the cell on the opposite side isn't in the maze yet
-			if (!getOppositeTile(wall).inMaze()) {
+			if (!getOppositeTile(wall).inMaze) {
 				// Mark the edge a passage
-				tiles[wall.row][wall.col].set_inMaze(true);
+				tiles[wall.row][wall.col].inMaze(true);
 
 				// Mark the cell on the opposite side a passage
-				getOppositeTile(wall).set_inMaze(true);
+				getOppositeTile(wall).inMaze(true);
 
 				row = wall.row + wall.rowOffset;
 				col = wall.col + wall.colOffset;
@@ -105,7 +105,7 @@ public class Maze {
 	private void analyze() {
 		for (int row = 0; row < tiles.length; row++)
 			for (int col = 0; col < tiles[0].length; col++)
-				if (tiles[row][col].inMaze()) {
+				if (tiles[row][col].inMaze) {
 					openTiles.add(tiles[row][col]);
 					setNeighbors(row, col);
 				}
@@ -124,19 +124,19 @@ public class Maze {
 		List<Wall> temp = new ArrayList<Wall>();
 
 		// Check top
-		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze())
+		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze)
 			temp.add(new Wall(row, col, row + 1, col));
 
 		// Check right
-		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze())
+		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze)
 			temp.add(new Wall(row, col, row, col + 1));
 
 		// Check bottom
-		if (row > 2 && !tiles[row - 1][col].inMaze())
+		if (row > 2 && !tiles[row - 1][col].inMaze)
 			temp.add(new Wall(row, col, row - 1, col));
 
 		// Check left
-		if (col > 2 && !tiles[row][col - 1].inMaze())
+		if (col > 2 && !tiles[row][col - 1].inMaze)
 			temp.add(new Wall(row, col, row, col - 1));
 
 		return temp;
@@ -147,11 +147,14 @@ public class Maze {
 	}
 	
 	public void makeSwatch(int topX, int topY) {
-		for (int i = 0; i < 5; i++) {
-			for(int j = 0; j < 5; j++) {
-				this.tiles[i][j].put();   // Puts the tile into a swatch
+		for (int i = 0; i <= 5; i++) {
+			for(int j = 0; j <= 5; j++) {
+				if(this.tiles[i][j].inMaze) {
+					this.tiles[i][j].inSwatch(true);
+				}
 			}
 		}
+		System.out.println();
 	}
 	
 	public Tile tileAtLocation(float xPos, float yPos) {
