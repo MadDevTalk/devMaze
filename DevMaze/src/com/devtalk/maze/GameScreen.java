@@ -1,7 +1,7 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +22,8 @@ public class GameScreen implements Screen {
 	private Player player;
 	private PuppetMaster monsterHandler;
 	private HUD hud;
+	
+	private InputMultiplexer inputMultiplexer;
 
 	public GameScreen(DevMaze g) {
 		
@@ -35,8 +37,10 @@ public class GameScreen implements Screen {
 		this.hud = new HUD(g);
 
 		// Set our input processor
-		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
-		
+		inputMultiplexer = new InputMultiplexer();
+		Gdx.input.setInputProcessor(inputMultiplexer);
+		//inputMultiplexer.addProcessor(new MazeInputProcessor(g));
+		inputMultiplexer.addProcessor(new HUDInputProcessor(g, this.hud));
 	}
 
 	// The main loop, fires @ 60 fps
@@ -85,17 +89,6 @@ public class GameScreen implements Screen {
 		}
 		batch.end();
 
-		// TODO: Put in game screen input processor
-		// **REGISTER INPUTS** //
-		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
-		if (Gdx.input.justTouched()) {
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY();
-
-			if ((x < 64 && y < 64) || space) {
-				game.setScreen(game.pauseScreen);
-			}
-		}
 	}
 
 	public void resize(int width, int height) {

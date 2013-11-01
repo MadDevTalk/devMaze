@@ -193,7 +193,7 @@ public class Maze {
 				if (camera.frustum.sphereInFrustum(tile, GameScreen.EDGE_SIZE_PX))
 					if (this.tiles[i][j].inMaze())
 						batch.draw(this.tiles[i][j].texture(), 
-								j * GameScreen.EDGE_SIZE_PX, i * GameScreen.EDGE_SIZE_PX);
+								x, y);
 			}
 		
 	}
