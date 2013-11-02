@@ -43,13 +43,7 @@ public class HUDInputProcessor implements InputProcessor {
 		screenX += camera.position.x - camera.viewportWidth / 2;
 		screenY = (int) (camera.position.y + camera.viewportHeight / 2 - screenY); 
 		
-		for (HUDModule module : hud.modules)
-			if (module.rectangle().contains(screenX, screenY)) {
-				module.action();
-				return true;
-			}
-		
-		return false;
+		return hud.actionedAt(screenX, screenY);
 	}
 
 	@Override

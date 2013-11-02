@@ -12,7 +12,7 @@ public class PauseModule implements HUDModule {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
-	private static Texture pauseButton = new Texture(Gdx.files.internal("PAUSE.png"));
+	private static Texture button = new Texture(Gdx.files.internal("PAUSE.png"));
 	
 	public PauseModule(DevMaze g) {
 		this.game = g;
@@ -22,15 +22,15 @@ public class PauseModule implements HUDModule {
 
 	@Override
 	public void render() {
-        batch.draw(pauseButton, camera.position.x - camera.viewportWidth / 2, 
-                        (camera.position.y + camera.viewportHeight / 2) - pauseButton.getHeight());
+        batch.draw(button, camera.position.x - camera.viewportWidth / 2, 
+                        (camera.position.y + camera.viewportHeight / 2) - button.getHeight());
 	}
 
 	@Override
 	public Rectangle rectangle() {
 		return new Rectangle(camera.position.x - camera.viewportWidth / 2, 
-                (camera.position.y + camera.viewportHeight / 2) - pauseButton.getHeight(),
-                pauseButton.getWidth(), pauseButton.getHeight());
+                (camera.position.y + camera.viewportHeight / 2) - button.getHeight(),
+                button.getWidth(), button.getHeight());
 	}
 
 	@Override
