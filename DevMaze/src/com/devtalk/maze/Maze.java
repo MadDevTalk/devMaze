@@ -85,12 +85,12 @@ public class Maze {
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 
 			// If the cell on the opposite side isn't in the maze yet
-			if (!getOppositeTile(wall).inMaze()) {
+			if (!getOppositeTile(wall).inMaze) {
 				// Mark the edge a passage
-				tiles[wall.row][wall.col].set_inMaze(true);
+				tiles[wall.row][wall.col].inMaze(true);
 
 				// Mark the cell on the opposite side a passage
-				getOppositeTile(wall).set_inMaze(true);
+				getOppositeTile(wall).inMaze(true);
 
 				row = wall.row + wall.rowOffset;
 				col = wall.col + wall.colOffset;
@@ -107,7 +107,7 @@ public class Maze {
 		
 		// Mark end tile
 		end = tiles[tiles.length - 2][tiles[0].length - 1];
-		end.set_inMaze(true);
+		end.inMaze(true);
 		
 		analyze();
 	}
@@ -200,12 +200,12 @@ public class Maze {
 	public void render() {
 		for (int i = 0; i < this.tiles.length; i++)
 			for (int j = 0; j < this.tiles[0].length; j++) {
-				float x = this.tiles[i][j].rectangle().x;
-				float y = this.tiles[i][j].rectangle().y;
+				float x = this.tiles[i][j].rectangle.x;
+				float y = this.tiles[i][j].rectangle.y;
 				Vector3 tile = new Vector3(x, y, 0);
 		
 				if (camera.frustum.sphereInFrustum(tile, GameScreen.EDGE_SIZE_PX))
-					if (this.tiles[i][j].inMaze())
+					if (this.tiles[i][j].inMaze)
 						batch.draw(this.tiles[i][j].texture(), 
 								j * GameScreen.EDGE_SIZE_PX, i * GameScreen.EDGE_SIZE_PX);
 	}

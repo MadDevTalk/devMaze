@@ -32,9 +32,10 @@ public class GameScreen implements Screen {
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
-		maze.reset(); maze.makeSwatch(5, 5);
 		this.hud = new HUD(g);
 
+		maze.makeSwatch(5, 5);
+		
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
 	}
@@ -48,7 +49,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 		
 		// Check if at end
-		if (maze.end.rectangle().contains(player.rectangle)) {
+		if (maze.end.rectangle.contains(player.rectangle)) {
 			if (!game.levels.isEmpty()) {
 				game.currentLevel = game.levels.remove(0);
 				game.setScreen(game.levelFinishScreen);
@@ -72,10 +73,7 @@ public class GameScreen implements Screen {
 			maze.render();
 		
 			// **DRAW ITEMS** //			
-						// Toggle index overlay
-						font.draw(batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 35);
-					}
-				}
+
 		
 			// **DRAW MONSTERS** //
 			monsterHandler.render();
@@ -85,7 +83,6 @@ public class GameScreen implements Screen {
 		
 			// **DRAW HUD** //
 			hud.render();
-		}
 		batch.end();
 
 		// TODO: Put in game screen input processor

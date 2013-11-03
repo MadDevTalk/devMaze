@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Tile {
-	private boolean inMaze;
 	
 	private static Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 	private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
@@ -84,6 +83,7 @@ public class Tile {
 
 	public void dispose() {
 		IN_MAZE.dispose();
-		NOT_IN_MAZE.dispose();
+		SWATCH.dispose();
+		PORTAL.dispose();
 	}
 }
