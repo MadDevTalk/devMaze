@@ -25,6 +25,7 @@ public class Monster {
 	Rectangle rectangle;
 	
 	float prevAngle;
+	int velocityScale;
 	Vector2 position;
 	Vector2 velocity;
 	Vector2 velocityLatch;
@@ -89,18 +90,21 @@ public class Monster {
 			this.totalHealth = 5;
 			this.hitDamage = 1;
 			this.attackFrequency = 65;
+			this.velocityScale = 1;
 			break;
 		case MEDIUM:
 			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 6;
 			this.totalHealth = 10;
 			this.hitDamage = 2;
 			this.attackFrequency = 55;
+			this.velocityScale = 2;
 			break;
 		case HARD:
 			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 4;
 			this.totalHealth = 15;
 			this.hitDamage = 4;
 			this.attackFrequency = 45;
+			this.velocityScale = 3;
 			break;
 		}
 		

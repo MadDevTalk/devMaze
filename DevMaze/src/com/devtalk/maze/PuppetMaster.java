@@ -110,7 +110,7 @@ public class PuppetMaster {
 		Tile lastPosition = maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
 		
 		if (lastPosition != currentPosition)
-			monster.count = DevMaze.EDGE_SIZE_PX / 2;
+			monster.count = (DevMaze.EDGE_SIZE_PX / 2) / monster.velocityScale;
 	
 		if (monster.path.size() > 1) {
 			monster.path.remove(currentPosition);
@@ -123,7 +123,7 @@ public class PuppetMaster {
 				monster.velocity.set(monster.velocityLatch);
 				monster.count --;
 			} else {
-				monster.velocity.set(x, y);
+				monster.velocity.set(x * monster.velocityScale, y * monster.velocityScale);
 				monster.velocityLatch = monster.velocity.cpy();
 			}
 			

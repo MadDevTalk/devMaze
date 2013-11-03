@@ -12,7 +12,7 @@ public class DevMaze extends Game {
 
 	public static final int EDGE_SIZE_PX = 64;
 	public static final int PLAYER_SIZE_PX = 32;
-	public static final int KEY_VEL_PxPer60S = 5;
+	public static final int KEY_VEL_PxPer60S = 3;
 	public static final int SPEED_LATCH_PX = 32;
 
 	protected SpriteBatch batch;
