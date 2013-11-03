@@ -25,16 +25,16 @@ public class MazeInputProcessor implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
 		case Keys.UP:
-			player.start(0, GameScreen.KEY_VEL_PxPer60S);
+			player.start(0, DevMaze.KEY_VEL_PxPer60S);
 			break;
 		case Keys.RIGHT:
-			player.start(GameScreen.KEY_VEL_PxPer60S, 0);
+			player.start(DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		case Keys.DOWN:
-			player.start(0, -GameScreen.KEY_VEL_PxPer60S);
+			player.start(0, -DevMaze.KEY_VEL_PxPer60S);
 			break;
 		case Keys.LEFT:
-			player.start(-GameScreen.KEY_VEL_PxPer60S, 0);
+			player.start(-DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		default:
 			break;
@@ -46,16 +46,16 @@ public class MazeInputProcessor implements InputProcessor {
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
 		case Keys.UP:
-			player.stop(0, GameScreen.KEY_VEL_PxPer60S);
+			player.stop(0, DevMaze.KEY_VEL_PxPer60S);
 			break;
 		case Keys.RIGHT:
-			player.stop(GameScreen.KEY_VEL_PxPer60S, 0);
+			player.stop(DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		case Keys.DOWN:
-			player.stop(0, -GameScreen.KEY_VEL_PxPer60S);
+			player.stop(0, -DevMaze.KEY_VEL_PxPer60S);
 			break;
 		case Keys.LEFT:
-			player.stop(-GameScreen.KEY_VEL_PxPer60S, 0);
+			player.stop(-DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		default:
 			break;

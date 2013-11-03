@@ -17,10 +17,10 @@ public class Player {
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
 	private static final int INIT_HEALTH = 10;
-	private static final int INIT_HIT_RAD = GameScreen.PLAYER_SIZE_PX / 2;
+	private static final int INIT_HIT_RAD = DevMaze.PLAYER_SIZE_PX / 2;
 	private static final int INIT_HIT_DMG = 1;
-	private static final int INIT_X = GameScreen.EDGE_SIZE_PX * (3/2);
-	private static final int INIT_Y = GameScreen.EDGE_SIZE_PX * (3/2);
+	private static final int INIT_X = DevMaze.EDGE_SIZE_PX * (3/2);
+	private static final int INIT_Y = DevMaze.EDGE_SIZE_PX * (3/2);
 	
 	private DevMaze game;
 	private Maze maze;
@@ -54,7 +54,7 @@ public class Player {
 		this.batch = g.batch;
 		this.font = g.font;
 
-		this.rectangle = new Rectangle(INIT_X, INIT_Y, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+		this.rectangle = new Rectangle(INIT_X, INIT_Y, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
@@ -105,8 +105,8 @@ public class Player {
 			this.walking = true;
 			this.prevPosition.set(position.cpy());
 
-			xOffset = Math.min(GameScreen.SPEED_LATCH_PX, xOffset);
-			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
+			xOffset = Math.min(DevMaze.SPEED_LATCH_PX, xOffset);
+			yOffset = Math.min(DevMaze.SPEED_LATCH_PX, yOffset);
 		} else
 			return;
 
@@ -117,21 +117,21 @@ public class Player {
 			if (!neighbor.inMaze()) {
 				if (neighbor.rectangle().overlaps(
 						new Rectangle(position.x + xOffset, position.y,
-								GameScreen.PLAYER_SIZE_PX,
-								GameScreen.PLAYER_SIZE_PX)))
+								DevMaze.PLAYER_SIZE_PX,
+								DevMaze.PLAYER_SIZE_PX)))
 					xOffset = 0;
 	
 				if (neighbor.rectangle().overlaps(
 						new Rectangle(position.x, position.y + yOffset,
-								GameScreen.PLAYER_SIZE_PX,
-								GameScreen.PLAYER_SIZE_PX)))
+								DevMaze.PLAYER_SIZE_PX,
+								DevMaze.PLAYER_SIZE_PX)))
 					yOffset = 0;
 			}
 		}
 
 		this.position.add(xOffset, yOffset, 0);
 		this.rectangle.set(this.position.x, this.position.y, 
-				GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+				DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 	}
 
 	public void start(int xVel, int yVel) {

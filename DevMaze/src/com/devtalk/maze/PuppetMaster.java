@@ -43,8 +43,8 @@ public class PuppetMaster {
 		for (int i = 0; i < monsterCount; i++)
 		{
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			monsters.add(new Monster((float) ((openTile.getPosition().x * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
-					(float) ((openTile.getPosition().y * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
+			monsters.add(new Monster((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
 					difficulty, game));
 		}
 	}
@@ -110,7 +110,7 @@ public class PuppetMaster {
 		Tile lastPosition = maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
 		
 		if (lastPosition != currentPosition)
-			monster.count = GameScreen.EDGE_SIZE_PX / 2;
+			monster.count = DevMaze.EDGE_SIZE_PX / 2;
 	
 		if (monster.path.size() > 1) {
 			monster.path.remove(currentPosition);

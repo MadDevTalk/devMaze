@@ -8,11 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
-
-	public static final int EDGE_SIZE_PX = 64;
-	public static final int PLAYER_SIZE_PX = 32;
-	public static final int KEY_VEL_PxPer60S = 5;
-	public static final int SPEED_LATCH_PX = 32;
 	
 	private DevMaze game;
 	private OrthographicCamera camera;

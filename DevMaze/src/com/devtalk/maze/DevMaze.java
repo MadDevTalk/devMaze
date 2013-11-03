@@ -10,6 +10,11 @@ import com.devtalk.maze.Level.LEVEL;
 
 public class DevMaze extends Game {
 
+	public static final int EDGE_SIZE_PX = 64;
+	public static final int PLAYER_SIZE_PX = 32;
+	public static final int KEY_VEL_PxPer60S = 5;
+	public static final int SPEED_LATCH_PX = 32;
+
 	protected SpriteBatch batch;
 	protected BitmapFont font;
 	protected OrthographicCamera camera;
@@ -68,14 +73,14 @@ public class DevMaze extends Game {
 		
 		// Set game objects
 		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
-		this.player.reset(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
+		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2);
 		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
 	}
 	
 	public void newLevel() {
 		// Set game objects
 		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
-		this.player.reset(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
+		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2);
 		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
 	}
 

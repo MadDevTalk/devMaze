@@ -63,7 +63,7 @@ public class Monster {
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 		
-		this.rectangle = new Rectangle(xPos, yPos, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+		this.rectangle = new Rectangle(xPos, yPos, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
@@ -85,19 +85,19 @@ public class Monster {
 		
 		switch (type) {
 		case EASY:
-			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 8;
+			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 8;
 			this.totalHealth = 5;
 			this.hitDamage = 1;
 			this.attackFrequency = 65;
 			break;
 		case MEDIUM:
-			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 6;
+			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 6;
 			this.totalHealth = 10;
 			this.hitDamage = 2;
 			this.attackFrequency = 55;
 			break;
 		case HARD:
-			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 4;
+			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 4;
 			this.totalHealth = 15;
 			this.hitDamage = 4;
 			this.attackFrequency = 45;
@@ -113,7 +113,7 @@ public class Monster {
 		this.prevPosition = this.position.cpy();
 		this.position.add(this.velocity);
 		this.rectangle.set(this.position.x, this.position.y, 
-				GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+				DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 		
 		float xPos = this.position.x; 
 		float yPos = this.position.y;
@@ -128,8 +128,8 @@ public class Monster {
 						break;
 					}
 					
-					xPos += (velocity.x * (GameScreen.PLAYER_SIZE_PX / 2));
-					xPos += (velocity.y * (GameScreen.PLAYER_SIZE_PX / 2));
+					xPos += (velocity.x * (DevMaze.PLAYER_SIZE_PX / 2));
+					xPos += (velocity.y * (DevMaze.PLAYER_SIZE_PX / 2));
 				}
 	}
 	

@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class DPadModule implements HUDModule {
 	
+	public static int DPAD_SIZE_PX = 192;
+	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	
@@ -36,8 +38,8 @@ public class DPadModule implements HUDModule {
 		for (int i = 0; i < rectangles.length; i++) {
 			for (int j = 0; j < rectangles[0].length; j++) {
 				if (rectangles[i][j].contains(x, y)) {
-					player.velocity.set((j - 1) * GameScreen.KEY_VEL_PxPer60S,
-							(i - 1) * GameScreen.KEY_VEL_PxPer60S, 0);
+					player.velocity.set((j - 1) * DevMaze.KEY_VEL_PxPer60S,
+							(i - 1) * DevMaze.KEY_VEL_PxPer60S, 0);
 					return true;
 				}
 			}
@@ -54,9 +56,9 @@ public class DPadModule implements HUDModule {
 		
 		for (int i = 0; i < temp.length; i++)
 			for (int j = 0; j < temp[0].length; j++)
-				temp[i][j] = new Rectangle(x + (j * button.getWidth() / 3), 
-						y + (i * button.getHeight() / 3),
-						button.getWidth() / 3, button.getHeight() / 3);
+				temp[i][j] = new Rectangle(x + (j * DPAD_SIZE_PX / 3), 
+						y + (i * DPAD_SIZE_PX / 3),
+						DPAD_SIZE_PX / 3, DPAD_SIZE_PX / 3);
 		
 		return temp;
 	}
@@ -67,9 +69,7 @@ public class DPadModule implements HUDModule {
 		float yPos = camera.position.y - (camera.viewportHeight / 2) + 32;
 		Rectangle rectangle = new Rectangle(xPos, yPos, button.getWidth(), button.getHeight());
 		
-		System.out.println(x + ", " + y);
 		if (rectangle.contains(x, y)) {
-			System.out.println("d pad touch up");
 			player.walking = false;
 			player.velocity.set(0, 0, 0);
 		}
