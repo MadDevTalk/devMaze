@@ -12,6 +12,7 @@ public class HUD {
 		this.modules.add(new PauseModule(g));
 		this.modules.add(new AButtonModule(g));
 		this.modules.add(new BButtonModule(g));
+		this.modules.add(new DPadModule(g));
 	}
 	
 	public void render() {
@@ -21,11 +22,14 @@ public class HUD {
 	
 	public boolean actionedAt(int x, int y) {
 		for (HUDModule module : this.modules)
-			if (module.rectangle().contains(x, y)) {
-				module.action();
+			if (module.actionedAt(x, y))
 				return true;
-			}
 		
 		return false;
+	}
+	
+	public void stopAction(int x, int y) {
+		for (HUDModule module : this.modules)
+			module.stopAction(x, y);
 	}
 }

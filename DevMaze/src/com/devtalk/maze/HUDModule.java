@@ -1,11 +1,9 @@
 package com.devtalk.maze;
 
-import com.badlogic.gdx.math.Rectangle;
-
 public interface HUDModule {
 	
 	public void render();
-	public Rectangle rectangle();
-	public void action();
+	public boolean actionedAt(int x, int y);
+	public void stopAction(int x, int y);
 	
 }

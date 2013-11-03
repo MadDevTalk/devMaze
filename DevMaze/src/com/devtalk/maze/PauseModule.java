@@ -27,15 +27,25 @@ public class PauseModule implements HUDModule {
 	}
 
 	@Override
-	public Rectangle rectangle() {
+	public boolean actionedAt(int x, int y) {
+		if (this.rectangle().contains(x, y)) {
+			game.setScreen(game.pauseScreen);
+			return true;
+		}
+		
+		return false;
+	}
+
+	private Rectangle rectangle() {
 		return new Rectangle(camera.position.x - camera.viewportWidth / 2, 
                 (camera.position.y + camera.viewportHeight / 2) - button.getHeight(),
                 button.getWidth(), button.getHeight());
 	}
 
 	@Override
-	public void action() {
-        game.setScreen(game.pauseScreen);
+	public void stopAction(int x, int y) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -26,14 +26,18 @@ public class BButtonModule implements HUDModule {
 	}
 
 	@Override
-	public Rectangle rectangle() {
+	public boolean actionedAt(int x, int y) {
+		return false;
+	}
+	
+	private Rectangle rectangle() {
 		float x = camera.position.x + (camera.viewportWidth / 2) - (3 * button.getWidth());
 		float y = camera.position.y - (camera.viewportHeight / 2) + (button.getHeight() / 2);
 		return new Rectangle(x, y, button.getWidth(), button.getHeight());
 	}
 
 	@Override
-	public void action() {
+	public void stopAction(int x, int y) {
 		// TODO Auto-generated method stub
 		
 	}

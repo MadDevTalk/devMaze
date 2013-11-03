@@ -1,23 +1,21 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
 public class HUDInputProcessor implements InputProcessor {
 	
-	private DevMaze game;
 	private OrthographicCamera camera;
 	private HUD hud;
 	
 	private Vector3 touch_down;
 	
 	public HUDInputProcessor(DevMaze g, HUD hud) {
-		this.game = g;
 		this.camera = g.camera;
 		this.hud = hud;
-		this.touch_down = new Vector3(-1, -1, 0);
+		
+		this.touch_down = new Vector3();
 	}
 
 	@Override
@@ -40,22 +38,35 @@ public class HUDInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		int tempX = screenX;
+		int tempY = screenY;
+		
 		screenX += camera.position.x - camera.viewportWidth / 2;
 		screenY = (int) (camera.position.y + camera.viewportHeight / 2 - screenY); 
 		
-		return hud.actionedAt(screenX, screenY);
+		if (hud.actionedAt(screenX, screenY)) {
+			this.touch_down.set(tempX, tempY, 0);
+			return true;
+		}
+		else
+			return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		int x = (int) (this.touch_down.x + camera.position.x - (camera.viewportWidth / 2));
+		int y = (int) (camera.position.y + camera.viewportHeight / 2 - this.touch_down.y); 
+		
+		hud.stopAction(x, y);
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
+		screenX += camera.position.x - camera.viewportWidth / 2;
+		screenY = (int) (camera.position.y + camera.viewportHeight / 2 - screenY); 
+		
+		return hud.actionedAt(screenX, screenY);
 	}
 
 	@Override
