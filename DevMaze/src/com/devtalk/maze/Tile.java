@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Tile {
+	private boolean inMaze;
 	
 	private static Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 	private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
@@ -28,11 +29,13 @@ public class Tile {
 		neighbors = new ArrayList<Tile>();
 		position = new Vector2(col, row);
 		
+		
 		int x = col * GameScreen.EDGE_SIZE_PX;
 		int y = row * GameScreen.EDGE_SIZE_PX;
 		rectangle = new Rectangle(x, y, GameScreen.EDGE_SIZE_PX, GameScreen.EDGE_SIZE_PX);
 		center = new Vector2(x + (GameScreen.EDGE_SIZE_PX / 2), y + (GameScreen.EDGE_SIZE_PX / 2));
 	}
+
 	
 	public void inMaze(boolean bool) {
 		this.inMaze = bool;
@@ -62,18 +65,25 @@ public class Tile {
 	}
 	
 	public Vector2 getPosition() {
-		return position;
+		return this.position;
 	}
 	
 	public List<Tile> getNeighbors() {
-		return neighbors;
+
+		return this.neighbors;
 	}
 	
 	public void addNeighbor(Tile neighbor) {
-		neighbors.add(neighbor);
+	
+		this.neighbors.add(neighbor);
 	}
 	
 	public String toString() {
-		return "(" + (int)position.x + ", "+ (int)position.y + ")";
+		return "(" + (int)this.position.x + ", "+ (int)this.position.y + ")";
+	}
+
+	public void dispose() {
+		IN_MAZE.dispose();
+		NOT_IN_MAZE.dispose();
 	}
 }

@@ -4,16 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LoadingScreen implements Screen {
-	final DevMaze game;
-	OrthographicCamera camera;
-	int i = 0;
+	
+	private DevMaze game;
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+	private BitmapFont font;
 
-	public LoadingScreen(final DevMaze game) {
-		this.game = game;
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+	public LoadingScreen(final DevMaze g) {
+		this.game = g;
+		this.camera = g.camera;
+		this.batch = g.batch;
+		this.font = g.font;
 	}
 
 	public void render(float delta) {
@@ -21,13 +26,13 @@ public class LoadingScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
-		game.batch.setProjectionMatrix(camera.combined);
-		game.batch.begin();
-		game.font.draw(game.batch, "Loading...", 100, 150);
-		game.batch.end();
-
-		game.setScreen(new MainMenuScreen(game));
-		this.dispose();
+		batch.setProjectionMatrix(camera.combined);
+		
+		batch.begin();
+		{
+			font.draw(game.batch, "Loading...", 100, 150);
+		}
+		batch.end();
 	}
 
 	@Override

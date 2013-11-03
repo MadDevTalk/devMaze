@@ -32,8 +32,15 @@ public class GameScreen implements Screen {
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
+<<<<<<< HEAD
+		
+		// Reset game elements based on current level
 		maze.reset(); maze.makeSwatch(5, 5);
+		player.reset();
+		monsterHandler.reset();
+=======
 		this.hud = new HUD(g);
+>>>>>>> Combat
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
@@ -69,23 +76,55 @@ public class GameScreen implements Screen {
 		// Draw everything
 		batch.begin();
 			// **DRAW MAZE** //
-			maze.render();
+<<<<<<< HEAD
+			for (int i = 0; i < maze.tiles.length; i++)
+				for (int j = 0; j < maze.tiles[0].length; j++) {
+					float x = maze.tiles[i][j].rectangle.x;
+					float y = maze.tiles[i][j].rectangle.y;
+					Vector3 tile = new Vector3(x, y, 0);
 		
-			// **DRAW ITEMS** //			
+					if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX)) {
+						if (maze.tiles[i][j].inMaze) {
+							batch.draw(maze.tiles[i][j].texture(), 
+									j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
+							
+						}
 						// Toggle index overlay
 						font.draw(batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 35);
 					}
 				}
-		
+=======
+			maze.render();
+			
+			// **DRAW ITEMS** //			
+			
 			// **DRAW MONSTERS** //
 			monsterHandler.render();
+>>>>>>> Combat
 		
 			// **DRAW PLAYER** //
 			player.render();
-		
+			
+<<<<<<< HEAD
+			// **DRAW MONSTERS** //
+//			for (Monster monster : monsterHandler.monsters)
+//			{
+//				tmp = monster.texture(Gdx.graphics.getDeltaTime());
+//				batch.draw(tmp, monster.position.x, monster.position.y,
+//						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+//						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+//						monster.angle());
+//				
+//				// TODO: one debug bool that toggles all debug drawing
+//				font.draw(batch, monster.toString(), monster.position.x, monster.position.y);
+//				font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
+//						monster.position.x, monster.position.y);
+//			}
+=======
 			// **DRAW HUD** //
 			hud.render();
 		}
+>>>>>>> Combat
 		batch.end();
 
 		// TODO: Put in game screen input processor
@@ -96,7 +135,11 @@ public class GameScreen implements Screen {
 			int y = Gdx.input.getY();
 
 			if ((x < 64 && y < 64) || space) {
+<<<<<<< HEAD
+				// Pause?
+=======
 				game.setScreen(game.pauseScreen);
+>>>>>>> Combat
 			}
 		}
 	}

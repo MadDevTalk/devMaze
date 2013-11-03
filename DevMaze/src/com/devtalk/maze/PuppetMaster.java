@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.devtalk.maze.Monster.MonsterType;
@@ -15,22 +19,33 @@ public class PuppetMaster {
 	private static final int G_WEIGHT_AXIAL = 10;
 
 	private DevMaze game;
+	private SpriteBatch batch;
+	private BitmapFont font;
+	private Maze maze;
+	private Player player;
 	
 	public List<Monster> monsters;
 	
-	public PuppetMaster(int monsterCount, MonsterType difficulty, DevMaze g) {
+	public PuppetMaster(DevMaze g) {
+		
 		this.game = g;
+		this.batch = g.batch;
+		this.font = g.font;
+		this.maze = g.maze;
+		this.player = g.player;
+		this.monsters = new ArrayList<Monster>();
 		
-		monsters = new ArrayList<Monster>();
-		
+	}
+	
+	public void set(int monsterCount, MonsterType difficulty) {
+		monsters.clear();
 		Random r = new Random();
-		
 		for (int i = 0; i < monsterCount; i++)
 		{
-			Tile openTile = game.maze.openTiles.get(r.nextInt(game.maze.openTiles.size()));
+			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
 			monsters.add(new Monster((float) ((openTile.getPosition().x * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
 					(float) ((openTile.getPosition().y * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
-					difficulty, g));
+					difficulty, game));
 		}
 	}
 
@@ -38,33 +53,38 @@ public class PuppetMaster {
 		for (Monster monster : monsters) 
 		{
 			switch (monster.state) {
-			case FOLLOWING_PLAYER:
-				setDestination(monster, game.player);
-			case FINDING_DESTINATION:
-				if (!seekDestination(monster)) {
-					if (monster.sawPlayer)
-						monster.state = State.IN_COMBAT;
-					else
-						monster.state = State.AT_DESTINATION;
+			case IN_COMBAT:
+				// Move towards player if needed - fan out (not all monsters overlap)
+				// Attempt to hit player after count (held in monster)
+				Random r = new Random();
+				int random = r.nextInt(monster.attackFrequency);
+				if (random == 0) {
+					player.detectHit(monster);
 				}
 				
+				monster.state = State.FOLLOWING_PLAYER;
+				break;
+			case FOLLOWING_PLAYER:
+				setDestination(monster, player);
+				if (!seekDestination(monster))
+					monster.state = State.IN_COMBAT;
+				break;
+			case FINDING_DESTINATION:
 				if (monster.sawPlayer)
 					monster.state = State.FOLLOWING_PLAYER;
+				else if (!seekDestination(monster))
+					monster.state = State.AT_DESTINATION;
 				break;
 			case AT_DESTINATION:
 				if (setDestination(monster, null))
 					monster.state = State.FINDING_DESTINATION;
-				break;
-			case IN_COMBAT:
-				// Move towards player if needed - fan out (not all monsters overlap)
-				// Attempt to hit player after count (held in monster)
 				break;
 			default:
 				// OH NOOOOOOOOOO
 				break;
 			}
 			
-			monster.updatePos(game.player);
+			monster.updatePos();
 		}
 	}
 	
@@ -73,11 +93,11 @@ public class PuppetMaster {
 		
 		if (player == null) {
 			Random r = new Random();
-			end = game.maze.openTiles.get(r.nextInt(game.maze.openTiles.size() - 1));
-		} else if (monster.destination == game.maze.tileAtLocation(player.position.x, player.position.y)) {
+			end = maze.openTiles.get(r.nextInt(maze.openTiles.size() - 1));
+		} else if (monster.destination == maze.tileAtLocation(player.position.x, player.position.y)) {
 			return true;
 		} else {
-			end = game.maze.tileAtLocation(player.position.x, player.position.y);
+			end = maze.tileAtLocation(player.position.x, player.position.y);
 		}
 		
 		// find path from monster position to end
@@ -86,9 +106,8 @@ public class PuppetMaster {
 	}
 	
 	private boolean seekDestination(Monster monster) {
-		
-		Tile currentPosition = game.maze.tileAtLocation(monster.position.x, monster.position.y);
-		Tile lastPosition = game.maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
+		Tile currentPosition = maze.tileAtLocation(monster.position.x, monster.position.y);
+		Tile lastPosition = maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
 		
 		if (lastPosition != currentPosition)
 			monster.count = GameScreen.EDGE_SIZE_PX / 2;
@@ -120,7 +139,7 @@ public class PuppetMaster {
 	 * A* pathing implemented as per http://www.policyalmanac.org/games/aStarTutorial.htm
 	 */
 	private boolean findPath(Monster monster, Tile end) {
-		Tile start = game.maze.tileAtLocation(monster.position.x, monster.position.y);
+		Tile start = maze.tileAtLocation(monster.position.x, monster.position.y);
 		PathList openList = new PathList();
 		PathList closedList = new PathList();
 		PathNode currentNode = new PathNode(start, null, 0, heuristic(start, end));
@@ -173,6 +192,7 @@ public class PuppetMaster {
 		}
 		
 		return false;
+		
 	}
 	
 	private int heuristic(Tile current, Tile destination) {
@@ -203,7 +223,7 @@ public class PuppetMaster {
 		List<Monster> deadMonsters = new ArrayList<Monster>();
 		for (Monster monster : monsters) 
 			if (hitArea.overlaps(monster.rectangle)) {
-				monster.currentHealth -= 1;
+				monster.currentHealth -= player.hitDamage;
 				if (!monster.isAlive())
 					deadMonsters.add(monster);
 			}
@@ -212,13 +232,27 @@ public class PuppetMaster {
 		
 	}
 
-	public void dispose() {
-		// TODO Auto-generated method stub
+	public void render() {
+		for (Monster monster : this.monsters)
+		{
+			TextureRegion tmp = monster.texture(Gdx.graphics.getDeltaTime());
+			batch.draw(tmp, monster.position.x, monster.position.y,
+					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+					monster.angle());
+			
+			// TODO: one debug bool that toggles all debug drawing
+			// game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
+			font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
+					monster.position.x, monster.position.y);
+		}
 		
 	}
 
-	public void reset() {
-		// TODO Auto-generated method stub
+	public void dispose() {
+		for (Monster monster : monsters) {
+			monster.dispose();
+		}
 		
 	}
 	

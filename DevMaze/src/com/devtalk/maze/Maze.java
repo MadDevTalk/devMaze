@@ -4,26 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+
 /**
  * @author max
- * 
+ *
  */
 public class Maze {
 
-	private static final int DEFAULT_HEIGHT = 51;
-	private static final int DEFAULT_WIDTH = 31;
-
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
+	
 
 	public Tile[][] tiles;
 	public List<Tile> openTiles;
+	public Tile end;
 
-	public Maze() {
-		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
+	public Maze(DevMaze g) {
+		
+		this.camera = g.camera;
+		this.batch = g.batch;
+		this.tiles = new Tile[0][0];
+		this.openTiles = new ArrayList<Tile>();
+		
 	}
-
-	public Maze(int row, int col) {
+	
+	public void create(int row, int col) {
 		tiles = new Tile[row][col];
-		openTiles = new ArrayList<Tile>();
+		openTiles.clear();
 
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
@@ -75,12 +85,12 @@ public class Maze {
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 
 			// If the cell on the opposite side isn't in the maze yet
-			if (!getOppositeTile(wall).inMaze) {
+			if (!getOppositeTile(wall).inMaze()) {
 				// Mark the edge a passage
-				tiles[wall.row][wall.col].inMaze(true);
+				tiles[wall.row][wall.col].set_inMaze(true);
 
 				// Mark the cell on the opposite side a passage
-				getOppositeTile(wall).inMaze(true);
+				getOppositeTile(wall).set_inMaze(true);
 
 				row = wall.row + wall.rowOffset;
 				col = wall.col + wall.colOffset;
@@ -95,16 +105,16 @@ public class Maze {
 
 		}
 		
-		// Mark beginning and end tiles.
-		//tiles[1][0].set_inMaze(true);
-		//tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
+		// Mark end tile
+		end = tiles[tiles.length - 2][tiles[0].length - 1];
+		end.set_inMaze(true);
 		
 		analyze();
 	}
 	
 	private void analyze() {
 		for (int row = 0; row < tiles.length; row++)
-			for (int col = 0; col < tiles[0].length; col++)
+			for (int col = 0; col < tiles[0].length; col++) 
 				if (tiles[row][col].inMaze) {
 					openTiles.add(tiles[row][col]);
 					setNeighbors(row, col);
@@ -187,13 +197,24 @@ public class Maze {
 		return calculated;
 	}
 
-	public void dispose() {
-		// TODO Auto-generated method stub
+	public void render() {
+		for (int i = 0; i < this.tiles.length; i++)
+			for (int j = 0; j < this.tiles[0].length; j++) {
+				float x = this.tiles[i][j].rectangle().x;
+				float y = this.tiles[i][j].rectangle().y;
+				Vector3 tile = new Vector3(x, y, 0);
+		
+				if (camera.frustum.sphereInFrustum(tile, GameScreen.EDGE_SIZE_PX))
+					if (this.tiles[i][j].inMaze())
+						batch.draw(this.tiles[i][j].texture(), 
+								j * GameScreen.EDGE_SIZE_PX, i * GameScreen.EDGE_SIZE_PX);
+	}
 		
 	}
 
-	public void reset() {
-		// TODO Auto-generated method stub
-		
+	public void dispose() {
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[0].length; j++)
+				tiles[i][j].dispose();
 	}
 }

@@ -32,11 +32,11 @@ public class GameScreen implements Screen {
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
-		maze.reset(); maze.makeSwatch(5, 5);
 		this.hud = new HUD(g);
 
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
+		
 	}
 
 	// The main loop, fires @ 60 fps
@@ -68,21 +68,18 @@ public class GameScreen implements Screen {
 		
 		// Draw everything
 		batch.begin();
+		{
 			// **DRAW MAZE** //
 			maze.render();
-		
+			
 			// **DRAW ITEMS** //			
-						// Toggle index overlay
-						font.draw(batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 35);
-					}
-				}
-		
+			
 			// **DRAW MONSTERS** //
 			monsterHandler.render();
 		
 			// **DRAW PLAYER** //
 			player.render();
-		
+			
 			// **DRAW HUD** //
 			hud.render();
 		}

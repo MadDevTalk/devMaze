@@ -1,10 +1,12 @@
 package com.devtalk.maze;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.devtalk.maze.Monster.MonsterType;
+import com.devtalk.maze.Level.LEVEL;
 
 public class DevMaze extends Game {
 
@@ -20,31 +22,62 @@ public class DevMaze extends Game {
 	
 	protected MainMenuScreen mainMenuScreen;
 	protected GameScreen gameScreen;
+	protected PauseScreen pauseScreen;
+	protected LevelFinishScreen levelFinishScreen;
+	
+	protected List<Level> levels;
+	protected Level currentLevel;
 
 	public void create() {
 		
 		// Create batch and font
-		batch = new SpriteBatch();
-		font = new BitmapFont();
+		this.batch = new SpriteBatch();
+		this.font = new BitmapFont();
 		
 		// Create Camera
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		this.camera = new OrthographicCamera();
+		this.camera.setToOrtho(false, 800, 480);
 		
 		// Create game objects
-		// TODO: these constructors should not take params,
-		// instead, these params should be set when necessary,
-		// with some kind of reset function
-		maze = new Maze(11, 15);// must be odd
-		player = new Player(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2, this);
-		monsterHandler = new PuppetMaster(50, MonsterType.EASY, this);
+		this.maze = new Maze(this);
+		this.player = new Player(this);
+		this.monsterHandler = new PuppetMaster(this);
+		this.levels = new ArrayList<Level>();
 		
 		// Create screens
-		mainMenuScreen = new MainMenuScreen(this);
-		gameScreen = new GameScreen(this);
+		this.mainMenuScreen = new MainMenuScreen(this);
+		this.gameScreen = new GameScreen(this);
+		this.pauseScreen = new PauseScreen(this);
+		this.levelFinishScreen = new LevelFinishScreen(this);
 		
 		// Start at menu
 		this.setScreen(mainMenuScreen);	
+	}
+	
+	public void newGame() {
+		// Reset levels
+		this.levels.clear();
+		this.levels.add(new Level(LEVEL.LEVEL_1));
+		this.levels.add(new Level(LEVEL.LEVEL_2));
+		this.levels.add(new Level(LEVEL.LEVEL_3));
+		this.levels.add(new Level(LEVEL.LEVEL_4));
+		this.levels.add(new Level(LEVEL.LEVEL_5));
+		this.levels.add(new Level(LEVEL.LEVEL_6));
+		
+		// Start at current level
+		this.currentLevel = this.levels.remove(0);
+		
+		// Set game objects
+		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
+		this.player.reset(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
+		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
+	}
+	
+	public void newLevel() {
+		// Set game objects
+		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
+		this.player.reset(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
+		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
 	}
 
 	public void render() {
@@ -52,12 +85,18 @@ public class DevMaze extends Game {
 	}
 
 	public void dispose() {
-		batch.dispose();
-		font.dispose();
+		// Dispose LibGDX stuff
+		this.batch.dispose();
+		this.font.dispose();
 		
-		maze.dispose();
-		player.dispose();
-		monsterHandler.dispose();
+		// Dispose game objects
+		this.maze.dispose();
+		this.player.dispose();
+		this.monsterHandler.dispose();
+		
+		// Dispose Screens
+		this.mainMenuScreen.dispose();
+	    this.gameScreen.dispose();
 	}
 
 }

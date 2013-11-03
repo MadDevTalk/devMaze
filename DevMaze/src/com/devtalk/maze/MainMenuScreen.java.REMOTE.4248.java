@@ -20,13 +20,12 @@ public class MainMenuScreen implements Screen {
 	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg;
 	Rectangle newGame, resume, player, settings, quit;
 	
-	
-	
 	public MainMenuScreen(DevMaze g) {
 		this.game = g;
 		this.camera = g.camera;
 		this.batch = g.batch;
 		this.font = g.font;
+		
 		// Load Textures
 		this.gameImg = new Texture(Gdx.files.internal("NEW_GAME.png"));
 		this.resumeImg = new Texture(Gdx.files.internal("RESUME.png"));
@@ -45,13 +44,12 @@ public class MainMenuScreen implements Screen {
 		newGame = new Rectangle(x, y, 192, 64);
 		y = 155;
 		resume = new Rectangle(x, y, 192, 64);
-
-//		y = 235;
-//		settings = new Rectangle(x, y, 192, 64);
-//		y = 315;
-//		player = new Rectangle(x, y, 192, 64);
-//		y = 395;
-//		quit = new Rectangle(x, y, 192, 64);
+		y = 235;
+		settings = new Rectangle(x, y, 192, 64);
+		y = 315;
+		player = new Rectangle(x, y, 192, 64);
+		y = 395;
+		quit = new Rectangle(x, y, 192, 64);
 
 	}
 
@@ -66,34 +64,32 @@ public class MainMenuScreen implements Screen {
 		
 		batch.begin();
 		{
-		// **DRAW SYMBOL** //
-		/**
-		for (int i = 0; i < paths.length; i++) {
-			for (int j = 0; j < paths[0].length; j++) {
-				
-				if(i == 2 || j == 2) {
-					game.batch.draw(IN_MAZE, j * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX), 
-							i * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX));
+			// **DRAW SYMBOL** //
+			/**
+			for (int i = 0; i < paths.length; i++) {
+				for (int j = 0; j < paths[0].length; j++) {
+					
+					if(i == 2 || j == 2) {
+						game.batch.draw(IN_MAZE, j * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX), 
+								i * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX));
+					}
+					
+					// Wanna see the indices overlaid on the maze? Uncomment this line right here
+					// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * GameScreen.EDGE_SIZE_PX + 15, i * GameScreen.EDGE_SIZE_PX + 40);
 				}
-				
-				// Wanna see the indices overlaid on the maze? Uncomment this line right here
-				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * GameScreen.EDGE_SIZE_PX + 15, i * GameScreen.EDGE_SIZE_PX + 40);
 			}
-		}
-		**/
-		
-		// **DRAW BUTTONS** //
-
+			**/
+			
+			// **DRAW BUTTONS** //
 			batch.draw(gameImg, newGame.x, newGame.y);
 			font.draw(game.batch, "NEW GAME", newGame.x + 25, newGame.y + 25);
-		
-		
+			
 			batch.draw(resumeImg, resume.x, resume.y);
 			font.draw(game.batch, "RESUME", resume.x + 25, resume.y + 25);
-		
-
-		
-
+			
+			batch.draw(playerImg, player.x, player.y);
+			font.draw(game.batch, "PLAYER", player.x + 25, player.y + 25);
+			
 			batch.draw(settingsImg, settings.x, settings.y);
 			font.draw(game.batch, "SETTINGS", settings.x + 25, settings.y + 25);
 			
