@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devtalk.maze.Level.LEVEL;
 
 public class DevMaze extends Game {
+	
+	public static final boolean DEBUG = true;
 
 	public static final int EDGE_SIZE_PX = 64;
 	public static final int PLAYER_SIZE_PX = 32;

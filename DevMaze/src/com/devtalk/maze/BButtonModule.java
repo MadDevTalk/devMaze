@@ -30,6 +30,7 @@ public class BButtonModule implements HUDModule {
 		return false;
 	}
 	
+	@SuppressWarnings("unused")
 	private Rectangle rectangle() {
 		float x = camera.position.x + (camera.viewportWidth / 2) - (3 * button.getWidth());
 		float y = camera.position.y - (camera.viewportHeight / 2) + (button.getHeight() / 2);

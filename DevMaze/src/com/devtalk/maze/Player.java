@@ -195,8 +195,11 @@ public class Player {
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
 				this.angle());
-		font.draw(batch, "HP: " + this.currentHealth + "/" + this.totalHealth,
-				this.position.x, this.position.y);
+		
+		if (DevMaze.DEBUG) {
+			font.draw(batch, "HP: " + this.currentHealth + "/" + this.totalHealth,
+					this.position.x, this.position.y);
+		}
 		
 	}
 
