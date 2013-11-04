@@ -51,22 +51,8 @@ public class Maze {
 		List<Wall> walls = new ArrayList<Wall>();
 
 		// Start with a grid full of walls
-
-		// There are certain places an initial tile could be such that the maze
-		// could go the the edge of the 2d array. Therefor, I'm just starting 
-		// at 1,1 for now which should work as long as the grid coords are 
-		// prime (or just odd maybe). This makes choosing a maze "start" 
-		// pretty easy, but is also kind of shit.
-		//
 		int row, col;
-		// do {
-		// Pick a (random, but not on edge) cell
-		// row = gen.nextInt(tiles.length - 2) + 1;
-		// col = gen.nextInt(tiles[0].length - 2) + 1;
-		// } while ();
-
 		row = col = 1;
-
 		Tile start = tiles[row][col];
 
 		// Mark as part of the maze
@@ -83,6 +69,7 @@ public class Maze {
 
 			// If the cell on the opposite side isn't in the maze yet
 			if (!getOppositeTile(wall).inMaze()) {
+				
 				// Mark the edge a passage
 				tiles[wall.row][wall.col].set_inMaze(true);
 
@@ -95,10 +82,9 @@ public class Maze {
 				// Add the walls of the cell to the wall list
 				walls.addAll(get_Neighbors(row, col));
 
-			} else {
+			} else
 				// Remove wall from list
 				walls.remove(wall);
-			}
 
 		}
 		
@@ -106,6 +92,7 @@ public class Maze {
 		end = tiles[tiles.length - 2][tiles[0].length - 1];
 		end.set_inMaze(true);
 		
+		// Set the tiles' in maze neighbors
 		analyze();
 	}
 	
@@ -165,7 +152,7 @@ public class Maze {
 	
 	// May want to throw a new OutOfMaze exception or something
 	public int row(float yPos) {
-		int calculated = (int) ((yPos + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		int calculated = (int) ((yPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
 		
 		if (calculated > tiles.length - 1 || calculated < 0) 
 			calculated = -1;
@@ -175,7 +162,7 @@ public class Maze {
 
 	// May want to throw a new OutOfMaze exception or something
 	public int col(float xPos) {
-		int calculated = (int) ((xPos + (GameScreen.PLAYER_SIZE_PX / 2)) / GameScreen.EDGE_SIZE_PX);
+		int calculated = (int) ((xPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
 		
 		if (calculated > tiles[0].length - 1 || calculated < 0) 
 			calculated = -1; 
@@ -190,10 +177,9 @@ public class Maze {
 				float y = this.tiles[i][j].rectangle().y;
 				Vector3 tile = new Vector3(x, y, 0);
 	
-				if (camera.frustum.sphereInFrustum(tile, GameScreen.EDGE_SIZE_PX))
+				if (camera.frustum.sphereInFrustum(tile, DevMaze.EDGE_SIZE_PX))
 					if (this.tiles[i][j].inMaze())
-						batch.draw(this.tiles[i][j].texture(), 
-								j * GameScreen.EDGE_SIZE_PX, i * GameScreen.EDGE_SIZE_PX);
+						batch.draw(this.tiles[i][j].texture(), x, y);
 			}
 		
 	}

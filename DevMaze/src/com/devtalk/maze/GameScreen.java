@@ -1,18 +1,13 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
-
-	public static final int EDGE_SIZE_PX = 64;
-	public static final int PLAYER_SIZE_PX = 32;
-	public static final int KEY_VEL_PxPer60S = 5;
-	public static final int SPEED_LATCH_PX = 32;
 	
 	private DevMaze game;
 	private OrthographicCamera camera;
@@ -22,6 +17,8 @@ public class GameScreen implements Screen {
 	private Player player;
 	private PuppetMaster monsterHandler;
 	private HUD hud;
+	
+	private InputMultiplexer inputMultiplexer;
 
 	public GameScreen(DevMaze g) {
 		
@@ -35,7 +32,10 @@ public class GameScreen implements Screen {
 		this.hud = new HUD(g);
 
 		// Set our input processor
-		Gdx.input.setInputProcessor(new MazeInputProcessor(g));
+		inputMultiplexer = new InputMultiplexer();
+		inputMultiplexer.addProcessor(new HUDInputProcessor(g, this.hud));
+		inputMultiplexer.addProcessor(new MazeInputProcessor(g));
+		Gdx.input.setInputProcessor(inputMultiplexer);
 		
 	}
 
@@ -85,17 +85,6 @@ public class GameScreen implements Screen {
 		}
 		batch.end();
 
-		// TODO: Put in game screen input processor
-		// **REGISTER INPUTS** //
-		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
-		if (Gdx.input.justTouched()) {
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY();
-
-			if ((x < 64 && y < 64) || space) {
-				game.setScreen(game.pauseScreen);
-			}
-		}
 	}
 
 	public void resize(int width, int height) {

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -20,7 +19,6 @@ public class PuppetMaster {
 
 	private DevMaze game;
 	private SpriteBatch batch;
-	private BitmapFont font;
 	private Maze maze;
 	private Player player;
 	
@@ -30,7 +28,6 @@ public class PuppetMaster {
 		
 		this.game = g;
 		this.batch = g.batch;
-		this.font = g.font;
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsters = new ArrayList<Monster>();
@@ -43,8 +40,8 @@ public class PuppetMaster {
 		for (int i = 0; i < monsterCount; i++)
 		{
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			monsters.add(new Monster((float) ((openTile.getPosition().x * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
-					(float) ((openTile.getPosition().y * GameScreen.EDGE_SIZE_PX) + (GameScreen.EDGE_SIZE_PX / 4)),
+			monsters.add(new Monster((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
 					difficulty, game));
 		}
 	}
@@ -53,25 +50,31 @@ public class PuppetMaster {
 		for (Monster monster : monsters) 
 		{
 			switch (monster.state) {
+			case IN_COMBAT:
+				// Move towards player if needed - fan out (not all monsters overlap)
+				// Attempt to hit player after count (held in monster)
+				Random r = new Random();
+				int random = r.nextInt(monster.attackFrequency);
+				if (random == 0) {
+					player.detectHit(monster);
+				}
+				
+				monster.state = State.FOLLOWING_PLAYER;
+				break;
 			case FOLLOWING_PLAYER:
 				setDestination(monster, player);
-			case FINDING_DESTINATION:
 				if (!seekDestination(monster))
-					if (monster.sawPlayer)
-						monster.state = State.IN_COMBAT;
-					else
-						monster.state = State.AT_DESTINATION;
-				
+					monster.state = State.IN_COMBAT;
+				break;
+			case FINDING_DESTINATION:
 				if (monster.sawPlayer)
 					monster.state = State.FOLLOWING_PLAYER;
+				else if (!seekDestination(monster))
+					monster.state = State.AT_DESTINATION;
 				break;
 			case AT_DESTINATION:
 				if (setDestination(monster, null))
 					monster.state = State.FINDING_DESTINATION;
-				break;
-			case IN_COMBAT:
-				// Move towards player if needed - fan out (not all monsters overlap)
-				// Attempt to hit player after count (held in monster)
 				break;
 			default:
 				// OH NOOOOOOOOOO
@@ -104,7 +107,7 @@ public class PuppetMaster {
 		Tile lastPosition = maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
 		
 		if (lastPosition != currentPosition)
-			monster.count = GameScreen.EDGE_SIZE_PX / 2;
+			monster.count = (DevMaze.EDGE_SIZE_PX / 2) / monster.velocityScale;
 	
 		if (monster.path.size() > 1) {
 			monster.path.remove(currentPosition);
@@ -117,7 +120,7 @@ public class PuppetMaster {
 				monster.velocity.set(monster.velocityLatch);
 				monster.count --;
 			} else {
-				monster.velocity.set(x, y);
+				monster.velocity.set(x * monster.velocityScale, y * monster.velocityScale);
 				monster.velocityLatch = monster.velocity.cpy();
 			}
 			
@@ -217,7 +220,7 @@ public class PuppetMaster {
 		List<Monster> deadMonsters = new ArrayList<Monster>();
 		for (Monster monster : monsters) 
 			if (hitArea.overlaps(monster.rectangle)) {
-				monster.currentHealth -= 1;
+				monster.currentHealth -= player.hitDamage;
 				if (!monster.isAlive())
 					deadMonsters.add(monster);
 			}
@@ -235,19 +238,17 @@ public class PuppetMaster {
 					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
 					monster.angle());
 			
-			// TODO: one debug bool that toggles all debug drawing
-			// game.font.draw(game.batch, monster.toString(), monster.position.x, monster.position.y);
-			font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
-					monster.position.x, monster.position.y);
+			if (DevMaze.DEBUG) {
+				game.font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
+						monster.position.x, monster.position.y);
+			}
 		}
-		
 	}
 
 	public void dispose() {
 		for (Monster monster : monsters) {
 			monster.dispose();
 		}
-		
 	}
 	
 }

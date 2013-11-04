@@ -31,11 +31,11 @@ public class Tile {
 		
 		neighbors = new ArrayList<Tile>();
 		position = new Vector2(col, row);
-		rectangle = new Rectangle(col * GameScreen.EDGE_SIZE_PX, 
-				row * GameScreen.EDGE_SIZE_PX, GameScreen.EDGE_SIZE_PX,
-				GameScreen.EDGE_SIZE_PX);
-		center = new Vector2(col * GameScreen.EDGE_SIZE_PX + (GameScreen.EDGE_SIZE_PX / 2), 
-				row * GameScreen.EDGE_SIZE_PX + (GameScreen.EDGE_SIZE_PX / 2));
+		rectangle = new Rectangle(col * DevMaze.EDGE_SIZE_PX, 
+				row * DevMaze.EDGE_SIZE_PX, DevMaze.EDGE_SIZE_PX,
+				DevMaze.EDGE_SIZE_PX);
+		center = new Vector2(col * DevMaze.EDGE_SIZE_PX + (DevMaze.EDGE_SIZE_PX / 2), 
+				row * DevMaze.EDGE_SIZE_PX + (DevMaze.EDGE_SIZE_PX / 2));
 	}
 
 	public void set_inMaze(boolean inMaze) {

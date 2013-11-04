@@ -17,11 +17,12 @@ public class Player {
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 4;
 	private static final int INIT_HEALTH = 10;
-	private static final int INIT_HIT_RAD = GameScreen.PLAYER_SIZE_PX / 2;
+	private static final int INIT_HIT_RAD = DevMaze.PLAYER_SIZE_PX / 2;
 	private static final int INIT_HIT_DMG = 1;
-	private static final int INIT_X = GameScreen.EDGE_SIZE_PX * (3/2);
-	private static final int INIT_Y = GameScreen.EDGE_SIZE_PX * (3/2);
+	private static final int INIT_X = DevMaze.EDGE_SIZE_PX * (3/2);
+	private static final int INIT_Y = DevMaze.EDGE_SIZE_PX * (3/2);
 	
+	private DevMaze game;
 	private Maze maze;
 	private SpriteBatch batch;
 	private BitmapFont font;
@@ -48,11 +49,12 @@ public class Player {
 	
 	public Player(DevMaze g) {
 
+		this.game = g;
 		this.maze = g.maze;
 		this.batch = g.batch;
 		this.font = g.font;
 
-		this.rectangle = new Rectangle(INIT_X, INIT_Y, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+		this.rectangle = new Rectangle(INIT_X, INIT_Y, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
@@ -80,8 +82,16 @@ public class Player {
 		
 	}
 
-	public void set(int x, int y) {
+	public void reset(int x, int y) {
 		this.position.set(x, y, 0);
+		
+		this.totalHealth = INIT_HEALTH;
+		this.currentHealth = totalHealth;
+		this.hitRadius = INIT_HIT_RAD;
+		this.hitDamage = INIT_HIT_DMG;
+		
+		this.equippedItem = null;
+		this.pack = new ArrayList<Item>();
 	}
 
 	public void updatePos() {
@@ -95,8 +105,8 @@ public class Player {
 			this.walking = true;
 			this.prevPosition.set(position.cpy());
 
-			xOffset = Math.min(GameScreen.SPEED_LATCH_PX, xOffset);
-			yOffset = Math.min(GameScreen.SPEED_LATCH_PX, yOffset);
+			xOffset = Math.min(DevMaze.SPEED_LATCH_PX, xOffset);
+			yOffset = Math.min(DevMaze.SPEED_LATCH_PX, yOffset);
 		} else
 			return;
 
@@ -107,21 +117,21 @@ public class Player {
 			if (!neighbor.inMaze()) {
 				if (neighbor.rectangle().overlaps(
 						new Rectangle(position.x + xOffset, position.y,
-								GameScreen.PLAYER_SIZE_PX,
-								GameScreen.PLAYER_SIZE_PX)))
+								DevMaze.PLAYER_SIZE_PX,
+								DevMaze.PLAYER_SIZE_PX)))
 					xOffset = 0;
 	
 				if (neighbor.rectangle().overlaps(
 						new Rectangle(position.x, position.y + yOffset,
-								GameScreen.PLAYER_SIZE_PX,
-								GameScreen.PLAYER_SIZE_PX)))
+								DevMaze.PLAYER_SIZE_PX,
+								DevMaze.PLAYER_SIZE_PX)))
 					yOffset = 0;
 			}
 		}
 
 		this.position.add(xOffset, yOffset, 0);
 		this.rectangle.set(this.position.x, this.position.y, 
-				GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+				DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 	}
 
 	public void start(int xVel, int yVel) {
@@ -159,7 +169,7 @@ public class Player {
 	
 	public boolean isAlive()
 	{
-		return this.currentHealth == 0;
+		return this.currentHealth > 0;
 	}
 	
 	public Rectangle getHitRectangle() {
@@ -167,6 +177,15 @@ public class Player {
 				this.position.y - hitRadius,
 				this.rectangle.width + (2 * hitRadius),
 				this.rectangle.height + (2 * hitRadius));
+	}
+	
+	public void detectHit(Monster monster) {
+		if (monster.getHitRectangle().overlaps(this.rectangle)) {
+			this.currentHealth -= monster.hitDamage;
+			if (!this.isAlive()) {
+				game.setScreen(game.mainMenuScreen);
+			}
+		}
 	}
 
 	public void render() {
@@ -176,8 +195,11 @@ public class Player {
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
 				this.angle());
-		font.draw(batch, "HP: " + this.currentHealth + "/" + this.totalHealth,
-				this.position.x, this.position.y);
+		
+		if (DevMaze.DEBUG) {
+			font.draw(batch, "HP: " + this.currentHealth + "/" + this.totalHealth,
+					this.position.x, this.position.y);
+		}
 		
 	}
 

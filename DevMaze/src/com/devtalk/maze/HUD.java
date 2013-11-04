@@ -1,23 +1,35 @@
 package com.devtalk.maze;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HUD {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
 	
-	Texture pauseButton = new Texture(Gdx.files.internal("PAUSE.png"));
+	List<HUDModule> modules;
 	
 	public HUD(DevMaze g) {
-		camera = g.camera;
-		batch = g.batch;
+		this.modules = new ArrayList<HUDModule>();
+		this.modules.add(new PauseModule(g));
+		this.modules.add(new AButtonModule(g));
+		this.modules.add(new BButtonModule(g));
+		this.modules.add(new DPadModule(g));
 	}
 	
 	public void render() {
-		batch.draw(pauseButton, camera.position.x - camera.viewportWidth / 2, 
-				camera.position.y + camera.viewportHeight / 2 - pauseButton.getHeight());
+		for (HUDModule module : modules)
+			module.render();
+	}
+	
+	public boolean actionedAt(int x, int y) {
+		for (HUDModule module : this.modules)
+			if (module.actionedAt(x, y))
+				return true;
+		
+		return false;
+	}
+	
+	public void stopAction(int x, int y) {
+		for (HUDModule module : this.modules)
+			module.stopAction(x, y);
 	}
 }

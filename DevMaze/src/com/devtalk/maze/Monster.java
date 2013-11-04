@@ -25,6 +25,7 @@ public class Monster {
 	Rectangle rectangle;
 	
 	float prevAngle;
+	int velocityScale;
 	Vector2 position;
 	Vector2 velocity;
 	Vector2 velocityLatch;
@@ -34,6 +35,7 @@ public class Monster {
 	int totalHealth;
 	int hitRadius;
 	int hitDamage;
+	int attackFrequency;
 	boolean sawPlayer;
 	
 	State state;
@@ -62,7 +64,7 @@ public class Monster {
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 		
-		this.rectangle = new Rectangle(xPos, yPos, GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+		this.rectangle = new Rectangle(xPos, yPos, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
@@ -84,19 +86,25 @@ public class Monster {
 		
 		switch (type) {
 		case EASY:
-			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 8;
+			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 8;
 			this.totalHealth = 5;
 			this.hitDamage = 1;
+			this.attackFrequency = 65;
+			this.velocityScale = 1;
 			break;
 		case MEDIUM:
-			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 6;
+			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 6;
 			this.totalHealth = 10;
 			this.hitDamage = 2;
+			this.attackFrequency = 55;
+			this.velocityScale = 2;
 			break;
 		case HARD:
-			this.hitRadius = GameScreen.PLAYER_SIZE_PX / 4;
+			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 4;
 			this.totalHealth = 15;
 			this.hitDamage = 4;
+			this.attackFrequency = 45;
+			this.velocityScale = 3;
 			break;
 		}
 		
@@ -109,7 +117,7 @@ public class Monster {
 		this.prevPosition = this.position.cpy();
 		this.position.add(this.velocity);
 		this.rectangle.set(this.position.x, this.position.y, 
-				GameScreen.PLAYER_SIZE_PX, GameScreen.PLAYER_SIZE_PX);
+				DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 		
 		float xPos = this.position.x; 
 		float yPos = this.position.y;
@@ -124,8 +132,8 @@ public class Monster {
 						break;
 					}
 					
-					xPos += (velocity.x * (GameScreen.PLAYER_SIZE_PX / 2));
-					xPos += (velocity.y * (GameScreen.PLAYER_SIZE_PX / 2));
+					xPos += (velocity.x * (DevMaze.PLAYER_SIZE_PX / 2));
+					xPos += (velocity.y * (DevMaze.PLAYER_SIZE_PX / 2));
 				}
 	}
 	
@@ -155,6 +163,13 @@ public class Monster {
 	public boolean isMoving()
 	{
 		return !(this.velocity.x == 0 && this.velocity.y == 0);
+	}
+	
+	public Rectangle getHitRectangle() {
+		return new Rectangle(this.position.x - hitRadius,
+				this.position.y - hitRadius,
+				this.rectangle.width + (2 * hitRadius),
+				this.rectangle.height + (2 * hitRadius));
 	}
 	
 	public String toString() {
