@@ -165,7 +165,7 @@ public class PuppetMaster {
 			List<Tile> neighbors = currentNode.tile.getNeighbors();
 			for (Tile neighbor : neighbors)
 				// If the tile is in the maze and not already in the path
-				if (neighbor.inMaze() && !closedList.contains(neighbor)) {
+				if (neighbor.inMaze && !closedList.contains(neighbor)) {
 
 					float horizontal = Math.abs(neighbor.getPosition().x - currentNode.tile.getPosition().x);
 					float vertical = Math.abs(neighbor.getPosition().y - currentNode.tile.getPosition().y);

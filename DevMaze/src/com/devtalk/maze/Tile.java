@@ -10,19 +10,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Tile {
 	
-	private boolean inMaze, inSwatch, isPortal;
-	
-	private static Texture IN_MAZE = new Texture(
-			Gdx.files.internal("IN_MAZE.png"));
-	private static Texture NOT_IN_MAZE = new Texture(
-			Gdx.files.internal("NOT_IN_MAZE.png"));
-	//private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
-	
+	private static Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
+	private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
+	private static Texture PORTAL = new Texture(Gdx.files.internal("PORTAL.png"));
 	private Vector2 position;
-	private Vector2 center;
 	private List<Tile> neighbors;
 
-	private Rectangle rectangle;
+	public boolean inMaze, inSwatch, isPortal;
+	public Rectangle rectangle;
+	public Vector2 center;
 
 	public Tile(int row, int col) {
 		this.inMaze = false;
@@ -38,24 +34,32 @@ public class Tile {
 				row * DevMaze.EDGE_SIZE_PX + (DevMaze.EDGE_SIZE_PX / 2));
 	}
 
-	public void set_inMaze(boolean inMaze) {
-		this.inMaze = inMaze;
+	
+	public void inMaze(boolean bool) {
+		this.inMaze = bool;
 	}
-
-	public boolean inMaze() {
-		return this.inMaze;
+	
+	public void inSwatch(boolean bool) {
+		this.inSwatch = bool;
+	}
+	
+	public void isPortal(boolean bool) {
+		this.isPortal = bool;
 	}
 
 	public Texture texture() {
-		if (inSwatch) {
-			return null; //SWATCH;
-		}
-		else if (inMaze) {
+		
+		if (this.inMaze) {
+			if (this.inSwatch) {
+				return SWATCH;
+			}
+			if (this.isPortal) {
+				return PORTAL;
+			}
 			return IN_MAZE;
 		}
-		else {
-			return NOT_IN_MAZE;
-		}
+		
+		return null;   // Something went wrong
 	}
 	
 	public Vector2 getPosition() {
@@ -69,18 +73,6 @@ public class Tile {
 	public void addNeighbor(Tile neighbor) {
 		this.neighbors.add(neighbor);
 	}
-
-	public Rectangle rectangle() {
-		return this.rectangle;
-	}
-
-	public Vector2 getCenter() {
-		return this.center;
-	}
-	
-	public void put() {
-		this.inSwatch = true;
-	}
 	
 	public String toString() {
 		return "(" + (int)this.position.x + ", "+ (int)this.position.y + ")";
@@ -88,6 +80,7 @@ public class Tile {
 
 	public void dispose() {
 		IN_MAZE.dispose();
-		NOT_IN_MAZE.dispose();
+		SWATCH.dispose();
+		PORTAL.dispose();
 	}
 }

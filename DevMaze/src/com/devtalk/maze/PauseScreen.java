@@ -48,12 +48,10 @@ public class PauseScreen implements Screen {
 		
 		game.batch.begin();
 		{
-			batch.draw(menuColor, menu.x, menu.y);   // Double draw is a hack 
-			batch.draw(menuColor, menu.x + menuColor.getWidth(), menu.y);   // around the ^2 rule
+			batch.draw(menuColor, menu.x, menu.y);
 			font.draw(game.batch, "MENU", menu.x + 20, menu.y + 20);
 			
 			batch.draw(resumeColor, resume.x, resume.y);
-			batch.draw(resumeColor, resume.x + resumeColor.getWidth(), resume.y);
 			font.draw(game.batch, "RESUME", resume.x + 20, resume.y + 20);
 		}
 		game.batch.end();

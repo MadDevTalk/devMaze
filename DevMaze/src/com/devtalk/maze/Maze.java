@@ -56,7 +56,7 @@ public class Maze {
 		Tile start = tiles[row][col];
 
 		// Mark as part of the maze
-		start.set_inMaze(true);
+		start.inMaze(true);
 
 		// Add the walls of the cell to the wall list
 		walls.addAll(get_Neighbors(row, col));
@@ -68,13 +68,12 @@ public class Maze {
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 
 			// If the cell on the opposite side isn't in the maze yet
-			if (!getOppositeTile(wall).inMaze()) {
-				
+			if (!getOppositeTile(wall).inMaze) {
 				// Mark the edge a passage
-				tiles[wall.row][wall.col].set_inMaze(true);
+				tiles[wall.row][wall.col].inMaze(true);
 
 				// Mark the cell on the opposite side a passage
-				getOppositeTile(wall).set_inMaze(true);
+				getOppositeTile(wall).inMaze(true);
 
 				row = wall.row + wall.rowOffset;
 				col = wall.col + wall.colOffset;
@@ -90,16 +89,15 @@ public class Maze {
 		
 		// Mark end tile
 		end = tiles[tiles.length - 2][tiles[0].length - 1];
-		end.set_inMaze(true);
+		end.inMaze(true);
 		
-		// Set the tiles' in maze neighbors
 		analyze();
 	}
 	
 	private void analyze() {
 		for (int row = 0; row < tiles.length; row++)
-			for (int col = 0; col < tiles[0].length; col++)
-				if (tiles[row][col].inMaze()) {
+			for (int col = 0; col < tiles[0].length; col++) 
+				if (tiles[row][col].inMaze) {
 					openTiles.add(tiles[row][col]);
 					setNeighbors(row, col);
 				}
@@ -118,19 +116,19 @@ public class Maze {
 		List<Wall> temp = new ArrayList<Wall>();
 
 		// Check top
-		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze())
+		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze)
 			temp.add(new Wall(row, col, row + 1, col));
 
 		// Check right
-		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze())
+		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze)
 			temp.add(new Wall(row, col, row, col + 1));
 
 		// Check bottom
-		if (row > 2 && !tiles[row - 1][col].inMaze())
+		if (row > 2 && !tiles[row - 1][col].inMaze)
 			temp.add(new Wall(row, col, row - 1, col));
 
 		// Check left
-		if (col > 2 && !tiles[row][col - 1].inMaze())
+		if (col > 2 && !tiles[row][col - 1].inMaze)
 			temp.add(new Wall(row, col, row, col - 1));
 
 		return temp;
@@ -138,6 +136,16 @@ public class Maze {
 
 	private Tile getOppositeTile(Wall wall) {
 		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
+	}
+	
+	public void makeSwatch(int topX, int topY) {
+		for (int i = 0; i <= 5; i++) {
+			for(int j = 0; j <= 5; j++) {
+				if(this.tiles[i][j].inMaze) {
+					this.tiles[i][j].inSwatch(true);
+				}
+			}
+		}
 	}
 	
 	public Tile tileAtLocation(float xPos, float yPos) {
@@ -173,8 +181,8 @@ public class Maze {
 	public void render() {
 		for (int i = 0; i < this.tiles.length; i++)
 			for (int j = 0; j < this.tiles[0].length; j++) {
-				float x = this.tiles[i][j].rectangle().x;
-				float y = this.tiles[i][j].rectangle().y;
+				float x = this.tiles[i][j].rectangle.x;
+				float y = this.tiles[i][j].rectangle.y;
 				Vector3 tile = new Vector3(x, y, 0);
 	
 				if (camera.frustum.sphereInFrustum(tile, DevMaze.EDGE_SIZE_PX))

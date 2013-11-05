@@ -114,14 +114,14 @@ public class Player {
 		
 		// TODO: fine tune collision detection to allow player to get closer to walls.
 		for (Tile neighbor : neighbors) {
-			if (!neighbor.inMaze()) {
-				if (neighbor.rectangle().overlaps(
+			if (!neighbor.inMaze) {
+				if (neighbor.rectangle.overlaps(
 						new Rectangle(position.x + xOffset, position.y,
 								DevMaze.PLAYER_SIZE_PX,
 								DevMaze.PLAYER_SIZE_PX)))
 					xOffset = 0;
 	
-				if (neighbor.rectangle().overlaps(
+				if (neighbor.rectangle.overlaps(
 						new Rectangle(position.x, position.y + yOffset,
 								DevMaze.PLAYER_SIZE_PX,
 								DevMaze.PLAYER_SIZE_PX)))

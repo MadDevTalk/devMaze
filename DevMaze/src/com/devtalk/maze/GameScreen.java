@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
-	
+
 	private DevMaze game;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
 		camera.position.set(player.position);
 		
 		// Check if at end
-		if (maze.end.rectangle().contains(player.rectangle)) {
+		if (maze.end.rectangle.contains(player.rectangle)) {
 			if (!game.levels.isEmpty()) {
 				game.currentLevel = game.levels.remove(0);
 				game.setScreen(game.levelFinishScreen);

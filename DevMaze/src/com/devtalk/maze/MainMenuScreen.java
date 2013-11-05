@@ -64,18 +64,14 @@ public class MainMenuScreen implements Screen {
 		
 		batch.begin();
 		{
-			// **DRAW SYMBOL** //
-			/**
-			for (int i = 0; i < paths.length; i++) {
-				for (int j = 0; j < paths[0].length; j++) {
-					
-					if(i == 2 || j == 2) {
-						game.batch.draw(IN_MAZE, j * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX), 
-								i * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX));
-					}
-					
-					// Wanna see the indices overlaid on the maze? Uncomment this line right here
-					// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * GameScreen.EDGE_SIZE_PX + 15, i * GameScreen.EDGE_SIZE_PX + 40);
+		// **DRAW SYMBOL** //
+		/**
+		for (int i = 0; i < paths.length; i++) {
+			for (int j = 0; j < paths[0].length; j++) {
+				
+				if(i == 2 || j == 2) {
+					game.batch.draw(IN_MAZE, j * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX), 
+							i * GameScreen.EDGE_SIZE_PX + (5 * GameScreen.EDGE_SIZE_PX));
 				}
 				
 				// Wanna see the indices overlaid on the maze? Uncomment this line right here
