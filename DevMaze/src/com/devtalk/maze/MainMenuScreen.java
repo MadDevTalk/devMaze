@@ -20,8 +20,6 @@ public class MainMenuScreen implements Screen {
 	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg;
 	Rectangle newGame, resume, player, settings, quit;
 	
-	
-	
 	public MainMenuScreen(DevMaze g) {
 		this.game = g;
 		this.camera = g.camera;
@@ -45,7 +43,6 @@ public class MainMenuScreen implements Screen {
 		newGame = new Rectangle(x, y, 192, 64);
 		y = 155;
 		resume = new Rectangle(x, y, 192, 64);
-
 //		y = 235;
 //		settings = new Rectangle(x, y, 192, 64);
 //		y = 315;
@@ -91,14 +88,11 @@ public class MainMenuScreen implements Screen {
 			batch.draw(resumeImg, resume.x, resume.y);
 			font.draw(game.batch, "RESUME", resume.x + 25, resume.y + 25);
 		
-
-		
-
-			batch.draw(settingsImg, settings.x, settings.y);
-			font.draw(game.batch, "SETTINGS", settings.x + 25, settings.y + 25);
-			
-			batch.draw(quitImg, quit.x, quit.y);
-			font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
+//			batch.draw(settingsImg, settings.x, settings.y);
+//			font.draw(game.batch, "SETTINGS", settings.x + 25, settings.y + 25);
+//			
+//			batch.draw(quitImg, quit.x, quit.y);
+//			font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
 		}
 		batch.end();
 

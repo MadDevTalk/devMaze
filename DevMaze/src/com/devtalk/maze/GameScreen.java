@@ -33,8 +33,6 @@ public class GameScreen implements Screen {
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
 		this.hud = new HUD(g);
-
-		maze.makeSwatch(5, 5);
 		
 		// Set our input processor
 		Gdx.input.setInputProcessor(new MazeInputProcessor(g));

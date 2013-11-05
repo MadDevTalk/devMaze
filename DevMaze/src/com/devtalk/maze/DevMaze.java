@@ -68,7 +68,7 @@ public class DevMaze extends Game {
 		this.currentLevel = this.levels.remove(0);
 		
 		// Set game objects
-		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
+		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth); this.maze.makeSwatch(5, 5);
 		this.player.reset(GameScreen.EDGE_SIZE_PX + 2, GameScreen.EDGE_SIZE_PX + 2);
 		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
 	}
