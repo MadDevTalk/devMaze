@@ -78,7 +78,8 @@ public class Player {
 		this.hitDamage = INIT_HIT_DMG;
 		
 		this.equippedItem = null;
-		this.pack = new ArrayList<Item>();
+		//TODO item pack will be later implemented
+		//this.pack = new ArrayList<Item>();
 		
 	}
 
@@ -91,7 +92,8 @@ public class Player {
 		this.hitDamage = INIT_HIT_DMG;
 		
 		this.equippedItem = null;
-		this.pack = new ArrayList<Item>();
+		//TODO item pack will be later implemented
+		//this.pack = new ArrayList<Item>();
 	}
 
 	public void updatePos() {
@@ -170,6 +172,10 @@ public class Player {
 	public boolean isAlive()
 	{
 		return this.currentHealth > 0;
+	}
+	
+	public void resetHealth() {
+		currentHealth = INIT_HEALTH;
 	}
 	
 	public Rectangle getHitRectangle() {

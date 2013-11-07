@@ -111,7 +111,7 @@ public class MainMenuScreen implements Screen {
 *
 *			else if(player.contains(x, y)) { game.setScreen(new PlayerScreen(game)); }
 *			else if(settings.contains(x, y)) { game.setScreen(new SettingsScreen(game)); }
-*			else if(quit.contains(x, y)) { game.setScreen(new QuitScreen(game)); }
+*			
 */
 		}
 	}

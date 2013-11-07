@@ -16,6 +16,7 @@ public class GameScreen implements Screen {
 	private Maze maze;
 	private Player player;
 	private PuppetMaster monsterHandler;
+	private ItemHandler itemHandler;
 	private HUD hud;
 	
 	private InputMultiplexer inputMultiplexer;
@@ -29,6 +30,7 @@ public class GameScreen implements Screen {
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
+		this.itemHandler = g.itemHandler;
 		this.hud = new HUD(g);
 
 		// Set our input processor
@@ -57,6 +59,9 @@ public class GameScreen implements Screen {
 		
 		// Update the monsters' current position
 		monsterHandler.updateMonsters();
+		
+		//update items
+		itemHandler.updateItems();
 
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
@@ -72,7 +77,8 @@ public class GameScreen implements Screen {
 			// **DRAW MAZE** //
 			maze.render();
 			
-			// **DRAW ITEMS** //			
+			// **DRAW ITEMS** //
+			itemHandler.render();
 			
 			// **DRAW MONSTERS** //
 			monsterHandler.render();
