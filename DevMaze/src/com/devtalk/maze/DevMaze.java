@@ -16,8 +16,6 @@ public class DevMaze extends Game {
 	public static final int PLAYER_SIZE_PX = 32;
 	public static final int KEY_VEL_PxPer60S = 3;
 	public static final int SPEED_LATCH_PX = 32;
-
-	//private static Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
 	
 	protected SpriteBatch batch;
 	protected BitmapFont font;
@@ -88,7 +86,7 @@ public class DevMaze extends Game {
 	}
 
 	public void render() {
-		super.render();
+		super.render();   // Do not delete
 	}
 
 	public void dispose() {
