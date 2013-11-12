@@ -195,7 +195,7 @@ public class PuppetMaster {
 	private int heuristic(Tile current, Tile destination) {
 		int horizontal = Math.abs((int) (destination.getPosition().x - current.getPosition().x));
 		int vertical = Math.abs((int) (destination.getPosition().y - current.getPosition().y));
-		return (horizontal + vertical) * G_WEIGHT_AXIAL;
+		return (horizontal + vertical) ;//* G_WEIGHT_AXIAL;
 	}
 	
 	private List<Tile> readPath(PathNode path) {
