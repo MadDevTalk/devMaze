@@ -14,11 +14,15 @@ public class AButtonModule implements HUDModule {
 	private Player player;
 	private PuppetMaster monsterHandler;
 	
+	private boolean pressed;
+	
 	private static Texture button = new Texture(Gdx.files.internal("ABUTTON.png"));
 	
 	public AButtonModule(DevMaze g) {
 		this.batch = g.batch;
 		this.camera = g.camera;
+		
+		this.pressed = false;
 		
 		this.player = g.player;
 		this.monsterHandler = g.monsterHandler;
@@ -33,8 +37,8 @@ public class AButtonModule implements HUDModule {
 
 	@Override
 	public boolean actionedAt(int x, int y) {
-		if (this.rectangle().contains(x, y)) {
-			// Check area of player hit radius for monster hit
+		if (this.rectangle().contains(x, y) && !pressed) {
+			this.pressed = true;
 			monsterHandler.detectHit(player.getHitRectangle());
 			return true;
 		}
@@ -50,8 +54,7 @@ public class AButtonModule implements HUDModule {
 
 	@Override
 	public void stopAction(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		pressed = false;
 	}
 
 }

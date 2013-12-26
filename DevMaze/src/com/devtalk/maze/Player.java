@@ -47,8 +47,11 @@ public class Player {
 	List<Item> pack;
 	Item equippedItem;
 	
+	boolean attack;
+	
 	public Player(DevMaze g) {
-
+		this.attack = false;
+		
 		this.game = g;
 		this.maze = g.maze;
 		this.batch = g.batch;

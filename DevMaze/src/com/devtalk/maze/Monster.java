@@ -12,16 +12,16 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Monster {
 	
-	private static final int FRAME_COLS = 4;
-	private static final int FRAME_ROWS = 4;
+	private static final int FRAME_COLS = 8;
+	private static final int FRAME_ROWS = 8;
 	
 	private Player player;
 	private Maze maze;
 
 	float stateTime;
-	Animation walkAnimation;
-	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
-	TextureRegion[] walkFrames;
+	Animation[] walkAnimation = new Animation[8];
+	Texture walkSheet = new Texture(Gdx.files.internal("goblin-walking.png"));
+	TextureRegion[][] walkFrames = new TextureRegion[8][8];
 	Rectangle rectangle;
 	
 	float prevAngle;
@@ -64,21 +64,20 @@ public class Monster {
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 		
-		this.rectangle = new Rectangle(xPos, yPos, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
-		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
-				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
-						/ FRAME_ROWS);
-		int index = 0;
-		for (int i = 0; i < FRAME_ROWS; i++) {
-			for (int j = 0; j < FRAME_COLS; j++) {
-				this.walkFrames[index++] = tmp[i][j];
-			}
+		this.rectangle = new Rectangle(xPos, yPos, DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
+
+		for (int i = 0; i < walkAnimation.length; i++) {
+			TextureRegion[][] tmp = TextureRegion.split(walkSheet,
+					walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
+							/ FRAME_ROWS);
+			
+			for (int j = 0; j < FRAME_COLS; j++)
+				this.walkFrames[i][j] = tmp[i][j];
+			
+			this.walkAnimation[i] = new Animation(0.025f, walkFrames[i]);
 		}
 
 		this.stateTime = 0.0f;
-		this.walkAnimation = new Animation(0.025f, walkFrames);
-
 		this.position = new Vector2(xPos, yPos);
 		this.prevPosition = position.cpy();
 		this.velocity = new Vector2();
@@ -86,25 +85,25 @@ public class Monster {
 		
 		switch (type) {
 		case EASY:
-			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 8;
+			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 8;
 			this.totalHealth = 5;
 			this.hitDamage = 1;
 			this.attackFrequency = 65;
-			this.velocityScale = 1;
+			this.velocityScale = 2;
 			break;
 		case MEDIUM:
-			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 6;
+			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 6;
 			this.totalHealth = 10;
 			this.hitDamage = 2;
 			this.attackFrequency = 55;
-			this.velocityScale = 2;
+			this.velocityScale = 3;
 			break;
 		case HARD:
-			this.hitRadius = DevMaze.PLAYER_SIZE_PX / 4;
+			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 4;
 			this.totalHealth = 15;
 			this.hitDamage = 4;
 			this.attackFrequency = 45;
-			this.velocityScale = 3;
+			this.velocityScale = 4;
 			break;
 		}
 		
@@ -117,7 +116,7 @@ public class Monster {
 		this.prevPosition = this.position.cpy();
 		this.position.add(this.velocity);
 		this.rectangle.set(this.position.x, this.position.y, 
-				DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
+				DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
 		
 		float xPos = this.position.x; 
 		float yPos = this.position.y;
@@ -132,9 +131,34 @@ public class Monster {
 						break;
 					}
 					
-					xPos += (velocity.x * (DevMaze.PLAYER_SIZE_PX / 2));
-					xPos += (velocity.y * (DevMaze.PLAYER_SIZE_PX / 2));
+					xPos += (velocity.x * (DevMaze.MONSTER_SIZE_PX / 2));
+					xPos += (velocity.y * (DevMaze.MONSTER_SIZE_PX / 2));
 				}
+	}
+	
+	public int dirIndex() {
+		int angle = (int)angle();
+		
+		switch (angle) {
+		case 0:
+			return 2;
+		case 45:
+			return 3;
+		case 90:
+			return 4;
+		case 135:
+			return 5;
+		case 180:
+			return 6;
+		case 225:
+			return 7;
+		case 270:
+			return 0;
+		case 315:
+			return 1;
+		default:
+			return 6;	
+		}
 	}
 	
 	public boolean isAlive()
@@ -146,9 +170,9 @@ public class Monster {
 		this.stateTime += stateTime;
 
 		if (isMoving())
-			return this.walkAnimation.getKeyFrame(this.stateTime, true);
+			return this.walkAnimation[dirIndex()].getKeyFrame(this.stateTime, true);
 		else
-			return this.walkFrames[4];
+			return this.walkFrames[dirIndex()][0];
 	}
 	
 	public float angle() {
