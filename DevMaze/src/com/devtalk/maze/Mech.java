@@ -238,7 +238,6 @@ public class Mech implements Monster {
 				this.rectangle.height + (2 * hitRadius));
 	}
 
-	@Override
 	public void dispose() {
 		walkSheet.dispose();
 	}
