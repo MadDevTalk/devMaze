@@ -93,10 +93,11 @@ public class Player {
 		this.hitRadius = INIT_HIT_RAD;
 		this.hitDamage = INIT_HIT_DMG;
 		this.equippedItem = null;
-		this.pack = new ArrayList<Item>();
 		
-		if (resetHealth)
+		if (resetHealth) {
+			this.pack.clear();
 			this.currentHealth = totalHealth;
+		}
 	}
 
 	public void updatePos() {

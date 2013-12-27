@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class PauseModule implements HUDModule {
-	
+
 	private DevMaze game;
 	private SpriteBatch batch;
+	private ItemHandler itemHandler;
 	private OrthographicCamera camera;
 	
 	private static Texture button = new Texture(Gdx.files.internal("pack.png"));
@@ -19,13 +20,17 @@ public class PauseModule implements HUDModule {
 		this.game = g;
 		this.batch = g.batch;
 		this.camera = g.camera;
+		this.itemHandler = g.itemHandler;
 	}
 
 	@Override
 	public void render() {
-		if (game.pause)
+		if (game.pause) {
 			batch.draw(menu, camera.position.x - camera.viewportWidth / 2, 
                     (camera.position.y + camera.viewportHeight / 2) - menu.getHeight());
+			
+			itemHandler.packRender();
+		}
 		
         batch.draw(button, camera.position.x - camera.viewportWidth / 2, 
                         (camera.position.y + camera.viewportHeight / 2) - button.getHeight());
@@ -35,9 +40,9 @@ public class PauseModule implements HUDModule {
 	public boolean actionedAt(int x, int y) {
 		if (this.rectangle().contains(x, y)) {
 			game.pause = !game.pause;
-			//game.setScreen(game.pauseScreen);
 			return true;
-		}
+		} else if (game.pause)
+			return itemHandler.actionedAt(x, y);
 		
 		return false;
 	}

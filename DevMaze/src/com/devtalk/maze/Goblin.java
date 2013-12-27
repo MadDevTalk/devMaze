@@ -21,7 +21,7 @@ public class Goblin implements Monster {
 
 	float stateTime;
 	Animation[] walkAnimation = new Animation[8];
-	Texture walkSheet = new Texture(Gdx.files.internal("goblin-walking.png"));
+	static Texture walkSheet = new Texture(Gdx.files.internal("goblin-walking.png"));
 	TextureRegion[][] walkFrames = new TextureRegion[8][8];
 	Rectangle rectangle;
 	

@@ -20,7 +20,7 @@ public class Mech implements Monster {
 	private Maze maze;
 
 	float stateTime;
-	Texture walkSheet = new Texture(Gdx.files.internal("mech_walking.png"));
+	static Texture walkSheet = new Texture(Gdx.files.internal("mech_walking.png"));
 	TextureRegion[] walkFrames = new TextureRegion[6];
 	Animation walkAnimation = new Animation(0.025f, walkFrames);
 	Rectangle rectangle;
