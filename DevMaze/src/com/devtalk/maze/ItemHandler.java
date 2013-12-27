@@ -13,6 +13,7 @@ public class ItemHandler {
 	private SpriteBatch batch;
 	private Maze maze;
 	private Player player;
+	private boolean actioned;
 	
 	public List<Item> items;
 	
@@ -22,6 +23,7 @@ public class ItemHandler {
 		this.maze = g.maze;
 		this.player = g.player;
 		
+		actioned = false;
 		items = new ArrayList<Item>();
 	}
 	
@@ -54,12 +56,16 @@ public class ItemHandler {
 	
 	public boolean actionedAt(int x, int y) {
 		List<Item> usedItems = new ArrayList<Item>();
-		for (Item item : player.pack) {
-			if (item.getPackRectangle().contains(x, y)) {
-				item.action();
-				usedItems.add(item);
+		
+		if (!actioned)
+			for (Item item : player.pack) {
+				if (item.getPackRectangle().contains(x, y)) {
+					item.action();
+					usedItems.add(item);
+					actioned = true;
+					break;
+				}
 			}
-		}
 		
 		if (!usedItems.isEmpty()) {
 			player.pack.removeAll(usedItems);
@@ -67,6 +73,10 @@ public class ItemHandler {
 		}
 		
 		return false;
+	}
+	
+	public void stopAction(int x, int y) {
+		actioned = false;
 	}
 	
 	public void updateItems() {

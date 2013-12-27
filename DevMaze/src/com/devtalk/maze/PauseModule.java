@@ -55,8 +55,8 @@ public class PauseModule implements HUDModule {
 
 	@Override
 	public void stopAction(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		if (game.pause)
+			itemHandler.stopAction(x, y);
 	}
 	
 }
