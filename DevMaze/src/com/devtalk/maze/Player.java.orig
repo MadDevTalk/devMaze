@@ -83,7 +83,8 @@ public class Player {
 		this.hitDamage = INIT_HIT_DMG;
 		
 		this.equippedItem = null;
-		this.pack = new ArrayList<Item>();
+		//TODO item pack will be later implemented
+		//this.pack = new ArrayList<Item>();
 		
 	}
 
@@ -93,10 +94,15 @@ public class Player {
 		this.hitRadius = INIT_HIT_RAD;
 		this.hitDamage = INIT_HIT_DMG;
 		this.equippedItem = null;
+<<<<<<< HEAD
 		this.pack = new ArrayList<Item>();
 		
 		if (resetHealth)
 			this.currentHealth = totalHealth;
+=======
+		//TODO item pack will be later implemented
+		//this.pack = new ArrayList<Item>();
+>>>>>>> Item
 	}
 
 	public void updatePos() {
@@ -176,7 +182,6 @@ public class Player {
 		return this.currentHealth > 0;
 	}
 	
-
 	public void resetHealth() {
 		currentHealth = INIT_HEALTH;
 	}
