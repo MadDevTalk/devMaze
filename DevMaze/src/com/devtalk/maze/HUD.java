@@ -9,10 +9,10 @@ public class HUD {
 	
 	public HUD(DevMaze g) {
 		this.modules = new ArrayList<HUDModule>();
-		this.modules.add(new PauseModule(g));
 		this.modules.add(new AButtonModule(g));
 		this.modules.add(new BButtonModule(g));
 		this.modules.add(new DPadModule(g));
+		this.modules.add(new PauseModule(g));
 	}
 	
 	public void render() {

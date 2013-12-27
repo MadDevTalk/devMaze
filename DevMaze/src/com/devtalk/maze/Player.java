@@ -87,14 +87,16 @@ public class Player {
 		
 	}
 
-	public void reset(int x, int y) {
+	public void reset(int x, int y, boolean resetHealth) {
 		this.position.set(x, y, 0);
 		this.totalHealth = INIT_HEALTH;
-		this.currentHealth = totalHealth;
 		this.hitRadius = INIT_HIT_RAD;
 		this.hitDamage = INIT_HIT_DMG;
 		this.equippedItem = null;
 		this.pack = new ArrayList<Item>();
+		
+		if (resetHealth)
+			this.currentHealth = totalHealth;
 	}
 
 	public void updatePos() {
@@ -151,7 +153,7 @@ public class Player {
 	public TextureRegion texture(float stateTime) {
 		this.stateTime += stateTime;
 
-		if (isMoving())
+		if (isMoving() && !game.pause)
 			return this.walkAnimation.getKeyFrame(this.stateTime, true);
 		else
 			return this.walkFrames[4];

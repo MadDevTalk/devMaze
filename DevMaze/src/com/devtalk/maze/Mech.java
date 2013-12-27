@@ -15,6 +15,7 @@ public class Mech implements Monster {
 	private static final int FRAME_COLS = 4;
 	private static final int FRAME_ROWS = 2;
 	
+	private DevMaze game;
 	private Player player;
 	private Maze maze;
 
@@ -44,6 +45,7 @@ public class Mech implements Monster {
 	int count;
 	
 	public Mech(float xPos, float yPos, MonsterType type, DevMaze g) {
+		this.game = g;
 		this.player = g.player;
 		this.maze = g.maze;
 		
@@ -213,7 +215,7 @@ public class Mech implements Monster {
 	public TextureRegion texture(float stateTime) {
 		this.stateTime += stateTime;
 
-		if (isMoving())
+		if (isMoving() && !game.pause)
 			return this.walkAnimation.getKeyFrame(this.stateTime, true);
 		else
 			return this.walkFrames[0];

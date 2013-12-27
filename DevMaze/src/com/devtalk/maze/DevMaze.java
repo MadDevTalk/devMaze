@@ -33,6 +33,8 @@ public class DevMaze extends Game {
 	
 	protected List<Level> levels;
 	protected Level currentLevel;
+	
+	protected boolean pause;
 
 	public void create() {
 		
@@ -58,6 +60,7 @@ public class DevMaze extends Game {
 		
 		// Start at menu
 		this.setScreen(mainMenuScreen);	
+		this.pause = false;
 		
 	}
 	
@@ -76,14 +79,14 @@ public class DevMaze extends Game {
 		
 		// Set game objects
 		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
-		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2);
+		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, true);
 		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
 	}
 	
 	public void newLevel() {
 		// Set game objects
 		this.maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
-		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2);
+		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, false);
 		this.monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
 	}
 

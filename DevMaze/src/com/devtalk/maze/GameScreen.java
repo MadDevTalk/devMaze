@@ -43,20 +43,24 @@ public class GameScreen implements Screen {
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
 		
-		// Set the camera on the player's current position
-		player.updatePos();
-		camera.position.set(player.position);
+		if (!game.pause) {
 		
-		// Check if at end
-		if (maze.end.rectangle.contains(player.rectangle)) {
-			if (!game.levels.isEmpty()) {
-				game.currentLevel = game.levels.remove(0);
-				game.setScreen(game.levelFinishScreen);
+			// Set the camera on the player's current position
+			player.updatePos();
+			camera.position.set(player.position);
+			
+			// Check if at end
+			if (maze.end.rectangle.contains(player.rectangle)) {
+				if (!game.levels.isEmpty()) {
+					game.currentLevel = game.levels.remove(0);
+					game.setScreen(game.levelFinishScreen);
+				}
 			}
-		}
+			
+			// Update the monsters' current position
+			monsterHandler.updateMonsters();
 		
-		// Update the monsters' current position
-		monsterHandler.updateMonsters();
+		}
 
 		// Clear the screen to deep blue and update the camera
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
