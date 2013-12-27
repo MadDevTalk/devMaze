@@ -36,11 +36,9 @@ public class MainMenuScreen implements Screen {
 		// Make Maze
 		this.paths = new Tile[5][5];
 		
-		int x, y;
-		
 		// Place the buttons
-		x = 800 - 100 - 128;
-		y = 75;
+		int x = 800 - 100 - 128;
+		int y = 75;
 		newGame = new Rectangle(x, y, 192, 64);
 		y = 155;
 		resume = new Rectangle(x, y, 192, 64);
@@ -104,15 +102,17 @@ public class MainMenuScreen implements Screen {
 			if(newGame.contains(x, y)) {
 				game.newGame();
 				game.setScreen(game.gameScreen);
-			} else if(resume.contains(x, y))
-				game.setScreen(game.gameScreen);
+			}
 			
 /* Uncomment these once the screens are started
-*
+*           else if(resume.contains(x, y)) game.setScreen(game.gameScreen);
 *			else if(player.contains(x, y)) { game.setScreen(new PlayerScreen(game)); }
 *			else if(settings.contains(x, y)) { game.setScreen(new SettingsScreen(game)); }
-*			else if(quit.contains(x, y)) { game.setScreen(new QuitScreen(game)); }
-*/
+*/			
+			
+			else if(quit.contains(x, y)) { 
+				Gdx.app.exit();
+			}
 		}
 	}
 

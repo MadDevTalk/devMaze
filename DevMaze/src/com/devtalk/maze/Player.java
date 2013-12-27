@@ -30,7 +30,9 @@ public class Player {
 	float stateTime;
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
+	//Texture attackSheet = new Texture(Gdx.files.internal("")); // find new sprites
 	TextureRegion[] walkFrames;
+	TextureRegion[] attackFrames;
 	Rectangle rectangle;
 
 	boolean walking;
@@ -87,12 +89,10 @@ public class Player {
 
 	public void reset(int x, int y) {
 		this.position.set(x, y, 0);
-		
 		this.totalHealth = INIT_HEALTH;
 		this.currentHealth = totalHealth;
 		this.hitRadius = INIT_HIT_RAD;
 		this.hitDamage = INIT_HIT_DMG;
-		
 		this.equippedItem = null;
 		this.pack = new ArrayList<Item>();
 	}
@@ -158,7 +158,6 @@ public class Player {
 	}
 
 	public float angle() {
-
 		if (!isMoving())
 			return this.prevAngle;
 
@@ -184,7 +183,7 @@ public class Player {
 	
 	public void detectHit(Monster monster) {
 		if (monster.getHitRectangle().overlaps(this.rectangle)) {
-			this.currentHealth -= monster.hitDamage;
+			this.currentHealth -= monster.getHitDamage();
 			if (!this.isAlive()) {
 				game.setScreen(game.mainMenuScreen);
 			}
@@ -192,18 +191,15 @@ public class Player {
 	}
 
 	public void render() {
-
 		TextureRegion tmp = this.texture(Gdx.graphics.getDeltaTime());
 		batch.draw(tmp, this.position.x, this.position.y,
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
 				this.angle());
 		
-		if (DevMaze.DEBUG) {
+		if (DevMaze.DEBUG)
 			font.draw(batch, "HP: " + this.currentHealth + "/" + this.totalHealth,
 					this.position.x, this.position.y);
-		}
-		
 	}
 
 	public void dispose() {

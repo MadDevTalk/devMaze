@@ -40,41 +40,46 @@ public class PuppetMaster {
 		for (int i = 0; i < monsterCount; i++)
 		{
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			monsters.add(new Monster((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-					difficulty, game));
+			if (i % 2 == 0)
+				monsters.add(new Goblin((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+						(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+						difficulty, game));
+			else
+				monsters.add(new Mech((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+						(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+						difficulty, game));
 		}
 	}
 
 	public void updateMonsters() {
 		for (Monster monster : monsters) 
 		{
-			switch (monster.state) {
+			switch (monster.getState()) {
 			case IN_COMBAT:
 				// Move towards player if needed - fan out (not all monsters overlap)
 				// Attempt to hit player after count (held in monster)
 				Random r = new Random();
-				int random = r.nextInt(monster.attackFrequency);
+				int random = r.nextInt(monster.getAttackFrequency());
 				if (random == 0) {
 					player.detectHit(monster);
 				}
 				
-				monster.state = State.FOLLOWING_PLAYER;
+				monster.setState(State.FOLLOWING_PLAYER);
 				break;
 			case FOLLOWING_PLAYER:
 				setDestination(monster, player);
 				if (!seekDestination(monster))
-					monster.state = State.IN_COMBAT;
+					monster.setState(State.IN_COMBAT);
 				break;
 			case FINDING_DESTINATION:
-				if (monster.sawPlayer)
-					monster.state = State.FOLLOWING_PLAYER;
+				if (monster.sawPlayer())
+					monster.setState(State.FOLLOWING_PLAYER);
 				else if (!seekDestination(monster))
-					monster.state = State.AT_DESTINATION;
+					monster.setState(State.AT_DESTINATION);
 				break;
 			case AT_DESTINATION:
 				if (setDestination(monster, null))
-					monster.state = State.FINDING_DESTINATION;
+					monster.setState(State.FINDING_DESTINATION);
 				break;
 			default:
 				// OH NOOOOOOOOOO
@@ -91,7 +96,7 @@ public class PuppetMaster {
 		if (player == null) {
 			Random r = new Random();
 			end = maze.openTiles.get(r.nextInt(maze.openTiles.size() - 1));
-		} else if (monster.destination == maze.tileAtLocation(player.position.x, player.position.y)) {
+		} else if (monster.getDestination() == maze.tileAtLocation(player.position.x, player.position.y)) {
 			return true;
 		} else {
 			end = maze.tileAtLocation(player.position.x, player.position.y);
@@ -103,31 +108,31 @@ public class PuppetMaster {
 	}
 	
 	private boolean seekDestination(Monster monster) {
-		Tile currentPosition = maze.tileAtLocation(monster.position.x, monster.position.y);
-		Tile lastPosition = maze.tileAtLocation(monster.prevPosition.x, monster.prevPosition.y);
+		Tile currentPosition = maze.tileAtLocation(monster.getPosition().x, monster.getPosition().y);
+		Tile lastPosition = maze.tileAtLocation(monster.getPrevPosition().x, monster.getPrevPosition().y);
 		
 		if (lastPosition != currentPosition)
-			monster.count = (DevMaze.EDGE_SIZE_PX / 2) / monster.velocityScale;
+			monster.setCount((DevMaze.EDGE_SIZE_PX / 2) / monster.getVelocityScale());
 	
-		if (monster.path.size() > 1) {
-			monster.path.remove(currentPosition);
-			Tile next = monster.path.get(0);
+		if (monster.getPath().size() > 1) {
+			monster.getPath().remove(currentPosition);
+			Tile next = monster.getPath().get(0);
 			
 			float x = next.getPosition().x - currentPosition.getPosition().x;
 			float y = next.getPosition().y - currentPosition.getPosition().y;
 			
-			if (monster.count > 0) {
-				monster.velocity.set(monster.velocityLatch);
-				monster.count --;
+			if (monster.getCount() > 0) {
+				monster.getVelocity().set(monster.getVelocityLatch());
+				monster.setCount(monster.getCount() - 1);
 			} else {
-				monster.velocity.set(x * monster.velocityScale, y * monster.velocityScale);
-				monster.velocityLatch = monster.velocity.cpy();
+				monster.getVelocity().set(x * monster.getVelocityScale(), y * monster.getVelocityScale());
+				monster.getVelocityLatch().set(monster.getVelocity().cpy());
 			}
 			
 			return true;
 		} else {
-			monster.velocity = new Vector2();
-			monster.path.clear();
+			monster.getVelocity().set(new Vector2());
+			monster.getPath().clear();
 			return false;
 		}
 	}
@@ -136,7 +141,7 @@ public class PuppetMaster {
 	 * A* pathing implemented as per http://www.policyalmanac.org/games/aStarTutorial.htm
 	 */
 	private boolean findPath(Monster monster, Tile end) {
-		Tile start = maze.tileAtLocation(monster.position.x, monster.position.y);
+		Tile start = maze.tileAtLocation(monster.getPosition().x, monster.getPosition().y);
 		PathList openList = new PathList();
 		PathList closedList = new PathList();
 		PathNode currentNode = new PathNode(start, null, 0, heuristic(start, end));
@@ -156,8 +161,8 @@ public class PuppetMaster {
 			
 			// If the path has been found
 			if (closedList.contains(end)) {
-				monster.path = readPath(closedList.get(end));
-				monster.destination = end;
+				monster.setPath(readPath(closedList.get(end)));
+				monster.setDestination(end);
 				return true;
 			}
 			
@@ -219,8 +224,8 @@ public class PuppetMaster {
 	public void detectHit(Rectangle hitArea) {
 		List<Monster> deadMonsters = new ArrayList<Monster>();
 		for (Monster monster : monsters) 
-			if (hitArea.overlaps(monster.rectangle)) {
-				monster.currentHealth -= player.hitDamage;
+			if (hitArea.overlaps(monster.getRectangle())) {
+				monster.setCurrentHealth(monster.getCurrentHealth() - player.hitDamage);
 				if (!monster.isAlive())
 					deadMonsters.add(monster);
 			}
@@ -233,14 +238,13 @@ public class PuppetMaster {
 		for (Monster monster : this.monsters)
 		{
 			TextureRegion tmp = monster.texture(Gdx.graphics.getDeltaTime());
-			batch.draw(tmp, monster.position.x, monster.position.y,
+			batch.draw(tmp, monster.getPosition().x, monster.getPosition().y,
 					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-					monster.angle());
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, monster.angle());
 			
 			if (DevMaze.DEBUG) {
-				game.font.draw(batch, "HP: " + monster.currentHealth + "/" + monster.totalHealth,
-						monster.position.x, monster.position.y);
+				game.font.draw(batch, "HP: " + monster.getCurrentHealth() + "/" + monster.getTotalHealth(),
+						monster.getPosition().x, monster.getPosition().y);
 			}
 		}
 	}

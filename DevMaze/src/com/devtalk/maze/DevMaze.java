@@ -58,6 +58,7 @@ public class DevMaze extends Game {
 		
 		// Start at menu
 		this.setScreen(mainMenuScreen);	
+		
 	}
 	
 	public void newGame() {

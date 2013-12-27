@@ -186,8 +186,7 @@ public class Maze {
 				Vector3 tile = new Vector3(x, y, 0);
 	
 				if (camera.frustum.sphereInFrustum(tile, DevMaze.EDGE_SIZE_PX))
-					if (this.tiles[i][j].inMaze)
-						batch.draw(this.tiles[i][j].texture(), x, y);
+					batch.draw(this.tiles[i][j].texture(), x, y);
 			}
 		
 	}
