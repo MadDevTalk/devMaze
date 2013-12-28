@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
 
 	// Kills the app. Calls a pause first
 	public void dispose() {
-		// TODO
+		this.hud.dispose();
 	}
 
 	@Override

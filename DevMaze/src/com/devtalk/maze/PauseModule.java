@@ -59,4 +59,9 @@ public class PauseModule implements HUDModule {
 			itemHandler.stopAction(x, y);
 	}
 	
+	public void dispose() {
+		button.dispose();
+		menu.dispose();
+	}
+	
 }

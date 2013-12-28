@@ -75,4 +75,8 @@ public class DPadModule implements HUDModule {
 		}
 	}
 
+	public void dispose() {
+		button.dispose();
+	}
+	
 }

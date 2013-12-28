@@ -39,8 +39,11 @@ public class BButtonModule implements HUDModule {
 
 	@Override
 	public void stopAction(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
+	}
+	
+	public void dispose() {
+		button.dispose();
 	}
 
 }

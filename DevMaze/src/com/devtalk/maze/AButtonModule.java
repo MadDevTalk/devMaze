@@ -56,5 +56,9 @@ public class AButtonModule implements HUDModule {
 	public void stopAction(int x, int y) {
 		pressed = false;
 	}
+	
+	public void dispose() {
+		button.dispose();
+	}
 
 }

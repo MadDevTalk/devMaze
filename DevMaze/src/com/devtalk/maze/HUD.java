@@ -32,4 +32,9 @@ public class HUD {
 		for (HUDModule module : this.modules)
 			module.stopAction(x, y);
 	}
+	
+	public void dispose() {
+		for (HUDModule module : this.modules)
+			module.dispose();
+	}
 }

@@ -81,6 +81,7 @@ public class Tile {
 
 	public void dispose() {
 		IN_MAZE.dispose();
+		NOT_IN_MAZE.dispose();
 		SWATCH.dispose();
 		PORTAL.dispose();
 	}
