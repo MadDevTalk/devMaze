@@ -9,8 +9,8 @@ public class Pack {
 	
 	private OrthographicCamera camera;
 	
-	public int PACK_HEIGHT = 3;
-	public int PACK_WIDTH = 5;
+	public int PACK_HEIGHT = 6;
+	public int PACK_WIDTH = 9;
 
 	List<Item>[][] pack = new List[PACK_HEIGHT][PACK_WIDTH];
 	
