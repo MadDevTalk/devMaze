@@ -46,13 +46,13 @@ public class Player {
 	int hitRadius;
 	int hitDamage;
 	
-	List<Item> pack;
-	Item equippedItem;
+	Pack pack;
 	
 	boolean attack;
 	
 	public Player(DevMaze g) {
 		this.attack = false;
+		this.pack = new Pack(g);
 		
 		this.game = g;
 		this.maze = g.maze;
@@ -81,10 +81,6 @@ public class Player {
 		this.currentHealth = totalHealth;
 		this.hitRadius = INIT_HIT_RAD;
 		this.hitDamage = INIT_HIT_DMG;
-		
-		this.equippedItem = null;
-		this.pack = new ArrayList<Item>();
-		
 	}
 
 	public void reset(int x, int y, boolean resetHealth) {
@@ -92,7 +88,6 @@ public class Player {
 		this.totalHealth = INIT_HEALTH;
 		this.hitRadius = INIT_HIT_RAD;
 		this.hitDamage = INIT_HIT_DMG;
-		this.equippedItem = null;
 		
 		if (resetHealth) {
 			this.pack.clear();

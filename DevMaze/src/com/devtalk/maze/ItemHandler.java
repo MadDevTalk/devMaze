@@ -13,7 +13,6 @@ public class ItemHandler {
 	private SpriteBatch batch;
 	private Maze maze;
 	private Player player;
-	private boolean actioned;
 	
 	public List<Item> items;
 	
@@ -22,8 +21,6 @@ public class ItemHandler {
 		this.batch = g.batch;
 		this.maze = g.maze;
 		this.player = g.player;
-		
-		actioned = false;
 		items = new ArrayList<Item>();
 	}
 	
@@ -33,50 +30,20 @@ public class ItemHandler {
 		for (int i = 0; i < itemCount; i++) {
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
 			//TODO add a random item type
-			items.add(new HealthPowerup( (float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)), 
+			items.add(new HealthPowerup( (float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 2)),
+					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 2)), 
 					this.game));
 		}
 	}
 	
 	public void render() {
 		for (Item item : this.items) {
-			batch.draw(item.getMapTexture(), item.getMapRectangle().x, item.getMapRectangle().y);
+			batch.draw(item.mapTexture(), item.mapRectangle().x, item.mapRectangle().y);
 			
 			if (DevMaze.DEBUG) {
-				game.font.draw(batch, "get healthy bitch!", item.getMapRectangle().x, item.getMapRectangle().y);
+				game.font.draw(batch, "get healthy bitch!", item.mapRectangle().x, item.mapRectangle().y);
 			}
 		}
-	}
-	
-	public void packRender() {
-		for (Item item : player.pack) 
-			item.render();
-	}
-	
-	public boolean actionedAt(int x, int y) {
-		List<Item> usedItems = new ArrayList<Item>();
-		
-		if (!actioned)
-			for (Item item : player.pack) {
-				if (item.getPackRectangle().contains(x, y)) {
-					item.action();
-					usedItems.add(item);
-					actioned = true;
-					break;
-				}
-			}
-		
-		if (!usedItems.isEmpty()) {
-			player.pack.removeAll(usedItems);
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public void stopAction(int x, int y) {
-		actioned = false;
 	}
 	
 	public void updateItems() {
@@ -86,7 +53,7 @@ public class ItemHandler {
 	public void runOverItem(Rectangle playerArea) {
 		List<Item> usedItems = new ArrayList<Item>();
 		for (Item item : this.items) {
-			if (playerArea.overlaps(item.getMapRectangle())) {
+			if (playerArea.overlaps(item.mapRectangle())) {
 				player.pack.add(item);
 				usedItems.add(item);
 			}
@@ -95,8 +62,7 @@ public class ItemHandler {
 	}
 	
 	public void dispose() {
-		for (Item item : this.items) {
+		for (Item item : this.items)
 			item.dispose();
-		}
 	}
 }
