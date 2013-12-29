@@ -1,6 +1,5 @@
 package com.devtalk.maze;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;

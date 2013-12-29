@@ -125,6 +125,7 @@ public class Goblin implements Monster {
 				}
 	}
 	
+	// This mapping relates to the spritesheet's layout
 	public int dirIndex() {
 		int angle = (int)myAngle();
 		

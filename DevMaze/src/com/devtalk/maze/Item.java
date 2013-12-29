@@ -10,6 +10,8 @@ public interface Item {
 	public Rectangle packRectangle();
 	public Texture mapTexture();
 	public Texture packTexture();
+	public int getID();
+	public boolean equals(Item item);
 	public void render();
 	public void action();
 	public void dispose();
@@ -24,6 +26,8 @@ class HealthPowerup implements Item {
 	private static Texture packTexture = new Texture(Gdx.files.internal("health2.png"));;
 	private Rectangle mapRectangle;
 	private Rectangle packRectangle;
+	
+	private static final int ITEM_ID = 1;
 	
 	public HealthPowerup(float xPos, float yPos, DevMaze g) {
 		this.batch = g.batch;
@@ -46,6 +50,14 @@ class HealthPowerup implements Item {
 	
 	public Texture packTexture() {
 		return packTexture;
+	}
+	
+	public int getID() {
+		return ITEM_ID;
+	}
+	
+	public boolean equals(Item item) {
+		return item.getID() == ITEM_ID;
 	}
 
 	public void render() {
