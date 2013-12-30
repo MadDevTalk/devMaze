@@ -15,20 +15,39 @@ public class Maze {
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	
+
 	public Tile[][] tiles;
 	public List<Tile> openTiles;
 	public Tile end;
 
 	public Maze(DevMaze g) {
-		
+
 		this.camera = g.camera;
 		this.batch = g.batch;
 		this.tiles = new Tile[0][0];
 		this.openTiles = new ArrayList<Tile>();
-		
+
 	}
-	
+
+	private void analyze() {
+		for (int row = 0; row < tiles.length; row++)
+			for (int col = 0; col < tiles[0].length; col++)
+				if (tiles[row][col].inMaze) {
+					openTiles.add(tiles[row][col]);
+					setNeighbors(row, col);
+				}
+	}
+
+	// May want to throw a new OutOfMaze exception or something
+	public int col(float xPos) {
+		int calculated = (int) ((xPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
+
+		if (calculated > tiles[0].length - 1 || calculated < 0)
+			calculated = -1;
+
+		return calculated;
+	}
+
 	public void create(int row, int col) {
 		tiles = new Tile[row][col];
 		openTiles.clear();
@@ -40,6 +59,12 @@ public class Maze {
 		}
 
 		this.generate();
+	}
+
+	public void dispose() {
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[0].length; j++)
+				tiles[i][j].dispose();
 	}
 
 	/**
@@ -86,30 +111,12 @@ public class Maze {
 				walls.remove(wall);
 
 		}
-		
+
 		// Mark end tile
 		end = tiles[tiles.length - 2][tiles[0].length - 1];
 		end.inMaze(true);
-		
+
 		analyze();
-	}
-	
-	private void analyze() {
-		for (int row = 0; row < tiles.length; row++)
-			for (int col = 0; col < tiles[0].length; col++) 
-				if (tiles[row][col].inMaze) {
-					openTiles.add(tiles[row][col]);
-					setNeighbors(row, col);
-				}
-	}
-	
-	private void setNeighbors(int row, int col) {
-		for (int i = -1; i <= 1; i++)
-			for (int j = -1; j <= 1; j++)
-				try {
-					if (i != 0 || j != 0)
-						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
-				} catch (IndexOutOfBoundsException e) {};
 	}
 
 	public List<Wall> get_Neighbors(int row, int col) {
@@ -137,45 +144,15 @@ public class Maze {
 	private Tile getOppositeTile(Wall wall) {
 		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
 	}
-	
+
 	public void makeSwatch(int topX, int topY) {
 		for (int i = 0; i <= 5; i++) {
-			for(int j = 0; j <= 5; j++) {
-				if(this.tiles[i][j].inMaze) {
+			for (int j = 0; j <= 5; j++) {
+				if (this.tiles[i][j].inMaze) {
 					this.tiles[i][j].inSwatch(true);
 				}
 			}
 		}
-	}
-	
-	public Tile tileAtLocation(float xPos, float yPos) {
-		int row = row(yPos);
-		int col = col(xPos);
-		
-		if (row < 0 || col < 0)
-			return null;
-					
-		return tiles[row(yPos)][col(xPos)];
-	}
-	
-	// May want to throw a new OutOfMaze exception or something
-	public int row(float yPos) {
-		int calculated = (int) ((yPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
-		
-		if (calculated > tiles.length - 1 || calculated < 0) 
-			calculated = -1;
-		
-		return calculated;
-	}
-
-	// May want to throw a new OutOfMaze exception or something
-	public int col(float xPos) {
-		int calculated = (int) ((xPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
-		
-		if (calculated > tiles[0].length - 1 || calculated < 0) 
-			calculated = -1; 
-		
-		return calculated;
 	}
 
 	public void render() {
@@ -184,16 +161,41 @@ public class Maze {
 				float x = this.tiles[i][j].rectangle.x;
 				float y = this.tiles[i][j].rectangle.y;
 				Vector3 tile = new Vector3(x, y, 0);
-	
+
 				if (camera.frustum.sphereInFrustum(tile, DevMaze.EDGE_SIZE_PX))
 					batch.draw(this.tiles[i][j].texture(), x, y);
 			}
-		
+
 	}
 
-	public void dispose() {
-		for (int i = 0; i < tiles.length; i++)
-			for (int j = 0; j < tiles[0].length; j++)
-				tiles[i][j].dispose();
+	// May want to throw a new OutOfMaze exception or something
+	public int row(float yPos) {
+		int calculated = (int) ((yPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
+
+		if (calculated > tiles.length - 1 || calculated < 0)
+			calculated = -1;
+
+		return calculated;
+	}
+
+	private void setNeighbors(int row, int col) {
+		for (int i = -1; i <= 1; i++)
+			for (int j = -1; j <= 1; j++)
+				try {
+					if (i != 0 || j != 0)
+						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
+				} catch (IndexOutOfBoundsException e) {
+				}
+		;
+	}
+
+	public Tile tileAtLocation(float xPos, float yPos) {
+		int row = row(yPos);
+		int col = col(xPos);
+
+		if (row < 0 || col < 0)
+			return null;
+
+		return tiles[row(yPos)][col(xPos)];
 	}
 }

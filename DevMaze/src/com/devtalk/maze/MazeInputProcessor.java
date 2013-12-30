@@ -11,14 +11,15 @@ import com.badlogic.gdx.InputProcessor;
 public class MazeInputProcessor implements InputProcessor {
 
 	private Player player;
-	//private PuppetMaster monsterHandler;
-	
-	//private Vector3 touch_down;
+
+	// private PuppetMaster monsterHandler;
+
+	// private Vector3 touch_down;
 
 	public MazeInputProcessor(DevMaze game) {
 		this.player = game.player;
-		//this.monsterHandler = game.monsterHandler;
-		//this.touch_down = new Vector3();
+		// this.monsterHandler = game.monsterHandler;
+		// this.touch_down = new Vector3();
 	}
 
 	@Override
@@ -39,6 +40,12 @@ public class MazeInputProcessor implements InputProcessor {
 		default:
 			break;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -64,42 +71,6 @@ public class MazeInputProcessor implements InputProcessor {
 	}
 
 	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		//if (button == Buttons.LEFT)
-			//touch_down = new Vector3(screenX, screenY, 0);
-		
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int x, int y, int pointer) {
-		// the current position of the pointer
-		//Vector3 new_position = new Vector3(x, y, 0);
-
-		// offset of new position from where drag started
-		//new_position.sub(touch_down);
-
-		// move camera by offset, need to invert x
-		//player.updatePos((int) -new_position.x, (int) new_position.y);
-
-		// move the drag started position to the current position
-		//touch_down.add(new_position);
-
-		return false;
-	}
-
-	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
 		return false;
@@ -108,6 +79,36 @@ public class MazeInputProcessor implements InputProcessor {
 	@Override
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// if (button == Buttons.LEFT)
+		// touch_down = new Vector3(screenX, screenY, 0);
+
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int x, int y, int pointer) {
+		// the current position of the pointer
+		// Vector3 new_position = new Vector3(x, y, 0);
+
+		// offset of new position from where drag started
+		// new_position.sub(touch_down);
+
+		// move camera by offset, need to invert x
+		// player.updatePos((int) -new_position.x, (int) new_position.y);
+
+		// move the drag started position to the current position
+		// touch_down.add(new_position);
+
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		return false;
 	}
 

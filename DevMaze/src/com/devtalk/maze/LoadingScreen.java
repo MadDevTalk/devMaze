@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LoadingScreen implements Screen {
-	
+
 	private DevMaze game;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -21,28 +21,10 @@ public class LoadingScreen implements Screen {
 		this.font = g.font;
 	}
 
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.update();
-
-		batch.setProjectionMatrix(camera.combined);
-		
-		batch.begin();
-		{
-			font.draw(game.batch, "Loading...", 100, 150);
-		}
-		batch.end();
-	}
-
 	@Override
-	public void resize(int width, int height) {
+	public void dispose() {
 		// TODO Auto-generated method stub
 
-	}
-
-	public void show() {
-		 
 	}
 
 	@Override
@@ -57,15 +39,33 @@ public class LoadingScreen implements Screen {
 
 	}
 
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1); // R,G,B,A (0.0f - 1.0f)
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		camera.update();
+
+		batch.setProjectionMatrix(camera.combined);
+
+		batch.begin();
+		{
+			font.draw(game.batch, "Loading...", 100, 150);
+		}
+		batch.end();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
+	public void show() {
 
 	}
 

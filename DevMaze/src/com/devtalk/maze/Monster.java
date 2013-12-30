@@ -7,47 +7,69 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public interface Monster {
-	
+
 	public static enum MonsterType {
-		EASY,
-		MEDIUM,
-		HARD,
+		EASY, MEDIUM, HARD,
 	};
-	
+
 	public static enum State {
-		FOLLOWING_PLAYER,
-		FINDING_DESTINATION,
-		AT_DESTINATION,
-		IN_COMBAT,
+		FOLLOWING_PLAYER, FINDING_DESTINATION, AT_DESTINATION, IN_COMBAT,
 	};
-	
-	public State getState();
-	public void setState(State state);
-	public Vector2 getPosition();
-	public Vector2 getPrevPosition();
-	public Vector2 getVelocity();
-	public Vector2 getVelocityLatch();
-	public boolean sawPlayer();
-	public Tile getDestination();
-	public void setDestination(Tile destination);
-	public int getAttackFrequency();
-	public int getVelocityScale();
-	public void setCount(int count);
-	public int getCount();
-	public List<Tile> getPath();
-	public void setPath(List<Tile> path);
-	public Rectangle getRectangle();
-	public int getCurrentHealth();
-	public void setCurrentHealth(int health);
-	public int getTotalHealth();
-	public int getHitDamage();
-	public void updatePos();
-	public boolean isAlive();
-	public TextureRegion texture(float stateTime);
+
 	public float angle();
-	public boolean isMoving();
-	public Rectangle getHitRectangle();
-	public String toString();
+
 	public void dispose();
-	
+
+	public int getAttackFrequency();
+
+	public int getCount();
+
+	public int getCurrentHealth();
+
+	public Tile getDestination();
+
+	public int getHitDamage();
+
+	public Rectangle getHitRectangle();
+
+	public List<Tile> getPath();
+
+	public Vector2 getPosition();
+
+	public Vector2 getPrevPosition();
+
+	public Rectangle getRectangle();
+
+	public State getState();
+
+	public int getTotalHealth();
+
+	public Vector2 getVelocity();
+
+	public Vector2 getVelocityLatch();
+
+	public int getVelocityScale();
+
+	public boolean isAlive();
+
+	public boolean isMoving();
+
+	public boolean sawPlayer();
+
+	public void setCount(int count);
+
+	public void setCurrentHealth(int health);
+
+	public void setDestination(Tile destination);
+
+	public void setPath(List<Tile> path);
+
+	public void setState(State state);
+
+	public TextureRegion texture(float stateTime);
+
+	public String toString();
+
+	public void updatePos();
+
 }

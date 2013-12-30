@@ -1,4 +1,5 @@
 package com.devtalk.maze;
+
 import java.util.ArrayList;
 
 public class PathList extends ArrayList<PathNode> {
@@ -10,16 +11,16 @@ public class PathList extends ArrayList<PathNode> {
 			if (node.equals(tile))
 				return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public PathNode get(Tile tile) {
 		for (PathNode node : this) {
 			if (node.equals(tile))
 				return node;
 		}
-		
+
 		return null;
 	}
 }

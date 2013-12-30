@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Goblin implements Monster {
-	
+
 	private static final int FRAME_COLS = 8;
 	private static final int FRAME_ROWS = 8;
 
@@ -21,48 +21,50 @@ public class Goblin implements Monster {
 
 	float stateTime;
 	Animation[] walkAnimation = new Animation[8];
-	static Texture walkSheet = new Texture(Gdx.files.internal("goblin-walking.png"));
+	static Texture walkSheet = new Texture(
+			Gdx.files.internal("goblin-walking.png"));
 	TextureRegion[][] walkFrames = new TextureRegion[8][8];
 	Rectangle rectangle;
-	
+
 	float prevAngle;
 	int velocityScale;
 	Vector2 position;
 	Vector2 velocity;
 	Vector2 velocityLatch;
 	Vector2 prevPosition;
-	
+
 	int currentHealth;
 	int totalHealth;
 	int hitRadius;
 	int hitDamage;
 	int attackFrequency;
 	boolean sawPlayer;
-	
+
 	State state;
 	List<Tile> path;
 	Tile destination;
 	int count;
-	
+
 	public Goblin(float xPos, float yPos, MonsterType type, DevMaze g) {
 		this.game = g;
 		this.player = g.player;
 		this.maze = g.maze;
-		
+
 		this.state = State.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
-		
-		this.rectangle = new Rectangle(xPos, yPos, DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
+
+		this.rectangle = new Rectangle(xPos, yPos, DevMaze.MONSTER_SIZE_PX,
+				DevMaze.MONSTER_SIZE_PX);
 
 		for (int i = 0; i < walkAnimation.length; i++) {
 			TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 					walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
 							/ FRAME_ROWS);
-			
+
 			for (int j = 0; j < FRAME_COLS; j++)
 				this.walkFrames[i][j] = tmp[i][j];
-			
+
 			this.walkAnimation[i] = new Animation(0.025f, walkFrames[i]);
 		}
 
@@ -71,7 +73,7 @@ public class Goblin implements Monster {
 		this.prevPosition = position.cpy();
 		this.velocity = new Vector2();
 		this.velocityLatch = new Vector2();
-		
+
 		switch (type) {
 		case EASY:
 			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 8;
@@ -95,40 +97,20 @@ public class Goblin implements Monster {
 			this.velocityScale = 4;
 			break;
 		}
-		
+
 		// Start with full health
 		this.currentHealth = this.totalHealth;
 		this.sawPlayer = false;
 	}
-	
-	public void updatePos() {
-		this.prevPosition = this.position.cpy();
-		this.position.add(this.velocity);
-		this.rectangle.set(this.position.x, this.position.y, 
-				DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
-		
-		float xPos = this.position.x; 
-		float yPos = this.position.y;
-		
-		// TODO this can be more efficient by checking by tile
-		if (!this.sawPlayer)
-			if (this.velocity.x != 0 || this.velocity.y != 0)
-				while (maze.tileAtLocation(xPos, yPos) != null 
-						&& maze.tileAtLocation(xPos, yPos).inMaze) {
-					if (player.rectangle.contains(xPos, yPos)) {
-						this.sawPlayer = true;
-						break;
-					}
-					
-					xPos += (velocity.x * (DevMaze.MONSTER_SIZE_PX / 2));
-					xPos += (velocity.y * (DevMaze.MONSTER_SIZE_PX / 2));
-				}
+
+	public float angle() {
+		return 0;
 	}
-	
+
 	// This mapping relates to the spritesheet's layout
 	public int dirIndex() {
-		int angle = (int)myAngle();
-		
+		int angle = (int) myAngle();
+
 		switch (angle) {
 		case 0:
 			return 2;
@@ -149,63 +131,42 @@ public class Goblin implements Monster {
 		case -180:
 			return 6;
 		default:
-			return 6;	
+			return 6;
 		}
-	}
-	
-	public boolean isAlive()
-	{
-		return this.currentHealth > 0;
-	}
-	
-	public TextureRegion texture(float stateTime) {
-		this.stateTime += stateTime;
-
-		if (isMoving() && !game.pause)
-			return this.walkAnimation[dirIndex()].getKeyFrame(this.stateTime, true);
-		else
-			return this.walkFrames[dirIndex()][0];
-	}
-	
-	private float myAngle() {
-		if (!isMoving())
-			return prevAngle;
-
-		return prevAngle = (float) (Math.toDegrees(Math.atan2(
-				-velocity.x, velocity.y)));
-	}
-	
-	public float angle() {
-		return 0;
-	}
-	
-	public boolean isMoving()
-	{
-		return !(this.velocity.x == 0 && this.velocity.y == 0);
-	}
-	
-	public Rectangle getHitRectangle() {
-		return new Rectangle(this.position.x - hitRadius,
-				this.position.y - hitRadius,
-				this.rectangle.width + (2 * hitRadius),
-				this.rectangle.height + (2 * hitRadius));
-	}
-	
-	public String toString() {
-		return ": " + this.position + " v: " + this.velocity + "\n" + 
-				"lV: " + this.velocityLatch;
 	}
 
 	public void dispose() {
 		walkSheet.dispose();
 	}
 
-	public State getState() {
-		return state;
+	public int getAttackFrequency() {
+		return attackFrequency;
 	}
 
-	public void setState(State state) {
-		this.state = state;
+	public int getCount() {
+		return count;
+	}
+
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	public Tile getDestination() {
+		return destination;
+	}
+
+	public int getHitDamage() {
+		return hitDamage;
+	}
+
+	public Rectangle getHitRectangle() {
+		return new Rectangle(this.position.x - hitRadius, this.position.y
+				- hitRadius, this.rectangle.width + (2 * hitRadius),
+				this.rectangle.height + (2 * hitRadius));
+	}
+
+	public List<Tile> getPath() {
+		return path;
 	}
 
 	public Vector2 getPosition() {
@@ -216,6 +177,18 @@ public class Goblin implements Monster {
 		return prevPosition;
 	}
 
+	public Rectangle getRectangle() {
+		return rectangle;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public int getTotalHealth() {
+		return totalHealth;
+	}
+
 	public Vector2 getVelocity() {
 		return velocity;
 	}
@@ -223,62 +196,89 @@ public class Goblin implements Monster {
 	public Vector2 getVelocityLatch() {
 		return velocityLatch;
 	}
-	
-	public boolean sawPlayer() {
-		return sawPlayer;
-	}
-
-	public Tile getDestination() {
-		return destination;
-	}
-
-	public void setDestination(Tile destination) {
-		this.destination = destination;
-	}
-
-	public int getAttackFrequency() {
-		return attackFrequency;
-	}
 
 	public int getVelocityScale() {
 		return velocityScale;
 	}
 
+	public boolean isAlive() {
+		return this.currentHealth > 0;
+	}
+
+	public boolean isMoving() {
+		return !(this.velocity.x == 0 && this.velocity.y == 0);
+	}
+
+	private float myAngle() {
+		if (!isMoving())
+			return prevAngle;
+
+		return prevAngle = (float) (Math.toDegrees(Math.atan2(-velocity.x,
+				velocity.y)));
+	}
+
+	public boolean sawPlayer() {
+		return sawPlayer;
+	}
+
 	public void setCount(int count) {
 		this.count = count;
-		
-	}
 
-	public int getCount() {
-		return count;
-	}
-
-	public List<Tile> getPath() {
-		return path;
-	}
-
-	public void setPath(List<Tile> path) {
-		this.path = path;
-	}
-
-	public Rectangle getRectangle() {
-		return rectangle;
-	}
-
-	public int getCurrentHealth() {
-		return currentHealth;
 	}
 
 	public void setCurrentHealth(int health) {
 		this.currentHealth = health;
 	}
 
-	public int getTotalHealth() {
-		return totalHealth;
+	public void setDestination(Tile destination) {
+		this.destination = destination;
 	}
 
-	public int getHitDamage() {
-		return hitDamage;
+	public void setPath(List<Tile> path) {
+		this.path = path;
 	}
-	
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	public TextureRegion texture(float stateTime) {
+		this.stateTime += stateTime;
+
+		if (isMoving() && !game.pause)
+			return this.walkAnimation[dirIndex()].getKeyFrame(this.stateTime,
+					true);
+		else
+			return this.walkFrames[dirIndex()][0];
+	}
+
+	public String toString() {
+		return ": " + this.position + " v: " + this.velocity + "\n" + "lV: "
+				+ this.velocityLatch;
+	}
+
+	public void updatePos() {
+		this.prevPosition = this.position.cpy();
+		this.position.add(this.velocity);
+		this.rectangle.set(this.position.x, this.position.y,
+				DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
+
+		float xPos = this.position.x;
+		float yPos = this.position.y;
+
+		// TODO this can be more efficient by checking by tile
+		if (!this.sawPlayer)
+			if (this.velocity.x != 0 || this.velocity.y != 0)
+				while (maze.tileAtLocation(xPos, yPos) != null
+						&& maze.tileAtLocation(xPos, yPos).inMaze) {
+					if (player.rectangle.contains(xPos, yPos)) {
+						this.sawPlayer = true;
+						break;
+					}
+
+					xPos += (velocity.x * (DevMaze.MONSTER_SIZE_PX / 2));
+					xPos += (velocity.y * (DevMaze.MONSTER_SIZE_PX / 2));
+				}
+	}
+
 }

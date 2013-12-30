@@ -3,21 +3,17 @@ package com.devtalk.maze;
 import com.devtalk.maze.Monster.MonsterType;
 
 public class Level {
-	
+
+	public enum LEVEL {
+		LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6,
+	}
+
 	int mazeWidth, mazeHeight;
 	int numMonsters;
 	int numItems;
+
 	MonsterType monsterDifficulty;
-	
-	public enum LEVEL {
-		LEVEL_1,
-		LEVEL_2,
-		LEVEL_3,
-		LEVEL_4,
-		LEVEL_5,
-		LEVEL_6,
-	}
-	
+
 	public Level(LEVEL level) {
 		switch (level) {
 		case LEVEL_1:
