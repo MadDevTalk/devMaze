@@ -1,11 +1,14 @@
-/DevMaze-android/bin/*
+*/bin/*
+*/war/*
+*/gwt-unitCache/*
+*/.settings/*
 *~
 *.class
 *.metadata*
 *.pak
 *.cache
+*.classpath
 
 # Package Files #
 *.war
 *.ear
-
