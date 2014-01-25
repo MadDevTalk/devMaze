@@ -24,7 +24,7 @@ public class DevMaze extends Game {
                                                      
 	protected Maze maze;                             /* The current maze tileset */
 	protected Player player;                         /* The player object */
-	protected PuppetMaster monsterHandler;           /* Monster Controller object */
+	protected MonsterHandler monsterHandler;           /* Monster Controller object */
 	protected ItemHandler itemHandler;               /* Item Controller object */
                                                      
 	protected MainMenuScreen mainMenuScreen;         /* Main Menu Screen */
@@ -37,6 +37,10 @@ public class DevMaze extends Game {
 
 	protected boolean pause;                         /* Is the game paused */
 
+	
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.ApplicationListener#create()
+	 */
 	public void create() {
 
 		// Create batch and font
@@ -50,7 +54,7 @@ public class DevMaze extends Game {
 		// Create game objects
 		this.maze = new Maze(this);
 		this.player = new Player(this);
-		this.monsterHandler = new PuppetMaster(this);
+		this.monsterHandler = new MonsterHandler(this);
 		this.itemHandler = new ItemHandler(this);
 		this.levels = new ArrayList<Level>();
 
@@ -66,6 +70,9 @@ public class DevMaze extends Game {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see com.badlogic.gdx.Game#dispose()
+	 */
 	public void dispose() {
 		// Dispose LibGDX stuff
 		this.batch.dispose();
@@ -81,6 +88,7 @@ public class DevMaze extends Game {
 		this.mainMenuScreen.dispose();
 		this.gameScreen.dispose();
 	}
+
 
 	public void newGame() {
 		// Reset levels

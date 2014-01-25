@@ -15,7 +15,7 @@ public class GameScreen implements Screen {
 
 	private Maze maze;
 	private Player player;
-	private PuppetMaster monsterHandler;
+	private MonsterHandler monsterHandler;
 	private ItemHandler itemHandler;
 	private HUD hud;
 

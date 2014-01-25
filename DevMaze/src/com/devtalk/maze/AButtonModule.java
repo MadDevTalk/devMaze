@@ -12,7 +12,7 @@ public class AButtonModule implements HUDModule {
 	private OrthographicCamera camera;
 
 	private Player player;
-	private PuppetMaster monsterHandler;
+	private MonsterHandler monsterHandler;
 
 	private boolean pressed;
 

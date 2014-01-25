@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.devtalk.maze.Monster.MonsterType;
 import com.devtalk.maze.Monster.State;
 
-public class PuppetMaster {
+public class MonsterHandler {
 
 	private static final int G_WEIGHT_AXIAL = 10;
 
@@ -27,7 +27,7 @@ public class PuppetMaster {
 
 	public List<Monster> monsters;
 
-	public PuppetMaster(DevMaze g) {
+	public MonsterHandler(DevMaze g) {
 		this.game = g;
 		this.maze = g.maze;
 		this.batch = g.batch;

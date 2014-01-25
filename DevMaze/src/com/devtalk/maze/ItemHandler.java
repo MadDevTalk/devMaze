@@ -4,46 +4,60 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 public class ItemHandler {
 
-	private DevMaze game;
-	private SpriteBatch batch;
 	private Maze maze;
+	private DevMaze game;
 	private Player player;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
 
 	public List<Item> items;
 
 	public ItemHandler(DevMaze g) {
 		this.game = g;
-		this.batch = g.batch;
 		this.maze = g.maze;
+		this.batch = g.batch;
 		this.player = g.player;
+		this.camera = g.camera;
+		
 		items = new ArrayList<Item>();
 	}
 
 	public void dispose() {
 		for (Item item : this.items)
+		{
 			item.dispose();
+		}
 	}
 
 	public void render() {
-		for (Item item : this.items) {
-			batch.draw(item.mapTexture(), item.mapRectangle().x,
-					item.mapRectangle().y);
-
-			if (DevMaze.DEBUG) {
-				game.font.draw(batch, "get healthy bitch!",
-						item.mapRectangle().x, item.mapRectangle().y);
+		for (Item item : this.items) 
+		{
+			Vector3 center = new Vector3(item.mapRectangle().x, item.mapRectangle().y, 0);
+			if (camera.frustum.sphereInFrustum(center, item.mapRectangle().getWidth()))
+			{
+				batch.draw(item.mapTexture(), item.mapRectangle().x,
+						item.mapRectangle().y);
+	
+				if (DevMaze.DEBUG) 
+				{
+					game.font.draw(batch, "get healthy bitch!",
+							item.mapRectangle().x, item.mapRectangle().y);
+				}
 			}
 		}
 	}
 
 	public void runOverItem(Rectangle playerArea) {
 		List<Item> usedItems = new ArrayList<Item>();
-		for (Item item : this.items) {
+		for (Item item : this.items) 
+		{
 			if (playerArea.overlaps(item.mapRectangle())) {
 				player.pack.add(item);
 				usedItems.add(item);
@@ -55,7 +69,8 @@ public class ItemHandler {
 	public void set(int itemCount) {
 		items.clear();
 		Random r = new Random();
-		for (int i = 0; i < itemCount; i++) {
+		for (int i = 0; i < itemCount; i++) 
+		{
 			Tile openTile = maze.openTiles
 					.get(r.nextInt(maze.openTiles.size()));
 			// TODO add a random item type
