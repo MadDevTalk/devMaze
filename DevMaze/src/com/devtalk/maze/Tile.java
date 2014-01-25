@@ -72,21 +72,12 @@ public class Tile {
 	}
 
 	public Texture texture() {
-
-		if (this.inMaze) {
-			if (this.tread) {
+		if (this.inMaze)
+			if (this.tread)
 				return PORTAL;
-			}
-//			if (this.inSwatch) {
-//				return SWATCH;
-//			}
-//			if (this.isPortal) {
-//				return PORTAL;
-//			}
-			return IN_MAZE;
-		}
-
-		return NOT_IN_MAZE;
+			else
+				return IN_MAZE;
+		else return NOT_IN_MAZE;
 	}
 
 	public String toString() {

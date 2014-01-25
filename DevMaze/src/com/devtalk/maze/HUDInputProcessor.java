@@ -14,7 +14,6 @@ public class HUDInputProcessor implements InputProcessor {
 	public HUDInputProcessor(DevMaze g, HUD hud) {
 		this.camera = g.camera;
 		this.hud = hud;
-
 		this.touch_down = new Vector3();
 	}
 
@@ -67,7 +66,6 @@ public class HUDInputProcessor implements InputProcessor {
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		screenX += camera.position.x - camera.viewportWidth / 2;
 		screenY = (int) (camera.position.y + camera.viewportHeight / 2 - screenY);
-
 		return hud.actionedAt(screenX, screenY);
 	}
 
@@ -75,7 +73,6 @@ public class HUDInputProcessor implements InputProcessor {
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		int x = (int) (this.touch_down.x + camera.position.x - (camera.viewportWidth / 2));
 		int y = (int) (camera.position.y + camera.viewportHeight / 2 - this.touch_down.y);
-
 		hud.stopAction(x, y);
 		return false;
 	}

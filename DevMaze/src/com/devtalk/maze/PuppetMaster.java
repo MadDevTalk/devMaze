@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.devtalk.maze.Monster.MonsterType;
 import com.devtalk.maze.Monster.State;
 
@@ -17,21 +19,21 @@ public class PuppetMaster {
 
 	private static final int G_WEIGHT_AXIAL = 10;
 
-	private DevMaze game;
-	private SpriteBatch batch;
 	private Maze maze;
+	private DevMaze game;
 	private Player player;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
 
 	public List<Monster> monsters;
 
 	public PuppetMaster(DevMaze g) {
-
 		this.game = g;
-		this.batch = g.batch;
 		this.maze = g.maze;
+		this.batch = g.batch;
+		this.camera = g.camera;
 		this.player = g.player;
 		this.monsters = new ArrayList<Monster>();
-
 	}
 
 	public void detectHit(Rectangle hitArea) {
@@ -142,16 +144,19 @@ public class PuppetMaster {
 
 	public void render() {
 		for (Monster monster : this.monsters) {
-			TextureRegion tmp = monster.texture(Gdx.graphics.getDeltaTime());
-			batch.draw(tmp, monster.getPosition().x, monster.getPosition().y,
-					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-					monster.angle());
-
-			if (DevMaze.DEBUG)
-				game.font.draw(batch, "HP: " + monster.getCurrentHealth() + "/"
-						+ monster.getTotalHealth(), monster.getPosition().x,
-						monster.getPosition().y);
+			Vector3 pos = new Vector3(monster.getPosition().x, monster.getPosition().y, 0);
+			if (camera.frustum.sphereInFrustum(pos, monster.getRectangle().getWidth())) {
+				TextureRegion tmp = monster.texture(Gdx.graphics.getDeltaTime());
+				batch.draw(tmp, monster.getPosition().x, monster.getPosition().y,
+						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+						monster.angle());
+	
+				if (DevMaze.DEBUG)
+					game.font.draw(batch, "HP: " + monster.getCurrentHealth() + "/"
+							+ monster.getTotalHealth(), monster.getPosition().x,
+							monster.getPosition().y);
+			}
 		}
 	}
 
