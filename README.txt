@@ -1,4 +1,4 @@
-DevMaze
+Stir Crazy
 =======
-
-The most amazing game ever built by DEV TALK.
+ 
+Do you have what it takes to escape from prison?
