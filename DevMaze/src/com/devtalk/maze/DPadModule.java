@@ -15,7 +15,7 @@ public class DPadModule implements HUDModule {
 
 	private Player player;
 
-	private static Texture button = new Texture(Gdx.files.internal("DPAD.png"));
+	private Texture button = new Texture(Gdx.files.internal("DPAD.png"));
 
 	public DPadModule(DevMaze g) {
 		this.camera = g.camera;
