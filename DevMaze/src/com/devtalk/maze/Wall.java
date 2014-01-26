@@ -1,7 +1,6 @@
 package com.devtalk.maze;
 
 public class Wall {
-
 	public int row;
 	public int col;
 

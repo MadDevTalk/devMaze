@@ -1,0 +1,42 @@
+This document outlines how each tab of the build path for each project should look. If you still have errors after configuring this, it is not related to LibGDX. There are plenty of those errors too, so if you run into one, just ask in the DevTalk group chat on Facebook. If you wanna be awesome, add what the error was and what the fix is to this document once you figure it out.
+
+*DevMaze
+
+	-Source
+		DevMaze/src
+	-Projects
+		No action necessary
+	-Libraries
+		gdx-sources.jar
+		gdx.jar --> Source Attachment: gdx-sources.jar
+	-Order and Export
+		gdx.jar should be checked
+	
+*DevMaze-android
+
+	-Source
+		DevMaze-android/src
+		DevMaze-android/gen
+	-Projects
+		DevMaze
+	-Libraries
+		gdx-backend-android.jar
+	-Order and Export
+		No action necessary
+
+*DevMaze-desktop
+
+	-Source
+		DevMaze-desktop/src
+		DevMaze-desktop/assets
+	-Projects
+		DevMaze
+	-Libraries
+		gdx-backend-lwjgl-natives.jar
+		gdx-backend-lwjgl.jar
+		gdx-natives.jar
+		gdx-tools.jar
+	-Order and Export
+		No action necessary
+	
+*DevMaze-html -- Don't worry about errors for now. We are focused on Android and Desktop. If they really annoy you, don't import this project.

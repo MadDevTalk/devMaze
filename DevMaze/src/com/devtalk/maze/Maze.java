@@ -4,23 +4,53 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+
 /**
  * @author max
- * 
  */
-public class Maze extends DevMaze {
+public class Maze {
 
-	private static final int DEFAULT_HEIGHT = 51;
-	private static final int DEFAULT_WIDTH = 31;
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
 
 	public Tile[][] tiles;
+	public List<Tile> openTiles;
+	public Tile end;
 
-	public Maze() {
-		this(DEFAULT_HEIGHT, DEFAULT_WIDTH);
+	public Maze(DevMaze g) {
+
+		this.camera = g.camera;
+		this.batch = g.batch;
+		this.tiles = new Tile[0][0];
+		this.openTiles = new ArrayList<Tile>();
+
 	}
 
-	public Maze(int row, int col) {
+	private void analyze() {
+		for (int row = 0; row < tiles.length; row++)
+			for (int col = 0; col < tiles[0].length; col++)
+				if (tiles[row][col].inMaze) {
+					openTiles.add(tiles[row][col]);
+					setNeighbors(row, col);
+				}
+	}
+
+	// May want to throw a new OutOfMaze exception or something
+	public int col(float xPos) {
+		int calculated = (int) ((xPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
+
+		if (calculated > tiles[0].length - 1 || calculated < 0)
+			calculated = -1;
+
+		return calculated;
+	}
+
+	public void create(int row, int col) {
 		tiles = new Tile[row][col];
+		openTiles.clear();
 
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
@@ -29,6 +59,12 @@ public class Maze extends DevMaze {
 		}
 
 		this.generate();
+	}
+
+	public void dispose() {
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[0].length; j++)
+				tiles[i][j].dispose();
 	}
 
 	/**
@@ -40,26 +76,12 @@ public class Maze extends DevMaze {
 		List<Wall> walls = new ArrayList<Wall>();
 
 		// Start with a grid full of walls
-
-		// There are certain places an initial tile could be such that the maze
-		// could go the the edge of the 2d array. Therefor, I'm just starting 
-		// at 1,1 for now which should work as long as the grid coords are 
-		// prime (or just odd maybe). This makes choosing a maze "start" 
-		// pretty easy, but is also kind of shit.
-		//
 		int row, col;
-		// do {
-		// Pick a (random, but not on edge) cell
-		// row = gen.nextInt(tiles.length - 2) + 1;
-		// col = gen.nextInt(tiles[0].length - 2) + 1;
-		// } while ();
-
 		row = col = 1;
-
 		Tile start = tiles[row][col];
 
 		// Mark as part of the maze
-		start.set_inMaze(true);
+		start.inMaze(true);
 
 		// Add the walls of the cell to the wall list
 		walls.addAll(get_Neighbors(row, col));
@@ -71,12 +93,12 @@ public class Maze extends DevMaze {
 			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
 
 			// If the cell on the opposite side isn't in the maze yet
-			if (!getOppositeTile(wall).inMaze()) {
+			if (!getOppositeTile(wall).inMaze) {
 				// Mark the edge a passage
-				tiles[wall.row][wall.col].set_inMaze(true);
+				tiles[wall.row][wall.col].inMaze(true);
 
 				// Mark the cell on the opposite side a passage
-				getOppositeTile(wall).set_inMaze(true);
+				getOppositeTile(wall).inMaze(true);
 
 				row = wall.row + wall.rowOffset;
 				col = wall.col + wall.colOffset;
@@ -84,53 +106,36 @@ public class Maze extends DevMaze {
 				// Add the walls of the cell to the wall list
 				walls.addAll(get_Neighbors(row, col));
 
-			} else {
+			} else
 				// Remove wall from list
 				walls.remove(wall);
-			}
 
 		}
-		
-		// Mark beginning and end tiles.
-		tiles[1][0].set_inMaze(true);
-		tiles[tiles.length - 2][tiles[0].length - 1].set_inMaze(true);
-		
+
+		// Mark end tile
+		end = tiles[tiles.length - 2][tiles[0].length - 1];
+		end.inMaze(true);
+
 		analyze();
-	}
-	
-	private void analyze() {
-		for (int row = 0; row < tiles.length; row++)
-			for (int col = 0; col < tiles[0].length; col++)
-				if (tiles[row][col].inMaze())
-					setNeighbors(row, col);
-	}
-	
-	private void setNeighbors(int row, int col) {
-		for (int i = -1; i <= 1; i++)
-			for (int j = -1; j <= 1; j++)
-				try {
-					if (i != 0 || j != 0)
-						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
-				} catch (IndexOutOfBoundsException e) {};
 	}
 
 	public List<Wall> get_Neighbors(int row, int col) {
 		List<Wall> temp = new ArrayList<Wall>();
 
 		// Check top
-		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze())
+		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze)
 			temp.add(new Wall(row, col, row + 1, col));
 
 		// Check right
-		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze())
+		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze)
 			temp.add(new Wall(row, col, row, col + 1));
 
 		// Check bottom
-		if (row > 2 && !tiles[row - 1][col].inMaze())
+		if (row > 2 && !tiles[row - 1][col].inMaze)
 			temp.add(new Wall(row, col, row - 1, col));
 
 		// Check left
-		if (col > 2 && !tiles[row][col - 1].inMaze())
+		if (col > 2 && !tiles[row][col - 1].inMaze)
 			temp.add(new Wall(row, col, row, col - 1));
 
 		return temp;
@@ -138,5 +143,59 @@ public class Maze extends DevMaze {
 
 	private Tile getOppositeTile(Wall wall) {
 		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
+	}
+
+	public void makeSwatch(int topX, int topY) {
+		for (int i = 0; i <= 5; i++) {
+			for (int j = 0; j <= 5; j++) {
+				if (this.tiles[i][j].inMaze) {
+					this.tiles[i][j].inSwatch(true);
+				}
+			}
+		}
+	}
+
+	public void render() {
+		for (int i = 0; i < this.tiles.length; i++)
+			for (int j = 0; j < this.tiles[0].length; j++) {
+				float x = this.tiles[i][j].rectangle.x;
+				float y = this.tiles[i][j].rectangle.y;
+				Vector3 tile = new Vector3(x, y, 0);
+
+				if (camera.frustum.sphereInFrustum(tile, DevMaze.EDGE_SIZE_PX))
+					batch.draw(this.tiles[i][j].texture(), x, y);
+			}
+
+	}
+
+	// May want to throw a new OutOfMaze exception or something
+	public int row(float yPos) {
+		int calculated = (int) ((yPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
+
+		if (calculated > tiles.length - 1 || calculated < 0)
+			calculated = -1;
+
+		return calculated;
+	}
+
+	private void setNeighbors(int row, int col) {
+		for (int i = -1; i <= 1; i++)
+			for (int j = -1; j <= 1; j++)
+				try {
+					if (i != 0 || j != 0)
+						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
+				} catch (IndexOutOfBoundsException e) {
+				}
+		;
+	}
+
+	public Tile tileAtLocation(float xPos, float yPos) {
+		int row = row(yPos);
+		int col = col(xPos);
+
+		if (row < 0 || col < 0)
+			return null;
+
+		return tiles[row(yPos)][col(xPos)];
 	}
 }

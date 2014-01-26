@@ -1,138 +1,128 @@
 package com.devtalk.maze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
-	final DevMaze game;
 
-	public static final int EDGE_SIZE_PX = 64;
-	public static final int PLAYER_SIZE_PX = 32;
-	public static final int KEY_VEL_PxPer60S = 5;
-	public static final int SPEED_LATCH_PX = 32;
+	private DevMaze game;
+	private OrthographicCamera camera;
+	private SpriteBatch batch;
 
-	OrthographicCamera camera;
-	Maze maze;
-	MazeInputProcessor inputProcessor;
-	Player player;
-	
-	FPSLogger test;
+	private Maze maze;
+	private Player player;
+	private MonsterHandler monsterHandler;
+	private ItemHandler itemHandler;
+	private HUD hud;
 
-	public GameScreen(final DevMaze g) {
-		
-		// Create game
+	private InputMultiplexer inputMultiplexer;
+
+	public GameScreen(DevMaze g) {
+
+		// Get reference to our game objects
 		this.game = g;
-		maze = new Maze(11, 15); // must be odd
-
-		// Create Camera
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
-
-		// Create player 		
-		// Find an open tile (currently default to 0, 1)
-		player = new Player(2, EDGE_SIZE_PX + 2, maze);
+		this.camera = g.camera;
+		this.batch = g.batch;
+		this.maze = g.maze;
+		this.player = g.player;
+		this.monsterHandler = g.monsterHandler;
+		this.itemHandler = g.itemHandler;
+		this.hud = new HUD(g);
 
 		// Set our input processor
-		Gdx.input.setInputProcessor(new MazeInputProcessor(player));
-	
-		test = new FPSLogger();
+		inputMultiplexer = new InputMultiplexer();
+		inputMultiplexer.addProcessor(new HUDInputProcessor(g, this.hud));
+		inputMultiplexer.addProcessor(new MazeInputProcessor(g));
+		Gdx.input.setInputProcessor(inputMultiplexer);
+
+	}
+
+	// Kills the app. Calls a pause first
+	public void dispose() {
+		this.hud.dispose();
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+	}
+
+	// Save user app information
+	public void pause() {
+		// TODO
 	}
 
 	// The main loop, fires @ 60 fps
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
-		
-		// log fps
-		// test.log();
-		
-		// Set the camera on the player's current position
-		player.updatePos();
-		camera.position.set(player.position);
+
+		if (!game.pause) {
+
+			// Set the camera on the player's current position
+			player.updatePos();
+			camera.position.set(player.position);
+
+			// Check if at end
+			if (maze.end.rectangle.contains(player.rectangle)) {
+				if (!game.levels.isEmpty()) {
+					game.currentLevel = game.levels.remove(0);
+					game.setScreen(game.levelFinishScreen);
+				}
+			}
+
+			// Update the monsters' current position
+			monsterHandler.updateMonsters();
+
+		}
+
+		// update items
+		itemHandler.updateItems();
 
 		// Clear the screen to deep blue and update the camera
-		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);   // R,G,B,A (0.0f - 1.0f)
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1); // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
 		// Tell batch to use the same coordinates as the camera
-		game.batch.setProjectionMatrix(camera.combined);
-		
+		batch.setProjectionMatrix(camera.combined);
+
 		// Draw everything
-		game.batch.begin();
-		
-		// **DRAW MAZE** //
-		for (int i = 0; i < maze.tiles.length; i++)
-			for (int j = 0; j < maze.tiles[0].length; j++) {
-				float x = maze.tiles[i][j].rectangle().x;
-				float y = maze.tiles[i][j].rectangle().y;
-				Vector3 tile = new Vector3(x, y, 0);
-	
-				if (camera.frustum.sphereInFrustum(tile, EDGE_SIZE_PX))
-					if (maze.tiles[i][j].inMaze()) {
-						game.batch.draw(maze.tiles[i][j].texture(), j * EDGE_SIZE_PX, i * EDGE_SIZE_PX);
-						
-					}
-				// Wanna see the indices overlaid on the maze? Uncomment this line right here
-				// game.font.draw(game.batch, maze.tiles[i][j].toString(), j * EDGE_SIZE_PX + 15, i * EDGE_SIZE_PX + 40);
-			}
-	
-		// **DRAW PLAYER** //
-		TextureRegion tmp = player.texture(Gdx.graphics.getDeltaTime());
-		game.batch.draw(tmp, camera.position.x, camera.position.y,
-				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-				player.angle());
-	
-		// **DRAW ITEMS** //
-		
-		// **DRAW MONSTERS** //
-			
-		game.batch.end();
+		batch.begin();
+		{
+			// **DRAW MAZE** //
+			maze.render();
 
-		// **REGISTER INPUTS** //
-		boolean space = Gdx.input.isKeyPressed(Keys.SPACE);
-		if (Gdx.input.justTouched()) {
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY();
+			// **DRAW ITEMS** //
+			itemHandler.render();
 
-			if ((x < 64 && y < 64) || space) {
-				game.setScreen(new PauseScreen(game, this));
-				this.dispose();
-			}
+			// **DRAW MONSTERS** //
+			monsterHandler.render();
+
+			// **DRAW PLAYER** //
+			player.render();
+
+			// **DRAW HUD** //
+			hud.render();
 		}
+		batch.end();
+
 	}
 
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 	}
 
-	// Save user app information
-	public void pause() {
-
-	}
-
 	// Return from pause
 	public void resume() {
-
-	}
-
-	// Kills the app. Calls a pause first
-	public void dispose() {
-
+		// TODO
 	}
 
 	@Override
 	public void show() {
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
+		// TODO
 	}
 }
