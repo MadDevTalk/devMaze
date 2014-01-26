@@ -11,8 +11,7 @@ public class BButtonModule implements HUDModule {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	private static Texture button = new Texture(
-			Gdx.files.internal("BBUTTON.png"));
+	private Texture button = new Texture(Gdx.files.internal("BBUTTON.png"));
 
 	public BButtonModule(DevMaze g) {
 		this.batch = g.batch;

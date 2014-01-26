@@ -13,9 +13,8 @@ public class PauseModule implements HUDModule {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	private static Texture button = new Texture(Gdx.files.internal("pack.png"));
-	private static Texture menu = new Texture(
-			Gdx.files.internal("pause_menu.png"));
+	private Texture button = new Texture(Gdx.files.internal("pack.png"));
+	private Texture menu = new Texture(Gdx.files.internal("pause_menu.png"));
 
 	public PauseModule(DevMaze g) {
 		this.game = g;

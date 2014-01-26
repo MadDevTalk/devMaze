@@ -16,8 +16,7 @@ public class AButtonModule implements HUDModule {
 
 	private boolean pressed;
 
-	private static Texture button = new Texture(
-			Gdx.files.internal("ABUTTON.png"));
+	private Texture button = new Texture(Gdx.files.internal("ABUTTON.png"));
 
 	public AButtonModule(DevMaze g) {
 		this.batch = g.batch;
