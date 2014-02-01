@@ -1,10 +1,13 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.devtalk.actors.MonsterHandler;
+import com.devtalk.actors.Player;
+import com.devtalk.maze.DevMaze;
 
 public class AButtonModule implements HUDModule {
 
@@ -16,8 +19,7 @@ public class AButtonModule implements HUDModule {
 
 	private boolean pressed;
 
-	private static Texture button = new Texture(
-			Gdx.files.internal("ABUTTON.png"));
+	private Texture button = new Texture(Gdx.files.internal("ABUTTON.png"));
 
 	public AButtonModule(DevMaze g) {
 		this.batch = g.batch;

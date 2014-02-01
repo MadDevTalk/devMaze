@@ -1,10 +1,12 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.devtalk.actors.Player;
+import com.devtalk.maze.DevMaze;
 
 public class PauseModule implements HUDModule {
 
@@ -13,9 +15,8 @@ public class PauseModule implements HUDModule {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	private static Texture button = new Texture(Gdx.files.internal("pack.png"));
-	private static Texture menu = new Texture(
-			Gdx.files.internal("pause_menu.png"));
+	private Texture button = new Texture(Gdx.files.internal("pack.png"));
+	private Texture menu = new Texture(Gdx.files.internal("pause_menu.png"));
 
 	public PauseModule(DevMaze g) {
 		this.game = g;

@@ -1,7 +1,9 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.devtalk.maze.DevMaze;
 
 public class HUD {
 

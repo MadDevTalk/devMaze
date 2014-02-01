@@ -1,9 +1,11 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 //import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 //import com.badlogic.gdx.math.Vector3;
+import com.devtalk.actors.Player;
+import com.devtalk.maze.DevMaze;
 
 // Use gesture listener in order to detect taps, flings, etc.
 // http://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/input/GestureDetector.GestureListener.html

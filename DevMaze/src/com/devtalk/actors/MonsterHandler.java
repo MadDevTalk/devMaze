@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.actors;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +12,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.devtalk.maze.Monster.MonsterType;
-import com.devtalk.maze.Monster.State;
+import com.devtalk.actors.Monster.MonsterType;
+import com.devtalk.actors.Monster.State;
+import com.devtalk.maze.DevMaze;
+import com.devtalk.maze.Maze;
+import com.devtalk.maze.PathList;
+import com.devtalk.maze.PathNode;
+import com.devtalk.maze.Tile;
 
 public class MonsterHandler {
 

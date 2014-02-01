@@ -21,12 +21,10 @@ public class Maze {
 	public Tile end;
 
 	public Maze(DevMaze g) {
-
 		this.camera = g.camera;
 		this.batch = g.batch;
 		this.tiles = new Tile[0][0];
 		this.openTiles = new ArrayList<Tile>();
-
 	}
 
 	private void analyze() {
@@ -184,9 +182,7 @@ public class Maze {
 				try {
 					if (i != 0 || j != 0)
 						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
-				} catch (IndexOutOfBoundsException e) {
-				}
-		;
+				} catch (IndexOutOfBoundsException e) {};
 	}
 
 	public Tile tileAtLocation(float xPos, float yPos) {
@@ -197,5 +193,9 @@ public class Maze {
 			return null;
 
 		return tiles[row(yPos)][col(xPos)];
+	}
+	
+	public int distanceToEnd() {
+		return -1;
 	}
 }

@@ -1,18 +1,18 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.devtalk.maze.DevMaze;
 
 public class BButtonModule implements HUDModule {
 
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	private static Texture button = new Texture(
-			Gdx.files.internal("BBUTTON.png"));
+	private Texture button = new Texture(Gdx.files.internal("BBUTTON.png"));
 
 	public BButtonModule(DevMaze g) {
 		this.batch = g.batch;

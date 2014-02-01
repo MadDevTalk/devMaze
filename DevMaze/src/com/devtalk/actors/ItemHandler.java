@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.actors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.devtalk.maze.DevMaze;
+import com.devtalk.maze.Maze;
 
 public class ItemHandler {
 
@@ -47,7 +49,7 @@ public class ItemHandler {
 	
 				if (DevMaze.DEBUG) 
 				{
-					game.font.draw(batch, "get healthy bitch!",
+					game.font.draw(batch, "this is an item.",
 							item.mapRectangle().x, item.mapRectangle().y);
 				}
 			}
@@ -66,19 +68,13 @@ public class ItemHandler {
 		this.items.removeAll(usedItems);
 	}
 
-	public void set(int itemCount) {
+	public void set() {
 		items.clear();
-		Random r = new Random();
-		for (int i = 0; i < itemCount; i++) 
-		{
-			Tile openTile = maze.openTiles
-					.get(r.nextInt(maze.openTiles.size()));
-			// TODO add a random item type
-			items.add(new HealthPowerup(
-					(float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 2)),
-					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 2)),
-					this.game));
-		}
+		//TODO 
+	}
+	
+	public Item chooseItem(int item_id) {
+		return null;
 	}
 
 	public void updateItems() {

@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.actors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,21 +9,24 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.devtalk.maze.DevMaze;
+import com.devtalk.maze.Maze;
+import com.devtalk.maze.Tile;
 
-public class Mech implements Monster {
+public class Goblin implements Monster {
 
-	private static final int FRAME_COLS = 4;
-	private static final int FRAME_ROWS = 2;
+	private static final int FRAME_COLS = 8;
+	private static final int FRAME_ROWS = 8;
 
 	private DevMaze game;
 	private Player player;
 	private Maze maze;
 
 	float stateTime;
+	Animation[] walkAnimation = new Animation[8];
 	static Texture walkSheet = new Texture(
-			Gdx.files.internal("mech_walking.png"));
-	TextureRegion[] walkFrames = new TextureRegion[6];
-	Animation walkAnimation = new Animation(0.025f, walkFrames);
+			Gdx.files.internal("goblin-walking.png"));
+	TextureRegion[][] walkFrames = new TextureRegion[8][8];
 	Rectangle rectangle;
 
 	float prevAngle;
@@ -45,7 +48,7 @@ public class Mech implements Monster {
 	Tile destination;
 	int count;
 
-	public Mech(float xPos, float yPos, MonsterType type, DevMaze g) {
+	public Goblin(float xPos, float yPos, MonsterType type, DevMaze g) {
 		this.game = g;
 		this.player = g.player;
 		this.maze = g.maze;
@@ -57,15 +60,16 @@ public class Mech implements Monster {
 		this.rectangle = new Rectangle(xPos, yPos, DevMaze.MONSTER_SIZE_PX,
 				DevMaze.MONSTER_SIZE_PX);
 
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
-				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
-						/ FRAME_ROWS);
+		for (int i = 0; i < walkAnimation.length; i++) {
+			TextureRegion[][] tmp = TextureRegion.split(walkSheet,
+					walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
+							/ FRAME_ROWS);
 
-		int index = 0;
-		for (int i = 0; i < FRAME_ROWS; i++)
 			for (int j = 0; j < FRAME_COLS; j++)
-				if (index < walkFrames.length)
-					this.walkFrames[index++] = tmp[i][j];
+				this.walkFrames[i][j] = tmp[i][j];
+
+			this.walkAnimation[i] = new Animation(0.025f, walkFrames[i]);
+		}
 
 		this.stateTime = 0.0f;
 		this.position = new Vector2(xPos, yPos);
@@ -76,24 +80,24 @@ public class Mech implements Monster {
 		switch (type) {
 		case EASY:
 			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 8;
-			this.totalHealth = 10;
-			this.hitDamage = 2;
+			this.totalHealth = 5;
+			this.hitDamage = 1;
 			this.attackFrequency = 65;
-			this.velocityScale = 1;
+			this.velocityScale = 2;
 			break;
 		case MEDIUM:
 			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 6;
-			this.totalHealth = 15;
-			this.hitDamage = 4;
+			this.totalHealth = 10;
+			this.hitDamage = 2;
 			this.attackFrequency = 55;
-			this.velocityScale = 2;
+			this.velocityScale = 3;
 			break;
 		case HARD:
 			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 4;
-			this.totalHealth = 20;
-			this.hitDamage = 5;
+			this.totalHealth = 15;
+			this.hitDamage = 4;
 			this.attackFrequency = 45;
-			this.velocityScale = 3;
+			this.velocityScale = 4;
 			break;
 		}
 
@@ -103,11 +107,35 @@ public class Mech implements Monster {
 	}
 
 	public float angle() {
-		if (!isMoving())
-			return prevAngle;
+		return 0;
+	}
 
-		return prevAngle = (float) (Math.toDegrees(Math.atan2(-velocity.x,
-				velocity.y)));
+	// This mapping relates to the spritesheet's layout
+	public int dirIndex() {
+		int angle = (int) myAngle();
+
+		switch (angle) {
+		case 0:
+			return 2;
+		case 45:
+			return 1;
+		case 90:
+			return 0;
+		case 135:
+			return 7;
+		case 180:
+			return 6;
+		case -45:
+			return 3;
+		case -90:
+			return 4;
+		case -135:
+			return 5;
+		case -180:
+			return 6;
+		default:
+			return 6;
+		}
 	}
 
 	public void dispose() {
@@ -184,12 +212,21 @@ public class Mech implements Monster {
 		return !(this.velocity.x == 0 && this.velocity.y == 0);
 	}
 
+	private float myAngle() {
+		if (!isMoving())
+			return prevAngle;
+
+		return prevAngle = (float) (Math.toDegrees(Math.atan2(-velocity.x,
+				velocity.y)));
+	}
+
 	public boolean sawPlayer() {
 		return sawPlayer;
 	}
 
 	public void setCount(int count) {
 		this.count = count;
+
 	}
 
 	public void setCurrentHealth(int health) {
@@ -212,9 +249,10 @@ public class Mech implements Monster {
 		this.stateTime += stateTime;
 
 		if (isMoving() && !game.pause)
-			return this.walkAnimation.getKeyFrame(this.stateTime, true);
+			return this.walkAnimation[dirIndex()].getKeyFrame(this.stateTime,
+					true);
 		else
-			return this.walkFrames[0];
+			return this.walkFrames[dirIndex()][0];
 	}
 
 	public String toString() {

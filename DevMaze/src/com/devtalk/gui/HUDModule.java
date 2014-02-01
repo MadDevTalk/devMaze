@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 public interface HUDModule {
 
