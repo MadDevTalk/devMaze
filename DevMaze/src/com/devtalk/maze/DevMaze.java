@@ -25,24 +25,24 @@ public class DevMaze extends Game {
 	public static final int KEY_VEL_PxPer60S = 4;    /* DEPRECATED: The speed in pixels of the player */
 	public static final int SPEED_LATCH_PX = 32;     /* DEPRECATED: Fastest speed when dragging */
                                                      
-	public SpriteBatch batch;                     /* Canvas to draw/display game elements */
-	public BitmapFont font;                       /* Canvas to draw/display debug text */
-	public OrthographicCamera camera;             /* Our view of the SpriteBatch */
-                                                     
-	public Maze maze;                             /* The current maze tileset */
-	public Player player;                         /* The player object */
-	public MonsterHandler monsterHandler;           /* Monster Controller object */
-	public ItemHandler itemHandler;               /* Item Controller object */
-                                                     
-	public MainMenuScreen mainMenuScreen;         /* Main Menu Screen */
-	public GameScreen gameScreen;                 /* Gameplay screen */
-	public PauseScreen pauseScreen;               /* DEPRECATED: Pause menu screen */
-	public LevelFinishScreen levelFinishScreen;   /* TODO: Level information screen */
-
-	public List<Level> levels;                    /* List of available levels TODO: expand */
-	public Level currentLevel;                    /* Our current level being played */
-
-	public boolean pause;                         /* Is the game paused */
+	public SpriteBatch batch;                        /* Canvas to draw/display game elements */
+	public BitmapFont font;                          /* Canvas to draw/display debug text */
+	public OrthographicCamera camera;                /* Our view of the SpriteBatch */
+		                                                    
+	public Maze maze;                                /* The current maze tileset */
+	public Player player;                            /* The player object */
+	public MonsterHandler monsterHandler;            /* Monster Controller object */
+	public ItemHandler itemHandler;                  /* Item Controller object */
+		                                                    
+	public MainMenuScreen mainMenuScreen;            /* Main Menu Screen */
+	public GameScreen gameScreen;                    /* Gameplay screen */
+	public PauseScreen pauseScreen;                  /* DEPRECATED: Pause menu screen */
+	public LevelFinishScreen levelFinishScreen;      /* TODO: Level information screen */
+		                                             
+	public List<Level> levels;                       /* List of available levels TODO: expand */
+	public Level currentLevel;                       /* Our current level being played */
+		                                             
+	public boolean pause;                            /* Is the game paused */
 
 	
 	/* (non-Javadoc)
