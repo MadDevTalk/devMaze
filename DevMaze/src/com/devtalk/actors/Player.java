@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.actors;
 
 import java.util.List;
 
@@ -10,6 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.devtalk.gui.Pack;
+import com.devtalk.maze.DevMaze;
+import com.devtalk.maze.Maze;
+import com.devtalk.maze.Tile;
 
 public class Player {
 
@@ -33,22 +37,22 @@ public class Player {
 	// sprites
 	TextureRegion[] walkFrames;
 	TextureRegion[] attackFrames;
-	Rectangle rectangle;
+	public Rectangle rectangle;
 
-	boolean walking;
-	float prevAngle;
-	Vector3 velocity;
-	Vector3 position;
-	Vector3 prevPosition;
+	public boolean walking;
+	public float prevAngle;
+	public Vector3 velocity;
+	public Vector3 position;
+	public Vector3 prevPosition;
 
-	int currentHealth;
-	int totalHealth;
-	int hitRadius;
-	int hitDamage;
+	public int currentHealth;
+	public int totalHealth;
+	public int hitRadius;
+	public int hitDamage;
 
-	Pack pack;
+	public Pack pack;
 
-	boolean attack;
+	public boolean attack;
 
 	public Player(DevMaze g) {
 		this.attack = false;
@@ -127,9 +131,12 @@ public class Player {
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, this.angle());
 
-		if (DevMaze.DEBUG)
+		if (DevMaze.DEBUG) 
+		{
 			font.draw(batch, "HP: " + this.currentHealth + "/"
 					+ this.totalHealth, this.position.x, this.position.y);
+			//TODO add distance to end of level
+		}
 	}
 
 	public void reset(int x, int y, boolean resetHealth) {

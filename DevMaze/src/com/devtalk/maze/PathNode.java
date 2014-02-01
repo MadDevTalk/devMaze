@@ -1,5 +1,6 @@
 package com.devtalk.maze;
 
+
 public class PathNode {
 
 	public PathNode parent;

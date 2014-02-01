@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.devtalk.actors.Item;
+import com.devtalk.maze.DevMaze;
 
 public class Pack {
 

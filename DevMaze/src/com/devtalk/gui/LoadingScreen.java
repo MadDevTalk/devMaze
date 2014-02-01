@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.devtalk.maze.DevMaze;
 
 public class LoadingScreen implements Screen {
 

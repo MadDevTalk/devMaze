@@ -6,6 +6,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.devtalk.actors.ItemHandler;
+import com.devtalk.actors.MonsterHandler;
+import com.devtalk.actors.Player;
+import com.devtalk.gui.GameScreen;
+import com.devtalk.gui.LevelFinishScreen;
+import com.devtalk.gui.MainMenuScreen;
+import com.devtalk.gui.PauseScreen;
 import com.devtalk.maze.Level.LEVEL;
 
 public class DevMaze extends Game {
@@ -18,24 +25,24 @@ public class DevMaze extends Game {
 	public static final int KEY_VEL_PxPer60S = 4;    /* DEPRECATED: The speed in pixels of the player */
 	public static final int SPEED_LATCH_PX = 32;     /* DEPRECATED: Fastest speed when dragging */
                                                      
-	protected SpriteBatch batch;                     /* Canvas to draw/display game elements */
-	protected BitmapFont font;                       /* Canvas to draw/display debug text */
-	protected OrthographicCamera camera;             /* Our view of the SpriteBatch */
+	public SpriteBatch batch;                     /* Canvas to draw/display game elements */
+	public BitmapFont font;                       /* Canvas to draw/display debug text */
+	public OrthographicCamera camera;             /* Our view of the SpriteBatch */
                                                      
-	protected Maze maze;                             /* The current maze tileset */
-	protected Player player;                         /* The player object */
-	protected MonsterHandler monsterHandler;           /* Monster Controller object */
-	protected ItemHandler itemHandler;               /* Item Controller object */
+	public Maze maze;                             /* The current maze tileset */
+	public Player player;                         /* The player object */
+	public MonsterHandler monsterHandler;           /* Monster Controller object */
+	public ItemHandler itemHandler;               /* Item Controller object */
                                                      
-	protected MainMenuScreen mainMenuScreen;         /* Main Menu Screen */
-	protected GameScreen gameScreen;                 /* Gameplay screen */
-	protected PauseScreen pauseScreen;               /* DEPRECATED: Pause menu screen */
-	protected LevelFinishScreen levelFinishScreen;   /* TODO: Level information screen */
+	public MainMenuScreen mainMenuScreen;         /* Main Menu Screen */
+	public GameScreen gameScreen;                 /* Gameplay screen */
+	public PauseScreen pauseScreen;               /* DEPRECATED: Pause menu screen */
+	public LevelFinishScreen levelFinishScreen;   /* TODO: Level information screen */
 
-	protected List<Level> levels;                    /* List of available levels TODO: expand */
-	protected Level currentLevel;                    /* Our current level being played */
+	public List<Level> levels;                    /* List of available levels TODO: expand */
+	public Level currentLevel;                    /* Our current level being played */
 
-	protected boolean pause;                         /* Is the game paused */
+	public boolean pause;                         /* Is the game paused */
 
 	
 	/* (non-Javadoc)
@@ -110,7 +117,7 @@ public class DevMaze extends Game {
 		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, true);
 		this.monsterHandler.set(currentLevel.numMonsters,
 				currentLevel.monsterDifficulty);
-		this.itemHandler.set(currentLevel.numItems);
+		//this.itemHandler.set(currentLevel.numItems);
 	}
 
 	public void newLevel() {
@@ -119,7 +126,7 @@ public class DevMaze extends Game {
 		this.player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, false);
 		this.monsterHandler.set(currentLevel.numMonsters,
 				currentLevel.monsterDifficulty);
-		this.itemHandler.set(currentLevel.numItems);
+		//this.itemHandler.set(currentLevel.numItems);
 	}
 
 	public void render() {

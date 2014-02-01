@@ -1,8 +1,9 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.devtalk.maze.DevMaze;
 
 public class HUDInputProcessor implements InputProcessor {
 
