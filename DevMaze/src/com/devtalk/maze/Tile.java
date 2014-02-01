@@ -10,14 +10,11 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Tile {
 
-	private static Texture IN_MAZE = new Texture(
-			Gdx.files.internal("IN_MAZE.png"));
-	private static Texture NOT_IN_MAZE = new Texture(
-			Gdx.files.internal("NOT_IN_MAZE.png"));
-	private static Texture SWATCH = new Texture(
-			Gdx.files.internal("SWATCH.png"));
-	private static Texture PORTAL = new Texture(
-			Gdx.files.internal("PORTAL.png"));
+	private Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
+	private Texture NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
+	private Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
+	private Texture PORTAL = new Texture(Gdx.files.internal("PORTAL.png"));
+	
 	private Vector2 position;
 	private List<Tile> neighbors;
 
