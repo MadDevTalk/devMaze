@@ -1,6 +1,7 @@
 package com.devtalk.maze;
 
-import com.devtalk.maze.Monster.MonsterType;
+import com.devtalk.actors.Monster.MonsterType;
+
 
 public class Level {
 

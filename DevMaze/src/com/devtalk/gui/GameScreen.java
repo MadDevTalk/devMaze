@@ -1,4 +1,4 @@
-package com.devtalk.maze;
+package com.devtalk.gui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -6,6 +6,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.devtalk.actors.ItemHandler;
+import com.devtalk.actors.MonsterHandler;
+import com.devtalk.actors.Player;
+import com.devtalk.maze.DevMaze;
+import com.devtalk.maze.Maze;
 
 public class GameScreen implements Screen {
 

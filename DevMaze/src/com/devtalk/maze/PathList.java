@@ -2,6 +2,7 @@ package com.devtalk.maze;
 
 import java.util.ArrayList;
 
+
 public class PathList extends ArrayList<PathNode> {
 
 	private static final long serialVersionUID = 1L;
