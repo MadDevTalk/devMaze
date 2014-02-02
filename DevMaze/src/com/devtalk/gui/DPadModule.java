@@ -10,7 +10,7 @@ import com.devtalk.maze.DevMaze;
 
 public class DPadModule implements HUDModule {
 
-	public static int DPAD_SIZE_PX = 192;
+	public static int DPAD_SIZE_PX = 256;
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;

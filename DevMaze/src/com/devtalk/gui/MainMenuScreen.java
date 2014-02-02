@@ -17,41 +17,35 @@ public class MainMenuScreen implements Screen {
 	private DevMaze game;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	private BitmapFont font;
+	// private BitmapFont font;
 
 	Tile[][] paths;
-	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg, bgimage;
-	Rectangle newGame, resume, player, settings, quit;
+	Texture singleplayerImg, multiplayerImg, settingsImg, bgimage;
+	Rectangle singlePlayer, multiPlayer, settings;
 
 	public MainMenuScreen(DevMaze g) {
 		this.game = g;
 		this.camera = g.camera;
 		this.batch = g.batch;
-		this.font = g.font;
+		// this.font = g.font;
 
 		// Load Textures
 		this.bgimage = new Texture(Gdx.files.internal("bgimage.png"));
-		this.gameImg = new Texture(Gdx.files.internal("NEW_GAME.png"));
-		this.resumeImg = new Texture(Gdx.files.internal("RESUME.png"));
-		this.playerImg = new Texture(Gdx.files.internal("PLAYER.png"));
+		this.singleplayerImg = new Texture(Gdx.files.internal("SINGLE_PLAYER.png"));
+		this.multiplayerImg = new Texture(Gdx.files.internal("MULTI_PLAYER.png"));
 		this.settingsImg = new Texture(Gdx.files.internal("SETTINGS.png"));
-		this.quitImg = new Texture(Gdx.files.internal("QUIT.png"));
 
 		// Make Maze
 		this.paths = new Tile[5][5];
 
 		// Place the buttons
-		int x = 800 - 100 - 128;
-		int y = 75;
-		newGame = new Rectangle(x, y, 192, 64);
-		y = 155;
-		resume = new Rectangle(x, y, 192, 64);
-		y = 235;
-		settings = new Rectangle(x, y, 192, 64);
-		y = 315;
-		player = new Rectangle(x, y, 192, 64);
-		y = 395;
-		quit = new Rectangle(x, y, 192, 64);
+		int x = 150;
+		int y = 295;
+		singlePlayer = new Rectangle(x, y, 512, 64);
+		y = 215;
+		multiPlayer = new Rectangle(x, y, 512, 64);
+		y = 135;
+		settings = new Rectangle(x, y, 512, 64);
 
 	}
 
@@ -106,29 +100,24 @@ public class MainMenuScreen implements Screen {
 
 			// **DRAW BUTTONS** //
 			sprite.draw(batch);
-			
-			batch.draw(gameImg, newGame.x, newGame.y);
-			font.draw(game.batch, "NEW GAME", newGame.x + 25, newGame.y + 25);
 
-			batch.draw(resumeImg, resume.x, resume.y);
-			font.draw(game.batch, "RESUME", resume.x + 25, resume.y + 25);
-
-			batch.draw(playerImg, player.x, player.y);
-			font.draw(game.batch, "PLAYER", player.x + 25, player.y + 25);
+			batch.draw(multiplayerImg, multiPlayer.x, multiPlayer.y);
+			//font.draw(game.batch, "RESUME", resume.x + 25, resume.y + 25);
 
 			batch.draw(settingsImg, settings.x, settings.y);
-			font.draw(game.batch, "SETTINGS", settings.x + 25, settings.y + 25);
-
-			batch.draw(quitImg, quit.x, quit.y);
-			font.draw(game.batch, "QUIT", quit.x + 25, quit.y + 25);
+			//font.draw(game.batch, "PLAYER", player.x + 25, player.y + 25);
+			
+			batch.draw(singleplayerImg, singlePlayer.x, singlePlayer.y);
+			//font.draw(game.batch, "NEW GAME", newGame.x + 25, newGame.y + 25);
 		}
+		
 		batch.end();
 
 		if (Gdx.input.justTouched()) {
 			int x = Gdx.input.getX();
 			int y = 480 - Gdx.input.getY(); // Translate to Camera coordinates
 
-			if (newGame.contains(x, y)) {
+			if (singlePlayer.contains(x, y)) {
 				game.newGame();
 				game.setScreen(game.gameScreen);
 			}
@@ -141,9 +130,9 @@ public class MainMenuScreen implements Screen {
 			 * game.setScreen(new SettingsScreen(game)); }
 			 */
 
-			else if (quit.contains(x, y)) {
-				Gdx.app.exit();
-			}
+			//else if (quit.contains(x, y)) {
+				//Gdx.app.exit();
+			//}
 		}
 	}
 
