@@ -2,18 +2,15 @@ package com.devtalk.actors;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.devtalk.maze.DevMaze;
-import com.devtalk.maze.Maze;
 
 public class ItemHandler {
 
-	private Maze maze;
 	private DevMaze game;
 	private Player player;
 	private SpriteBatch batch;
@@ -23,7 +20,6 @@ public class ItemHandler {
 
 	public ItemHandler(DevMaze g) {
 		this.game = g;
-		this.maze = g.maze;
 		this.batch = g.batch;
 		this.player = g.player;
 		this.camera = g.camera;
