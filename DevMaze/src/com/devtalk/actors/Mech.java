@@ -23,10 +23,13 @@ public class Mech implements Monster {
 	private Maze maze;
 
 	float stateTime;
-	static Texture walkSheet = new Texture(
-			Gdx.files.internal("mech_walking.png"));
+	Texture walkSheet = new Texture(Gdx.files.internal("mech_walking.png"));
+	Texture attackSheet = new Texture(Gdx.files.internal("mech_attacking.png"));
 	TextureRegion[] walkFrames = new TextureRegion[6];
+	TextureRegion[] attackFrames = new TextureRegion[6];
 	Animation walkAnimation = new Animation(0.025f, walkFrames);
+	Animation attackAnimation = new Animation(0.025f, attackFrames);
+	Animation dyingAnimation = new Animation(0.025f, walkFrames);
 	Rectangle rectangle;
 
 	float prevAngle;
@@ -63,12 +66,18 @@ public class Mech implements Monster {
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
 						/ FRAME_ROWS);
+		
+		TextureRegion[][] temp = TextureRegion.split(attackSheet,
+				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
+				/ FRAME_ROWS);
 
 		int index = 0;
 		for (int i = 0; i < FRAME_ROWS; i++)
 			for (int j = 0; j < FRAME_COLS; j++)
-				if (index < walkFrames.length)
+				if (index < walkFrames.length) {
+					this.attackFrames[index] = temp[i][j];
 					this.walkFrames[index++] = tmp[i][j];
+				}
 
 		this.stateTime = 0.0f;
 		this.position = new Vector2(xPos, yPos);
@@ -214,10 +223,22 @@ public class Mech implements Monster {
 	public TextureRegion texture(float stateTime) {
 		this.stateTime += stateTime;
 
-		if (isMoving() && !game.pause)
-			return this.walkAnimation.getKeyFrame(this.stateTime, true);
-		else
-			return this.walkFrames[0];
+		if (!game.pause) {
+			switch (state) {
+			case FOLLOWING_PLAYER:
+			case FINDING_DESTINATION:
+				return this.walkAnimation.getKeyFrame(this.stateTime, true);
+			case AT_DESTINATION:
+				return this.walkFrames[0];
+			case IN_COMBAT:
+				return this.attackAnimation.getKeyFrame(this.stateTime, true);
+			case DYING:
+				//return this.dyingAnimation.getKeyFrame(this.stateTime, false);
+				break;
+			}
+		}
+		
+		return this.walkFrames[0];
 	}
 
 	public String toString() {

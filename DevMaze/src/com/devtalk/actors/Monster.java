@@ -14,7 +14,11 @@ public interface Monster {
 	};
 
 	public static enum State {
-		FOLLOWING_PLAYER, FINDING_DESTINATION, AT_DESTINATION, IN_COMBAT,
+		FOLLOWING_PLAYER,
+		FINDING_DESTINATION,
+		AT_DESTINATION, 
+		IN_COMBAT,
+		DYING,
 	};
 
 	public float angle();
