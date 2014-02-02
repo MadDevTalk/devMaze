@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.devtalk.maze.DevMaze;
@@ -19,7 +20,7 @@ public class MainMenuScreen implements Screen {
 	private BitmapFont font;
 
 	Tile[][] paths;
-	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg;
+	Texture gameImg, resumeImg, playerImg, settingsImg, quitImg, bgimage;
 	Rectangle newGame, resume, player, settings, quit;
 
 	public MainMenuScreen(DevMaze g) {
@@ -29,6 +30,7 @@ public class MainMenuScreen implements Screen {
 		this.font = g.font;
 
 		// Load Textures
+		this.bgimage = new Texture(Gdx.files.internal("bgimage.png"));
 		this.gameImg = new Texture(Gdx.files.internal("NEW_GAME.png"));
 		this.resumeImg = new Texture(Gdx.files.internal("RESUME.png"));
 		this.playerImg = new Texture(Gdx.files.internal("PLAYER.png"));
@@ -73,10 +75,15 @@ public class MainMenuScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1); // R,G,B,A (0.0f - 1.0f)
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		camera.update();
 
 		camera.position.set(camera.viewportWidth / 2,
 				camera.viewportHeight / 2, 0);
+		
+		camera.update();
+		
+		Sprite sprite = new Sprite(bgimage);
+		sprite.setSize(960,640);
+		
 
 		batch.setProjectionMatrix(camera.combined);
 
@@ -98,6 +105,8 @@ public class MainMenuScreen implements Screen {
 			 **/
 
 			// **DRAW BUTTONS** //
+			sprite.draw(batch);
+			
 			batch.draw(gameImg, newGame.x, newGame.y);
 			font.draw(game.batch, "NEW GAME", newGame.x + 25, newGame.y + 25);
 
