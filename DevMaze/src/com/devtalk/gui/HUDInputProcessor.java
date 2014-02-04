@@ -9,7 +9,6 @@ public class HUDInputProcessor implements InputProcessor {
 
 	private OrthographicCamera camera;
 	private HUD hud;
-
 	private Vector3 touch_down;
 
 	public HUDInputProcessor(DevMaze g, HUD hud) {
