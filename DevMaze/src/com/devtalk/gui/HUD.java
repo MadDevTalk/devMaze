@@ -15,6 +15,7 @@ public class HUD {
 		this.modules.add(new BButtonModule(g));
 		this.modules.add(new DPadModule(g));
 		this.modules.add(new PauseModule(g));
+		this.modules.add(new HealthModule(g));
 	}
 
 	public boolean actionedAt(int x, int y) {
