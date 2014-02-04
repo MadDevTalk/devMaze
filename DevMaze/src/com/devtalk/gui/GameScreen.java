@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
 	private HUD hud;
 
 	private InputMultiplexer inputMultiplexer;
+	private DirectionalGestureDetector gestureDetector;
 
 	public GameScreen(DevMaze g) {
 
@@ -42,9 +43,37 @@ public class GameScreen implements Screen {
 		inputMultiplexer = new InputMultiplexer();
 		inputMultiplexer.addProcessor(new HUDInputProcessor(g, this.hud));
 		inputMultiplexer.addProcessor(new MazeInputProcessor(g));
-		Gdx.input.setInputProcessor(inputMultiplexer);
+		
+		gestureDetector = new DirectionalGestureDetector(
+			new DirectionalGestureDetector.DirectionListener(){
+			
+			@Override
+			public void up() {
+				System.out.println("void up()");
+				player.start(DevMaze.KEY_VEL_PxPer60S, 0);
+			}
 
+			@Override
+			public void right() {
+				System.out.println("void right()");
+				player.start(0, DevMaze.KEY_VEL_PxPer60S);
+			}
+
+			@Override
+			public void left() {
+				System.out.println("void left()");
+				player.start(0, -DevMaze.KEY_VEL_PxPer60S);
+			}
+
+			@Override
+			public void down() {
+				System.out.println("void down()");
+				player.start(-DevMaze.KEY_VEL_PxPer60S, 0);
+			}
+		});
+		Gdx.input.setInputProcessor(gestureDetector);
 	}
+
 
 	// Kills the app. Calls a pause first
 	public void dispose() {

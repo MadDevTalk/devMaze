@@ -22,7 +22,7 @@ public class DevMaze extends Game {
 	public static final int EDGE_SIZE_PX = 128;      /* The square size of maze tiles must be power of 2 */
 	public static final int PLAYER_SIZE_PX = 32;     /* The square size of the player, must be  power of 2 */
 	public static final int MONSTER_SIZE_PX = 64;    /* The square size of the monster, must be power of 2 */
-	public static final int KEY_VEL_PxPer60S = 4;    /* DEPRECATED: The speed in pixels of the player */
+	public static final int KEY_VEL_PxPer60S = 6;    /* DEPRECATED: The speed in pixels of the player */
 	public static final int SPEED_LATCH_PX = 32;     /* DEPRECATED: Fastest speed when dragging */
                                                      
 	public SpriteBatch batch;                     /* Canvas to draw/display game elements */
@@ -74,7 +74,6 @@ public class DevMaze extends Game {
 		// Start at menu
 		this.setScreen(mainMenuScreen);
 		this.pause = false;
-
 	}
 
 	/* (non-Javadoc)

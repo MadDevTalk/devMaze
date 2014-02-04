@@ -181,6 +181,7 @@ public class Player {
 
 	public void updatePos(int xOffset, int yOffset) {
 
+		// Determine direction and speed
 		if (xOffset != 0 || yOffset != 0) {
 			this.walking = true;
 			this.prevPosition.set(position.cpy());
@@ -190,11 +191,10 @@ public class Player {
 		} else
 			return;
 
+		// Collision checking
 		List<Tile> neighbors = maze.tileAtLocation(position.x, position.y)
 				.getNeighbors();
 
-		// TODO: fine tune collision detection to allow player to get closer to
-		// walls.
 		for (Tile neighbor : neighbors) {
 			if (!neighbor.inMaze) {
 				if (neighbor.rectangle.overlaps(new Rectangle(position.x

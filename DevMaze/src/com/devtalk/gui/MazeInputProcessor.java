@@ -3,6 +3,7 @@ package com.devtalk.gui;
 //import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector3;
 //import com.badlogic.gdx.math.Vector3;
 import com.devtalk.actors.Player;
 import com.devtalk.maze.DevMaze;
@@ -16,12 +17,12 @@ public class MazeInputProcessor implements InputProcessor {
 
 	// private PuppetMaster monsterHandler;
 
-	// private Vector3 touch_down;
+	private Vector3 touch_down;
 
 	public MazeInputProcessor(DevMaze game) {
 		this.player = game.player;
 		// this.monsterHandler = game.monsterHandler;
-		// this.touch_down = new Vector3();
+		this.touch_down = new Vector3();
 	}
 
 	@Override
