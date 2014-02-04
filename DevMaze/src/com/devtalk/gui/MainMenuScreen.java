@@ -19,12 +19,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.devtalk.maze.DevMaze;
 import com.devtalk.maze.Tile;
 
-public class MainMenuScreen implements Screen, InputProcessor{
+public class MainMenuScreen implements Screen{
 
 	private DevMaze game;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	public boolean poop = false;
+	private boolean flag;
 	
 	
 	// private BitmapFont font;
@@ -89,8 +89,6 @@ public class MainMenuScreen implements Screen, InputProcessor{
 		
 		camera.update();
 		
-		Gdx.input.setInputProcessor(this);
-		
 		Sprite sprite = new Sprite(bgimage);
 		sprite.setSize(960,640);
 
@@ -130,19 +128,18 @@ public class MainMenuScreen implements Screen, InputProcessor{
 		int x = Gdx.input.getX();
 		int y = 480 - Gdx.input.getY();
 
-		if (Gdx.input.isButtonPressed(Buttons.LEFT) && singlePlayer.contains(x, y)) {
+		if (Gdx.input.isTouched() && singlePlayer.contains(x, y)) {
 			batch.begin();
 			batch.draw(onClick_singleplayer, singlePlayer.x, singlePlayer.y);
 			batch.end();
-			
-			boolean cunt = keyUp(Buttons.LEFT);
-			
-			if (!cunt)
-			{
-				game.newGame();
-				game.setScreen(game.gameScreen);
-			}
-		}	
+			flag = true;
+		}
+		
+		if (!Gdx.input.isTouched() && flag)
+		{
+			game.newGame();
+			game.setScreen(game.gameScreen);
+		}
 	}
 			/*
 			 * Uncomment these once the screens are started else
@@ -171,66 +168,5 @@ public class MainMenuScreen implements Screen, InputProcessor{
 	public void show() {
 		// TexturePacker2.process("img", "../DevMaze-android/assets/",
 		// "starters.pak");
-	}
-
-	@Override
-	public boolean keyDown(int keycode) {
-		if (Gdx.input.isTouched())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		if (Gdx.input.isKeyPressed(keycode))
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
