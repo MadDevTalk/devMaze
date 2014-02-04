@@ -12,8 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.devtalk.actors.Monster.MonsterState;
 import com.devtalk.actors.Monster.MonsterType;
-import com.devtalk.actors.Monster.State;
 import com.devtalk.maze.DevMaze;
 import com.devtalk.maze.Maze;
 import com.devtalk.maze.PathList;
@@ -244,28 +244,31 @@ public class MonsterHandler {
 				// Move towards player if needed - fan out (not all monsters
 				// overlap)
 				// Attempt to hit player after count (held in monster)
-				Random r = new Random();
-				int random = r.nextInt(monster.getAttackFrequency());
-				if (random == 0) {
-					player.detectHit(monster);
+				if (!monster.isAttacking()) {
+					Random r = new Random();
+					int random = r.nextInt(monster.getAttackFrequency());
+					if (random == 0)
+						monster.attack();
 				}
 
-				monster.setState(State.FOLLOWING_PLAYER);
+				monster.setState(MonsterState.FOLLOWING_PLAYER);
+				break;
+			case ATTACKING:
 				break;
 			case FOLLOWING_PLAYER:
 				setDestination(monster, player);
 				if (!seekDestination(monster))
-					monster.setState(State.IN_COMBAT);
+					monster.setState(MonsterState.IN_COMBAT);
 				break;
 			case FINDING_DESTINATION:
 				if (monster.sawPlayer())
-					monster.setState(State.FOLLOWING_PLAYER);
+					monster.setState(MonsterState.FOLLOWING_PLAYER);
 				else if (!seekDestination(monster))
-					monster.setState(State.AT_DESTINATION);
+					monster.setState(MonsterState.AT_DESTINATION);
 				break;
 			case AT_DESTINATION:
 				if (setDestination(monster, null))
-					monster.setState(State.FINDING_DESTINATION);
+					monster.setState(MonsterState.FINDING_DESTINATION);
 				break;
 			default:
 				// OH NOOOOOOOOOO

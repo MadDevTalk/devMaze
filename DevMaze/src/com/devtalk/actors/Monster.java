@@ -13,68 +13,46 @@ public interface Monster {
 		EASY, MEDIUM, HARD,
 	};
 
-	public static enum State {
+	public static enum MonsterState {
 		FOLLOWING_PLAYER,
 		FINDING_DESTINATION,
 		AT_DESTINATION, 
 		IN_COMBAT,
+		ATTACKING,
 		DYING,
 	};
 
-	public float angle();
-
-	public void dispose();
-
 	public int getAttackFrequency();
-
 	public int getCount();
-
 	public int getCurrentHealth();
-
-	public Tile getDestination();
-
-	public int getHitDamage();
-
-	public Rectangle getHitRectangle();
-
-	public List<Tile> getPath();
-
-	public Vector2 getPosition();
-
-	public Vector2 getPrevPosition();
-
-	public Rectangle getRectangle();
-
-	public State getState();
-
 	public int getTotalHealth();
-
-	public Vector2 getVelocity();
-
-	public Vector2 getVelocityLatch();
-
 	public int getVelocityScale();
-
-	public boolean isAlive();
-
-	public boolean isMoving();
-
-	public boolean sawPlayer();
-
+	public int getHitDamage();
+	public void attack();
 	public void setCount(int count);
-
 	public void setCurrentHealth(int health);
-
 	public void setDestination(Tile destination);
-
 	public void setPath(List<Tile> path);
-
-	public void setState(State state);
-
-	public TextureRegion texture(float stateTime);
-
-	public String toString();
-
+	public void setState(MonsterState state);
+	public void dispose();
 	public void updatePos();
+	public float angle();
+	public boolean isAlive();
+	public boolean isMoving();
+	public boolean sawPlayer();
+	public boolean isAttacking();
+	
+	public Tile getDestination();
+	public Rectangle getHitRectangle();
+	public List<Tile> getPath();
+	public Vector2 getPosition();
+	public Vector2 getPrevPosition();
+	public Vector2 getVelocity();
+	public Vector2 getVelocityLatch();
+	
+	public Rectangle getRectangle();
+	public MonsterState getState();
+	public TextureRegion texture(float stateTime);
+	public String toString();
 
 }

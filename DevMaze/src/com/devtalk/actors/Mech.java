@@ -46,7 +46,7 @@ public class Mech implements Monster {
 	int attackFrequency;
 	boolean sawPlayer;
 
-	State state;
+	MonsterState state;
 	List<Tile> path;
 	Tile destination;
 	int count;
@@ -56,7 +56,7 @@ public class Mech implements Monster {
 		this.player = g.player;
 		this.maze = g.maze;
 
-		this.state = State.AT_DESTINATION;
+		this.state = MonsterState.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 
@@ -168,7 +168,7 @@ public class Mech implements Monster {
 		return rectangle;
 	}
 
-	public State getState() {
+	public MonsterState getState() {
 		return state;
 	}
 
@@ -216,7 +216,7 @@ public class Mech implements Monster {
 		this.path = path;
 	}
 
-	public void setState(State state) {
+	public void setState(MonsterState state) {
 		this.state = state;
 	}
 
