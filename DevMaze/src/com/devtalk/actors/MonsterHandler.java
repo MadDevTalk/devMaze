@@ -243,32 +243,23 @@ public class MonsterHandler {
 				// TODO:
 				// Move towards player if needed - fan out (not all monsters
 				// overlap)
-				// Attempt to hit player after count (held in monster)
-				if (!monster.isAttacking()) {
+				
+				if (!monster.attack()) {
 					Random r = new Random();
 					int random = r.nextInt(monster.getAttackFrequency());
 					if (random == 0)
 						monster.attack();
 				}
-
-				monster.setState(MonsterState.FOLLOWING_PLAYER);
-				break;
-			case ATTACKING:
-				break;
-			case FOLLOWING_PLAYER:
-				setDestination(monster, player);
-				if (!seekDestination(monster))
-					monster.setState(MonsterState.IN_COMBAT);
 				break;
 			case FINDING_DESTINATION:
-				if (monster.sawPlayer())
-					monster.setState(MonsterState.FOLLOWING_PLAYER);
-				else if (!seekDestination(monster))
-					monster.setState(MonsterState.AT_DESTINATION);
+				if (!seekDestination(monster)) monster.setState(MonsterState.AT_DESTINATION);
 				break;
 			case AT_DESTINATION:
-				if (setDestination(monster, null))
+				if (monster.sawPlayer()) monster.setState(MonsterState.IN_COMBAT);
+				else {
+					setDestination(monster, null);
 					monster.setState(MonsterState.FINDING_DESTINATION);
+				}
 				break;
 			default:
 				// OH NOOOOOOOOOO

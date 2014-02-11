@@ -1,7 +1,6 @@
 package com.devtalk.actors;
 
 import java.util.List;
-
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -14,11 +13,9 @@ public interface Monster {
 	};
 
 	public static enum MonsterState {
-		FOLLOWING_PLAYER,
 		FINDING_DESTINATION,
 		AT_DESTINATION, 
 		IN_COMBAT,
-		ATTACKING,
 		DYING,
 	};
 
@@ -28,7 +25,6 @@ public interface Monster {
 	public int getTotalHealth();
 	public int getVelocityScale();
 	public int getHitDamage();
-	public void attack();
 	public void setCount(int count);
 	public void setCurrentHealth(int health);
 	public void setDestination(Tile destination);
@@ -37,10 +33,10 @@ public interface Monster {
 	public void dispose();
 	public void updatePos();
 	public float angle();
+	public boolean attack();
 	public boolean isAlive();
 	public boolean isMoving();
 	public boolean sawPlayer();
-	public boolean isAttacking();
 	
 	public Tile getDestination();
 	public Rectangle getHitRectangle();

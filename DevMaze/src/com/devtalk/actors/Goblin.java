@@ -284,4 +284,10 @@ public class Goblin implements Monster {
 				}
 	}
 
+	@Override
+	public boolean attack() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

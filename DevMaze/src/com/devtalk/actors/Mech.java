@@ -23,6 +23,7 @@ public class Mech implements Monster {
 	private Maze maze;
 
 	float stateTime;
+	float attackTime;
 	Texture walkSheet = new Texture(Gdx.files.internal("mech_walking.png"));
 	Texture attackSheet = new Texture(Gdx.files.internal("mech_attacking.png"));
 	TextureRegion[] walkFrames = new TextureRegion[6];
@@ -111,7 +112,6 @@ public class Mech implements Monster {
 
 		// Start with full health
 		this.currentHealth = this.totalHealth;
-		this.sawPlayer = false;
 	}
 
 	public float angle() {
@@ -225,7 +225,6 @@ public class Mech implements Monster {
 
 		if (!game.pause) {
 			switch (state) {
-			case FOLLOWING_PLAYER:
 			case FINDING_DESTINATION:
 				return this.walkAnimation.getKeyFrame(this.stateTime, true);
 			case AT_DESTINATION:
@@ -268,6 +267,12 @@ public class Mech implements Monster {
 					xPos += (velocity.x * (DevMaze.MONSTER_SIZE_PX / 2));
 					xPos += (velocity.y * (DevMaze.MONSTER_SIZE_PX / 2));
 				}
+	}
+
+	@Override
+	public boolean attack() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
