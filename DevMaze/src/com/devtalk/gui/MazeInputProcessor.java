@@ -18,6 +18,7 @@ public class MazeInputProcessor implements InputProcessor {
 	// private PuppetMaster monsterHandler;
 
 	private Vector3 touch_down;
+	private int startX, startY, endX, endY;
 
 	public MazeInputProcessor(DevMaze game) {
 		this.player = game.player;
@@ -70,12 +71,14 @@ public class MazeInputProcessor implements InputProcessor {
 		default:
 			break;
 		}
+		
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
@@ -88,13 +91,16 @@ public class MazeInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// if (button == Buttons.LEFT)
-		// touch_down = new Vector3(screenX, screenY, 0);
+		
+		System.out.println("touchDown( " + screenX + " " + screenY + " )");
+		startX = screenX;
+		startY = screenY;
 
 		return false;
 	}
 
 	@Override
-	public boolean touchDragged(int x, int y, int pointer) {
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		// the current position of the pointer
 		// Vector3 new_position = new Vector3(x, y, 0);
 
@@ -106,12 +112,43 @@ public class MazeInputProcessor implements InputProcessor {
 
 		// move the drag started position to the current position
 		// touch_down.add(new_position);
-
+		System.out.println("touchDragged( " + screenX + " " + screenY + " )");
+		
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		
+		System.out.println("touchUp( " + screenX + " " + screenY + " )");
+		endX = screenX;
+		endY = screenY;
+		player.velocity.set(0, 0, 0);
+
+		int x = endX - startX; int x_mag = Math.abs(x);
+		int y = endY - startY; int y_mag = Math.abs(y);
+		System.out.println("x( " + x + " )");
+		System.out.println("y( " + y + " )");
+		
+		if(x_mag > y_mag) {
+			if(x > 0) {
+				player.start(-DevMaze.KEY_VEL_PxPer60S, 0);
+			}
+			else {
+				player.start(DevMaze.KEY_VEL_PxPer60S, 0);
+			}
+		}
+		else {
+			if(y > 0) {
+				player.start(0, DevMaze.KEY_VEL_PxPer60S);
+			}
+			else {
+				player.start(0, -DevMaze.KEY_VEL_PxPer60S);
+			}
+		}
+
+		System.out.println("Player Velocity: " + player.velocity.x + ", " + player.velocity.y);
+		
 		return false;
 	}
 

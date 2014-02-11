@@ -156,6 +156,7 @@ public class Player {
 	}
 
 	public void start(int xVel, int yVel) {
+		System.out.println("START");
 		this.velocity.add(xVel, yVel, 0);
 	}
 

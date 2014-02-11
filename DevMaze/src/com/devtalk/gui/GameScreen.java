@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
 		inputMultiplexer.addProcessor(new HUDInputProcessor(g, this.hud));
 		inputMultiplexer.addProcessor(new MazeInputProcessor(g));
 		
-		gestureDetector = new DirectionalGestureDetector(
+		/*gestureDetector = new DirectionalGestureDetector(
 			new DirectionalGestureDetector.DirectionListener(){
 			
 			@Override
@@ -70,8 +70,8 @@ public class GameScreen implements Screen {
 				System.out.println("void down()");
 				player.start(-DevMaze.KEY_VEL_PxPer60S, 0);
 			}
-		});
-		Gdx.input.setInputProcessor(gestureDetector);
+		});*/
+		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
 
 
