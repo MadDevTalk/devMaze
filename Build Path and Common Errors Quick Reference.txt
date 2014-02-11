@@ -22,7 +22,7 @@ This document outlines how each tab of the build path for each project should lo
 	-Libraries
 		gdx-backend-android.jar
 	-Order and Export
-		No action necessary
+		Make sure everything is selected.
 
 *DevMaze-desktop
 

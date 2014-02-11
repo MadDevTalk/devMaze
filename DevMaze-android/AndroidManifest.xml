@@ -4,9 +4,10 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="20" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/devmaze_logo"
         android:label="@string/app_name" >
         <activity android:name="MainActivity" android:icon="@drawable/devmaze_logo" android:screenOrientation="landscape">
