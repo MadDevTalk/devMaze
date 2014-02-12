@@ -65,12 +65,10 @@ public class MonsterHandler {
 	 * http://www.policyalmanac.org/games/aStarTutorial.htm
 	 */
 	private boolean findPath(Monster monster, Tile end) {
-		Tile start = maze.tileAtLocation(monster.getPosition().x,
-				monster.getPosition().y);
+		Tile start = maze.tileAtLocation(monster.getPosition().x, monster.getPosition().y);
 		PathList openList = new PathList();
 		PathList closedList = new PathList();
-		PathNode currentNode = new PathNode(start, null, 0, heuristic(start,
-				end));
+		PathNode currentNode = new PathNode(start, null, 0, heuristic(start, end));
 
 		// Add the starting node to the open list
 		openList.add(currentNode);
@@ -118,6 +116,7 @@ public class MonsterHandler {
 											neighbor, end)));
 				}
 		}
+		
 		return false;
 	}
 
@@ -148,21 +147,8 @@ public class MonsterHandler {
 	}
 
 	public void render() {
-		for (Monster monster : this.monsters) {
-			Vector3 pos = new Vector3(monster.getPosition().x, monster.getPosition().y, 0);
-			if (camera.frustum.sphereInFrustum(pos, monster.getRectangle().getWidth())) {
-				TextureRegion tmp = monster.texture(Gdx.graphics.getDeltaTime());
-				batch.draw(tmp, monster.getPosition().x, monster.getPosition().y,
-						(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-						tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
-						monster.angle());
-	
-				if (DevMaze.DEBUG)
-					game.font.draw(batch, "HP: " + monster.getCurrentHealth() + "/"
-							+ monster.getTotalHealth(), monster.getPosition().x,
-							monster.getPosition().y);
-			}
-		}
+		for (Monster monster : this.monsters)
+			monster.render();
 	}
 
 	private boolean seekDestination(Monster monster) {
@@ -224,45 +210,51 @@ public class MonsterHandler {
 		if (player == null) {
 			Random r = new Random();
 			end = maze.openTiles.get(r.nextInt(maze.openTiles.size() - 1));
-		} else if (monster.getDestination() == maze.tileAtLocation(
-				player.position.x, player.position.y)) {
-			return true;
 		} else {
 			end = maze.tileAtLocation(player.position.x, player.position.y);
 		}
 
-		// find path from monster position to end
-		return findPath(monster, end);
-
+		if (monster.getDestination() != end)
+			return findPath(monster, end); // find path from monster position to end
+		else
+			return true;
 	}
 
 	public void updateMonsters() {
 		for (Monster monster : monsters) {
 			switch (monster.getState()) {
 			case IN_COMBAT:
-				// TODO:
-				// Move towards player if needed - fan out (not all monsters
-				// overlap)
-				
-				if (!monster.attack()) {
+				if (!monster.attacking()) {
 					Random r = new Random();
 					int random = r.nextInt(monster.getAttackFrequency());
-					if (random == 0)
+					if (random == 0) {
 						monster.attack();
-				}
+						monster.setState(MonsterState.FOLLOWING_PLAYER);
+					}
+				} 
+				
+				break;
+			case FOLLOWING_PLAYER:
+				setDestination(monster, player);
+				if (!seekDestination(monster))
+					monster.setState(MonsterState.IN_COMBAT);
 				break;
 			case FINDING_DESTINATION:
-				if (!seekDestination(monster)) monster.setState(MonsterState.AT_DESTINATION);
+				if (monster.sawPlayer())
+					monster.setState(MonsterState.FOLLOWING_PLAYER);
+				else if (!seekDestination(monster)) 
+					monster.setState(MonsterState.AT_DESTINATION);
 				break;
 			case AT_DESTINATION:
-				if (monster.sawPlayer()) monster.setState(MonsterState.IN_COMBAT);
+				if (monster.sawPlayer()) {
+					monster.setState(MonsterState.IN_COMBAT);
+				}
 				else {
 					setDestination(monster, null);
 					monster.setState(MonsterState.FINDING_DESTINATION);
 				}
 				break;
 			default:
-				// OH NOOOOOOOOOO
 				break;
 			}
 

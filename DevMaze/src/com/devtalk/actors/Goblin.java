@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.devtalk.maze.DevMaze;
 import com.devtalk.maze.Maze;
 import com.devtalk.maze.Tile;
@@ -21,6 +24,8 @@ public class Goblin implements Monster {
 	private DevMaze game;
 	private Player player;
 	private Maze maze;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
 
 	float stateTime;
 	Animation[] walkAnimation = new Animation[8];
@@ -52,6 +57,8 @@ public class Goblin implements Monster {
 		this.game = g;
 		this.player = g.player;
 		this.maze = g.maze;
+		this.camera = g.camera;
+		this.batch = g.batch;
 
 		this.state = MonsterState.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
@@ -284,8 +291,28 @@ public class Goblin implements Monster {
 				}
 	}
 
-	@Override
-	public boolean attack() {
+	public void attack() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void render() {
+		Vector3 pos = new Vector3(this.getPosition().x, this.getPosition().y, 0);
+		if (camera.frustum.sphereInFrustum(pos, this.getRectangle().getWidth())) {
+			TextureRegion tmp = this.texture(Gdx.graphics.getDeltaTime());
+			batch.draw(tmp, this.getPosition().x, this.getPosition().y,
+					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+					this.angle());
+
+			if (DevMaze.DEBUG)
+				game.font.draw(batch, "HP: " + this.getCurrentHealth() + "/"
+						+ this.getTotalHealth(), this.getPosition().x,
+						this.getPosition().y);
+		}
+	}
+
+	public boolean attacking() {
 		// TODO Auto-generated method stub
 		return false;
 	}

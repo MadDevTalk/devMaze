@@ -14,6 +14,7 @@ public interface Monster {
 
 	public static enum MonsterState {
 		FINDING_DESTINATION,
+		FOLLOWING_PLAYER,
 		AT_DESTINATION, 
 		IN_COMBAT,
 		DYING,
@@ -32,8 +33,10 @@ public interface Monster {
 	public void setState(MonsterState state);
 	public void dispose();
 	public void updatePos();
+	public void attack();
+	public void render();
 	public float angle();
-	public boolean attack();
+	public boolean attacking();
 	public boolean isAlive();
 	public boolean isMoving();
 	public boolean sawPlayer();
