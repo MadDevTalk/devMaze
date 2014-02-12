@@ -47,19 +47,15 @@ public class AButtonModule implements HUDModule {
 	}
 
 	private Rectangle rectangle() {
-		float x = camera.position.x + (camera.viewportWidth / 2)
-				- (3 * button.getWidth() / 2);
-		float y = camera.position.y - (camera.viewportHeight / 2)
-				+ (3 * button.getHeight() / 2);
+		float x = camera.position.x + (camera.viewportWidth / 2) - (3 * button.getWidth() / 2);
+		float y = camera.position.y - (camera.viewportHeight / 2) + (3 * button.getHeight() / 2);
 		return new Rectangle(x, y, button.getWidth(), button.getHeight());
 	}
 
 	@Override
 	public void render() {
-		float x = camera.position.x + (camera.viewportWidth / 2)
-				- (3 * button.getWidth() / 2);
-		float y = camera.position.y - (camera.viewportHeight / 2)
-				+ (3 * button.getHeight() / 2);
+		float x = camera.position.x + (camera.viewportWidth / 2) - (3 * button.getWidth() / 2);
+		float y = camera.position.y - (camera.viewportHeight / 2) + (3 * button.getHeight() / 2);
 		batch.draw(button, x, y, button.getWidth(), button.getHeight());
 	}
 

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.devtalk.maze.DevMaze;
 import com.devtalk.maze.Maze;
 import com.devtalk.maze.Tile;
@@ -21,12 +24,18 @@ public class Mech implements Monster {
 	private DevMaze game;
 	private Player player;
 	private Maze maze;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
 
 	float stateTime;
-	static Texture walkSheet = new Texture(
-			Gdx.files.internal("mech_walking.png"));
+	float attackTime;
+	Texture walkSheet = new Texture(Gdx.files.internal("mech_walking.png"));
+	Texture attackSheet = new Texture(Gdx.files.internal("mech_attacking.png"));
 	TextureRegion[] walkFrames = new TextureRegion[6];
+	TextureRegion[] attackFrames = new TextureRegion[6];
 	Animation walkAnimation = new Animation(0.025f, walkFrames);
+	Animation attackAnimation = new Animation(0.025f, attackFrames);
+	Animation dyingAnimation = new Animation(0.025f, walkFrames);
 	Rectangle rectangle;
 
 	float prevAngle;
@@ -41,9 +50,10 @@ public class Mech implements Monster {
 	int hitRadius;
 	int hitDamage;
 	int attackFrequency;
+	int attackMotionLength;
 	boolean sawPlayer;
 
-	State state;
+	MonsterState state;
 	List<Tile> path;
 	Tile destination;
 	int count;
@@ -52,8 +62,10 @@ public class Mech implements Monster {
 		this.game = g;
 		this.player = g.player;
 		this.maze = g.maze;
+		this.camera = g.camera;
+		this.batch = g.batch;
 
-		this.state = State.AT_DESTINATION;
+		this.state = MonsterState.AT_DESTINATION;
 		this.path = new ArrayList<Tile>();
 		this.count = 0;
 
@@ -63,12 +75,18 @@ public class Mech implements Monster {
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
 						/ FRAME_ROWS);
+		
+		TextureRegion[][] temp = TextureRegion.split(attackSheet,
+				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
+				/ FRAME_ROWS);
 
 		int index = 0;
 		for (int i = 0; i < FRAME_ROWS; i++)
 			for (int j = 0; j < FRAME_COLS; j++)
-				if (index < walkFrames.length)
+				if (index < walkFrames.length) {
+					this.attackFrames[index] = temp[i][j];
 					this.walkFrames[index++] = tmp[i][j];
+				}
 
 		this.stateTime = 0.0f;
 		this.position = new Vector2(xPos, yPos);
@@ -81,7 +99,7 @@ public class Mech implements Monster {
 			this.hitRadius = DevMaze.MONSTER_SIZE_PX / 8;
 			this.totalHealth = 10;
 			this.hitDamage = 2;
-			this.attackFrequency = 65;
+			this.attackFrequency = 100;
 			this.velocityScale = 1;
 			break;
 		case MEDIUM:
@@ -102,7 +120,6 @@ public class Mech implements Monster {
 
 		// Start with full health
 		this.currentHealth = this.totalHealth;
-		this.sawPlayer = false;
 	}
 
 	public float angle() {
@@ -159,7 +176,7 @@ public class Mech implements Monster {
 		return rectangle;
 	}
 
-	public State getState() {
+	public MonsterState getState() {
 		return state;
 	}
 
@@ -207,17 +224,47 @@ public class Mech implements Monster {
 		this.path = path;
 	}
 
-	public void setState(State state) {
+	public void setState(MonsterState state) {
 		this.state = state;
+	}
+	
+	public void render() {
+		this.attackMotionLength --;
+		
+		Vector3 pos = new Vector3(this.getPosition().x, this.getPosition().y, 0);
+		if (camera.frustum.sphereInFrustum(pos, this.getRectangle().getWidth())) {
+			TextureRegion tmp = this.texture(Gdx.graphics.getDeltaTime());
+			batch.draw(tmp, this.getPosition().x, this.getPosition().y,
+					(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
+					tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1,
+					this.angle());
+
+			if (DevMaze.DEBUG)
+				game.font.draw(batch, "HP: " + this.getCurrentHealth() + "/"
+						+ this.getTotalHealth(), this.getPosition().x,
+						this.getPosition().y);
+		}
 	}
 
 	public TextureRegion texture(float stateTime) {
 		this.stateTime += stateTime;
 
-		if (isMoving() && !game.pause)
-			return this.walkAnimation.getKeyFrame(this.stateTime, true);
-		else
-			return this.walkFrames[0];
+		if (!game.pause) {
+			switch (state) {
+			case FINDING_DESTINATION:
+			case FOLLOWING_PLAYER:
+				return this.walkAnimation.getKeyFrame(this.stateTime, true);
+			case AT_DESTINATION:
+				return this.walkFrames[0];
+			case IN_COMBAT:
+				return this.attackAnimation.getKeyFrame(this.stateTime, true);
+			case DYING:
+				//return this.dyingAnimation.getKeyFrame(this.stateTime, false);
+				break;
+			}
+		}
+		
+		return this.walkFrames[0];
 	}
 
 	public String toString() {
@@ -234,7 +281,7 @@ public class Mech implements Monster {
 		float xPos = this.position.x;
 		float yPos = this.position.y;
 
-		// TODO this can be more efficient by checking by tile
+		// TODO this can be more efficient - sucks currently
 		if (!this.sawPlayer)
 			if (this.velocity.x != 0 || this.velocity.y != 0)
 				while (maze.tileAtLocation(xPos, yPos) != null
@@ -247,6 +294,14 @@ public class Mech implements Monster {
 					xPos += (velocity.x * (DevMaze.MONSTER_SIZE_PX / 2));
 					xPos += (velocity.y * (DevMaze.MONSTER_SIZE_PX / 2));
 				}
+	}
+
+	public void attack() {
+		attackMotionLength = 5;
+	}
+	
+	public boolean attacking() {
+		return (attackMotionLength > 0);
 	}
 
 }

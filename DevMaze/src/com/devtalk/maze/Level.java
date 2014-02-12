@@ -20,7 +20,7 @@ public class Level {
 		case LEVEL_1:
 			this.mazeWidth = 15;
 			this.mazeHeight = 11;
-			this.numMonsters = 0;
+			this.numMonsters = 5;
 			this.numItems = 30;
 			this.monsterDifficulty = MonsterType.EASY;
 			break;
