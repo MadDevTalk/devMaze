@@ -8,6 +8,7 @@
 *.pak
 *.cache
 *.classpath
+*.db
 
 # Package Files #
 *.war
