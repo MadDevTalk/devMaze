@@ -5,13 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.devTalk.devMaze.actors.Monster.MonsterState;
 import com.devTalk.devMaze.actors.Monster.MonsterType;
 import com.devTalk.devMaze.maze.DevMaze;
@@ -27,16 +22,12 @@ public class MonsterHandler {
 	private Maze maze;
 	private DevMaze game;
 	private Player player;
-	private SpriteBatch batch;
-	private OrthographicCamera camera;
 
 	public List<Monster> monsters;
 
 	public MonsterHandler(DevMaze g) {
 		this.game = g;
 		this.maze = g.maze;
-		this.batch = g.batch;
-		this.camera = g.camera;
 		this.player = g.player;
 		this.monsters = new ArrayList<Monster>();
 	}
@@ -189,18 +180,7 @@ public class MonsterHandler {
 		monsters.clear();
 		Random r = new Random();
 		for (int i = 0; i < monsterCount; i++) {
-			Tile openTile = maze.openTiles
-					.get(r.nextInt(maze.openTiles.size()));
-			if (i % 2 == 0)
-				monsters.add(new Goblin(
-						(float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						difficulty, game));
-			else
-				monsters.add(new Mech(
-						(float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						difficulty, game));
+			//Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
 		}
 	}
 
