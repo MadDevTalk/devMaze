@@ -20,13 +20,11 @@ public class MonsterHandler {
 	private static final int G_WEIGHT_AXIAL = 10;
 
 	private Maze maze;
-	private DevMaze game;
 	private Player player;
 
 	public List<Monster> monsters;
 
 	public MonsterHandler(DevMaze g) {
-		this.game = g;
 		this.maze = g.maze;
 		this.player = g.player;
 		this.monsters = new ArrayList<Monster>();

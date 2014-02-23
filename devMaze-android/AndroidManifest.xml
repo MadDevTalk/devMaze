@@ -8,7 +8,7 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/devmaze_logo"
         android:label="@string/app_name" 
         android:screenOrientation="landscape"> 
         <activity
