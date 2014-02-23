@@ -122,14 +122,14 @@ public class Player {
 	}
 
 	public boolean isMoving() {
-		return this.walking || !this.velocity.isZero();
+		return this.walking;
 	}
 
 	public void render() {
 		TextureRegion tmp = this.texture(Gdx.graphics.getDeltaTime());
 		batch.draw(tmp, this.position.x, this.position.y,
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
-				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, this.angle());
+				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, angle());
 
 		if (DevMaze.DEBUG) 
 		{
@@ -156,7 +156,6 @@ public class Player {
 	}
 
 	public void start(int xVel, int yVel) {
-		System.out.println("START");
 		this.velocity.add(xVel, yVel, 0);
 	}
 
@@ -181,20 +180,14 @@ public class Player {
 	}
 
 	public void updatePos(int xOffset, int yOffset) {
-
-		// Determine direction and speed
-		if (xOffset != 0 || yOffset != 0) {
-			this.walking = true;
-			this.prevPosition.set(position.cpy());
-
-			xOffset = Math.min(DevMaze.SPEED_LATCH_PX, xOffset);
-			yOffset = Math.min(DevMaze.SPEED_LATCH_PX, yOffset);
-		} else
+		// Skip if we are not moving
+		if (xOffset == 0 && yOffset == 0) {
+			walking = false;
 			return;
-
+		}
+		
 		// Collision checking
-		List<Tile> neighbors = maze.tileAtLocation(position.x, position.y)
-				.getNeighbors();
+		List<Tile> neighbors = maze.tileAtLocation(position.x, position.y).getNeighbors();
 
 		for (Tile neighbor : neighbors) {
 			if (!neighbor.inMaze) {
@@ -209,11 +202,16 @@ public class Player {
 					yOffset = 0;
 			}
 		}
-
-		this.position.add(xOffset, yOffset, 0);
-		this.rectangle.set(this.position.x, this.position.y,
-				DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
-		maze.tileAtLocation(this.position.x, this.position.y).tread = true;
+		
+		if (xOffset != 0 || yOffset != 0) {
+			walking = true;
+			prevPosition.set(position.cpy());
+			position.add(xOffset, yOffset, 0);
+		} else
+			walking = false;
+		
+		rectangle.set(position.x, position.y, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
+		maze.tileAtLocation(position.x, position.y).tread = true;
 	}
 
 }

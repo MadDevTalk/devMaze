@@ -1,10 +1,8 @@
 package com.devTalk.devMaze.gui;
 
-//import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector3;
-//import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
 import com.devTalk.devMaze.actors.Player;
 import com.devTalk.devMaze.maze.DevMaze;
 
@@ -13,17 +11,15 @@ import com.devTalk.devMaze.maze.DevMaze;
 //
 public class MazeInputProcessor implements InputProcessor {
 
+	public static final int DRAG_THRESHOLD_PX = 20;
+	
 	private Player player;
-
-	// private PuppetMaster monsterHandler;
-
-	private Vector3 touch_down;
-	private int startX, startY, endX, endY;
+	private Vector2 touch_down, touch_up;
 
 	public MazeInputProcessor(DevMaze game) {
-		this.player = game.player;
-		// this.monsterHandler = game.monsterHandler;
-		this.touch_down = new Vector3();
+		player = game.player;
+		touch_down = new Vector2();
+		touch_up = new Vector2();
 	}
 
 	@Override
@@ -90,66 +86,48 @@ public class MazeInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// if (button == Buttons.LEFT)
-		
-		System.out.println("touchDown( " + screenX + " " + screenY + " )");
-		startX = screenX;
-		startY = screenY;
-
+		touch_down.set(screenX, screenY);
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// the current position of the pointer
-		// Vector3 new_position = new Vector3(x, y, 0);
-
-		// offset of new position from where drag started
-		// new_position.sub(touch_down);
-
-		// move camera by offset, need to invert x
-		// player.updatePos((int) -new_position.x, (int) new_position.y);
-
-		// move the drag started position to the current position
-		// touch_down.add(new_position);
-		System.out.println("touchDragged( " + screenX + " " + screenY + " )");
-		
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		
-		System.out.println("touchUp( " + screenX + " " + screenY + " )");
-		endX = screenX;
-		endY = screenY;
-		player.velocity.set(0, 0, 0);
+		touch_up.set(screenX, screenY);
+		player.velocity.set(0,0,0);
 
-		int x = endX - startX; int x_mag = Math.abs(x);
-		int y = endY - startY; int y_mag = Math.abs(y);
-		System.out.println("x( " + x + " )");
-		System.out.println("y( " + y + " )");
+		int x = (int) (touch_up.x - touch_down.x);
+		int y = (int) (touch_up.y - touch_down.y);
 		
-		if(x_mag > y_mag) {
-			if(x > 0) {
+		int mag_x = Math.abs(x);
+		int mag_y = Math.abs(y);
+		
+		// If we are just tapping, stop
+		if (mag_x <= DRAG_THRESHOLD_PX && mag_y <= DRAG_THRESHOLD_PX)
+			return false;
+		
+		// Otherwise find and move in correct cardinal direction
+		if(mag_x > mag_y) {
+			
+			if(x > 0)
 				player.start(-DevMaze.KEY_VEL_PxPer60S, 0);
-			}
-			else {
+			else
 				player.start(DevMaze.KEY_VEL_PxPer60S, 0);
-			}
-		}
-		else {
-			if(y > 0) {
+			
+		} else {
+			
+			if(y > 0)
 				player.start(0, DevMaze.KEY_VEL_PxPer60S);
-			}
-			else {
+			else
 				player.start(0, -DevMaze.KEY_VEL_PxPer60S);
-			}
-		}
 
-		System.out.println("Player Velocity: " + player.velocity.x + ", " + player.velocity.y);
+		}
 		
-		return false;
+		return true;
 	}
 
 }
