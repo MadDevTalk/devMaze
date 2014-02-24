@@ -5,8 +5,8 @@ import org.robovm.cocoatouch.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.me.mygdxgame.MyGdxGame;
-import com.me.mygdxgame.RobovmLauncher;
+import com.devTalk.devMaze.maze.DevMaze;
+import com.devTalk.devMaze.RobovmLauncher;
 
 public class RobovmLauncher extends IOSApplication.Delegate {
 	@Override
@@ -14,7 +14,7 @@ public class RobovmLauncher extends IOSApplication.Delegate {
 		IOSApplicationConfiguration config = new IOSApplicationConfiguration();
 		config.orientationLandscape = true;
 		config.orientationPortrait = false;
-		return new IOSApplication(new MyGdxGame(), config);
+		return new IOSApplication(new DevMaze(), config);
 	}
 
 	public static void main(String[] argv) {
