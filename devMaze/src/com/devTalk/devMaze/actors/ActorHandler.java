@@ -21,10 +21,12 @@ public class ActorHandler {
 
 	private Maze maze;
 	private Player player;
+	private DevMaze game;
 
 	public List<Actor> actors;
 
 	public ActorHandler(DevMaze g) {
+		this.game = g;
 		this.maze = g.maze;
 		this.player = g.player;
 		this.actors = new ArrayList<Actor>();
@@ -173,7 +175,7 @@ public class ActorHandler {
 		Random r = new Random();
 		for (int i = 0; i < monsterCount; i++) {
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			actors.add(new Guard());
+			actors.add(new Guard(game, openTile));
 		}
 	}
 

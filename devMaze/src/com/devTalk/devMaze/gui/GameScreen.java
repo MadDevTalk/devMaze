@@ -118,8 +118,7 @@ public class GameScreen implements Screen {
 	}
 
 	public void resize(int width, int height) {
-		setViewport(640, 480, false);
-		stage.getCamera().position.set(640/2, 480/2, 0);
+		//TODO;
 	}
 
 	// Return from pause

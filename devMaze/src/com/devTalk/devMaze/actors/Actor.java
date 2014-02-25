@@ -33,7 +33,6 @@ public interface Actor {
 	public boolean       isHitBy(Rectangle hitArea);
 	
 	public Tile          getDestination();
-	public Rectangle     getHitRectangle();
 	public List<Tile>    getPath();
 	public Vector2       getPosition();
 	public Vector2       getPrevPosition();
@@ -42,7 +41,7 @@ public interface Actor {
 	
 	public Rectangle     getRectangle();
 	public ActorState    getState();
-	public TextureRegion texture(float stateTime);
+	public TextureRegion texture();
 	public String        toString();
 
 }

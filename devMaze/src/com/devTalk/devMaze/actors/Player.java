@@ -99,12 +99,7 @@ public class Player {
 	}
 
 	public void detectHit(Actor monster) {
-		if (monster.getHitRectangle().overlaps(this.rectangle)) {
-			//TODO:
-			if (!this.isAlive()) {
-				game.setScreen(game.mainMenuScreen);
-			}
-		}
+		// TODO:
 	}
 
 	public void dispose() {
