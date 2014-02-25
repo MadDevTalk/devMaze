@@ -49,11 +49,11 @@ public class Guard implements Actor {
 		maze = g.maze;
 		player = g.player;
 		
-		int centered_x = 1;
-		int centered_y = 1;
+		int xPos = (int) (location.center.x - (DevMaze.MONSTER_SIZE_PX / 2));
+		int yPos = (int) (location.center.y - (DevMaze.MONSTER_SIZE_PX / 2));
 		
-		this.rectangle = new Rectangle(centered_x, centered_y, DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
-		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		rectangle = new Rectangle(xPos, yPos, DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
+		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
 				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
 						/ FRAME_ROWS);
@@ -61,11 +61,7 @@ public class Guard implements Actor {
 		int index = 0;
 		for (int i = 0; i < FRAME_ROWS; i++)
 			for (int j = 0; j < FRAME_COLS; j++)
-				this.walkFrames[index++] = tmp[i][j];
-		
-
-		int xPos = (int) location.center.x;
-		int yPos = (int) location.center.y;
+				walkFrames[index++] = tmp[i][j];
 		
 		state = ActorState.AT_DESTINATION;		
 		position = new Vector2(xPos, yPos);
@@ -87,7 +83,7 @@ public class Guard implements Actor {
 	}
 
 	public int getVelocityScale() {
-		return velocityScale + (alerted ? 1 : 0);
+		return velocityScale + (alerted ? 2 : 0);
 	}
 
 	public void render() {
@@ -128,7 +124,7 @@ public class Guard implements Actor {
 			float xPos = position.x;
 			float yPos = position.y;
 	
-			// TODO this can be more efficient by checking by tile
+			// TODO this can be more efficient
 			if (!alerted) {
 				while (maze.tileAtLocation(xPos, yPos) != null && maze.tileAtLocation(xPos, yPos).inMaze) {
 					if (player.rectangle.contains(xPos, yPos)) {

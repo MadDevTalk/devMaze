@@ -48,15 +48,15 @@ public class Player {
 	public boolean attack;
 
 	public Player(DevMaze g) {
-		this.attack = false;
-		this.pack = new Pack(g);
+		attack = false;
+		pack = new Pack(g);
 
-		this.game = g;
-		this.maze = g.maze;
-		this.batch = g.batch;
+		game = g;
+		maze = g.maze;
+		batch = g.batch;
 
-		this.rectangle = new Rectangle(INIT_X, INIT_Y, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
-		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+		rectangle = new Rectangle(INIT_X, INIT_Y, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
+		walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
 		TextureRegion[][] tmp = TextureRegion.split(walkSheet, 
 				walkSheet.getWidth()  / FRAME_COLS, 
 				walkSheet.getHeight() / FRAME_ROWS);
@@ -64,29 +64,28 @@ public class Player {
 		int index = 0;
 		for (int i = 0; i < FRAME_ROWS; i++)
 			for (int j = 0; j < FRAME_COLS; j++)
-				this.walkFrames[index++] = tmp[i][j];
+				walkFrames[index++] = tmp[i][j];
 
-		this.stateTime = 0.0f;
-		this.walkAnimation = new Animation(0.025f, walkFrames);
+		stateTime = 0.0f;
+		walkAnimation = new Animation(0.025f, walkFrames);
 
-		this.walking = false;
-		this.position = new Vector3(INIT_X, INIT_Y, 0);
-		this.prevPosition = new Vector3(position);
-		this.velocity = new Vector3();
+		walking = false;
+		position = new Vector3(INIT_X, INIT_Y, 0);
+		prevPosition = new Vector3(position);
+		velocity = new Vector3();
 
-		this.totalHealth = INIT_HEALTH;
-		this.currentHealth = totalHealth;
-		this.hitRadius = INIT_HIT_RAD;
-		this.hitDamage = INIT_HIT_DMG;
+		totalHealth = INIT_HEALTH;
+		currentHealth = totalHealth;
+		hitRadius = INIT_HIT_RAD;
+		hitDamage = INIT_HIT_DMG;
 	}
 
 	public float angle() {
 		if (!isMoving())
-			return this.prevAngle;
+			return prevAngle;
 
-		return this.prevAngle = (float) (Math.toDegrees(Math.atan2(
-				-(this.position.x - this.prevPosition.x), this.position.y
-						- this.prevPosition.y)));
+		return prevAngle = (float) (Math.toDegrees(Math.atan2(
+				-(position.x - prevPosition.x), position.y - prevPosition.y)));
 	}
 
 	public void detectHit(Actor monster) {
@@ -94,33 +93,33 @@ public class Player {
 	}
 
 	public void dispose() {
-		this.walkSheet.dispose();
+		walkSheet.dispose();
 	}
 
 	public boolean isAlive() {
-		return this.currentHealth > 0;
+		return currentHealth > 0;
 	}
 
 	public boolean isMoving() {
-		return this.walking;
+		return walking;
 	}
 
 	public void render() {
-		TextureRegion tmp = this.texture(Gdx.graphics.getDeltaTime());
-		batch.draw(tmp, this.position.x, this.position.y,
+		TextureRegion tmp = texture(Gdx.graphics.getDeltaTime());
+		batch.draw(tmp, position.x, position.y,
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, angle());
 	}
 
 	public void reset(int x, int y, boolean resetHealth) {
-		this.position.set(x, y, 0);
-		this.totalHealth = INIT_HEALTH;
-		this.hitRadius = INIT_HIT_RAD;
-		this.hitDamage = INIT_HIT_DMG;
+		position.set(x, y, 0);
+		totalHealth = INIT_HEALTH;
+		hitRadius = INIT_HIT_RAD;
+		hitDamage = INIT_HIT_DMG;
 
 		if (resetHealth) {
-			this.pack.clear();
-			this.currentHealth = totalHealth;
+			pack.clear();
+			currentHealth = totalHealth;
 		}
 	}
 
@@ -129,23 +128,23 @@ public class Player {
 	}
 
 	public void start(int xVel, int yVel) {
-		this.velocity.add(xVel, yVel, 0);
+		velocity.add(xVel, yVel, 0);
 	}
 
 	public void stop(int xVel, int yVel) {
-		this.velocity.sub(xVel, yVel, 0);
+		velocity.sub(xVel, yVel, 0);
 
 		if (this.velocity.isZero())
-			this.walking = false;
+			walking = false;
 	}
 
 	public TextureRegion texture(float stateTime) {
-		this.stateTime += stateTime;
+		stateTime += stateTime;
 
 		if (isMoving() && !game.pause)
-			return this.walkAnimation.getKeyFrame(this.stateTime, true);
+			return walkAnimation.getKeyFrame(stateTime, true);
 		else
-			return this.walkFrames[4];
+			return walkFrames[4];
 	}
 
 	public void updatePos() {
