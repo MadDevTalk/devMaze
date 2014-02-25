@@ -192,7 +192,6 @@ public class ActorHandler {
 			return true;
 	}
 
-	//TODO:
 	public void updateMonsters() {
 		for (Actor monster : actors) {
 			switch (monster.getState()) {
