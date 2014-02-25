@@ -12,8 +12,8 @@ public class Syringe implements Item {
 	private Player player;
 	private SpriteBatch batch;
 
-	private static Texture mapTexture = new Texture(Gdx.files.internal("pill.png"));
-	private static Texture packTexture = new Texture(Gdx.files.internal("pill.png"));
+	private static Texture mapTexture = new Texture(Gdx.files.internal("syringe.png"));
+	private static Texture packTexture = new Texture(Gdx.files.internal("syringe.png"));
 	
 	private Rectangle mapRectangle;
 	private Rectangle packRectangle;
@@ -74,8 +74,7 @@ public class Syringe implements Item {
 
 	@Override
 	public void render() {
-		// TODO Auto-generated method stub
-		
+		batch.draw(packTexture(), packRectangle().x, packRectangle().y);
 	}
 
 }
