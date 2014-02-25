@@ -1,6 +1,6 @@
 package com.devTalk.devMaze.maze;
 
-import com.devTalk.devMaze.actors.Monster.MonsterType;
+import com.devTalk.devMaze.actors.Actor.ActorType;
 
 
 public class Level {
@@ -13,7 +13,7 @@ public class Level {
 	int numMonsters;
 	int numItems;
 
-	MonsterType monsterDifficulty;
+	ActorType monsterDifficulty;
 
 	public Level(LEVEL level) {
 		switch (level) {
@@ -22,42 +22,42 @@ public class Level {
 			this.mazeHeight = 11;
 			this.numMonsters = 5;
 			this.numItems = 30;
-			this.monsterDifficulty = MonsterType.EASY;
+			this.monsterDifficulty = ActorType.EASY;
 			break;
 		case LEVEL_2:
 			this.mazeWidth = 21;
 			this.mazeHeight = 17;
 			this.numMonsters = 2;
 			this.numItems = 1;
-			this.monsterDifficulty = MonsterType.EASY;
+			this.monsterDifficulty = ActorType.EASY;
 			break;
 		case LEVEL_3:
 			this.mazeWidth = 31;
 			this.mazeHeight = 25;
 			this.numMonsters = 10;
 			this.numItems = 3;
-			this.monsterDifficulty = MonsterType.EASY;
+			this.monsterDifficulty = ActorType.EASY;
 			break;
 		case LEVEL_4:
 			this.mazeWidth = 35;
 			this.mazeHeight = 29;
 			this.numMonsters = 15;
 			this.numItems = 5;
-			this.monsterDifficulty = MonsterType.MEDIUM;
+			this.monsterDifficulty = ActorType.MEDIUM;
 			break;
 		case LEVEL_5:
 			this.mazeWidth = 35;
 			this.mazeHeight = 29;
 			this.numMonsters = 15;
 			this.numItems = 8;
-			this.monsterDifficulty = MonsterType.HARD;
+			this.monsterDifficulty = ActorType.HARD;
 			break;
 		case LEVEL_6:
 			this.mazeWidth = 35;
 			this.mazeHeight = 29;
 			this.numMonsters = 30;
 			this.numItems = 12;
-			this.monsterDifficulty = MonsterType.HARD;
+			this.monsterDifficulty = ActorType.HARD;
 			break;
 		}
 	}

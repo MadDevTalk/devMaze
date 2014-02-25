@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.devTalk.devMaze.actors.MonsterHandler;
+import com.devTalk.devMaze.actors.ActorHandler;
 import com.devTalk.devMaze.actors.Player;
 import com.devTalk.devMaze.maze.DevMaze;
 
@@ -15,7 +15,7 @@ public class AButtonModule implements HUDModule {
 	private OrthographicCamera camera;
 
 	private Player player;
-	private MonsterHandler monsterHandler;
+	private ActorHandler monsterHandler;
 
 	private boolean pressed;
 

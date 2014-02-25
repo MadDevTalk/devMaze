@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devTalk.devMaze.actors.ItemHandler;
-import com.devTalk.devMaze.actors.MonsterHandler;
+import com.devTalk.devMaze.actors.ActorHandler;
 import com.devTalk.devMaze.actors.Player;
 import com.devTalk.devMaze.gui.GameScreen;
 import com.devTalk.devMaze.gui.LevelFinishScreen;
@@ -31,7 +31,7 @@ public class DevMaze extends Game {
 		                                                    
 	public Maze maze;                                /* The current maze tileset */
 	public Player player;                            /* The player object */
-	public MonsterHandler monsterHandler;            /* Monster Controller object */
+	public ActorHandler monsterHandler;            /* Monster Controller object */
 	public ItemHandler itemHandler;                  /* Item Controller object */
 		                                                    
 	public MainMenuScreen mainMenuScreen;            /* Main Menu Screen */
@@ -61,7 +61,7 @@ public class DevMaze extends Game {
 		// Create game objects
 		this.maze = new Maze(this);
 		this.player = new Player(this);
-		this.monsterHandler = new MonsterHandler(this);
+		this.monsterHandler = new ActorHandler(this);
 		this.itemHandler = new ItemHandler(this);
 		this.levels = new ArrayList<Level>();
 

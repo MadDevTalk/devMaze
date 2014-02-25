@@ -98,9 +98,9 @@ public class Player {
 						- this.prevPosition.y)));
 	}
 
-	public void detectHit(Monster monster) {
+	public void detectHit(Actor monster) {
 		if (monster.getHitRectangle().overlaps(this.rectangle)) {
-			this.currentHealth -= monster.getHitDamage();
+			//TODO:
 			if (!this.isAlive()) {
 				game.setScreen(game.mainMenuScreen);
 			}

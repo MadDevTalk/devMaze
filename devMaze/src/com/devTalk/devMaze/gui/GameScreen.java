@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devTalk.devMaze.actors.ItemHandler;
-import com.devTalk.devMaze.actors.MonsterHandler;
+import com.devTalk.devMaze.actors.ActorHandler;
 import com.devTalk.devMaze.actors.Player;
 import com.devTalk.devMaze.maze.DevMaze;
 import com.devTalk.devMaze.maze.Maze;
@@ -20,7 +20,7 @@ public class GameScreen implements Screen {
 
 	private Maze maze;
 	private Player player;
-	private MonsterHandler monsterHandler;
+	private ActorHandler monsterHandler;
 	private ItemHandler itemHandler;
 	private HUD hud;
 
@@ -118,7 +118,8 @@ public class GameScreen implements Screen {
 	}
 
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		setViewport(640, 480, false);
+		stage.getCamera().position.set(640/2, 480/2, 0);
 	}
 
 	// Return from pause
