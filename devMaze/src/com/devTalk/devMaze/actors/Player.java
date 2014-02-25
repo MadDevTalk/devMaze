@@ -139,7 +139,7 @@ public class Player {
 	}
 
 	public TextureRegion texture(float stateTime) {
-		stateTime += stateTime;
+		this.stateTime += stateTime;
 
 		if (isMoving() && !game.pause)
 			return walkAnimation.getKeyFrame(stateTime, true);
