@@ -5,15 +5,12 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.devTalk.devMaze.gui.Pack;
-import com.devTalk.devMaze.maze.DevMaze;
-import com.devTalk.devMaze.maze.Maze;
-import com.devTalk.devMaze.maze.Tile;
+import com.devTalk.devMaze.maze.*;
 
 public class Player {
 
@@ -28,15 +25,11 @@ public class Player {
 	private DevMaze game;
 	private Maze maze;
 	private SpriteBatch batch;
-	private BitmapFont font;
 
 	float stateTime;
 	Animation walkAnimation;
 	Texture walkSheet = new Texture(Gdx.files.internal("dude_sheet.png"));
-	// Texture attackSheet = new Texture(Gdx.files.internal("")); // find new
-	// sprites
 	TextureRegion[] walkFrames;
-	TextureRegion[] attackFrames;
 	public Rectangle rectangle;
 
 	public boolean walking;
@@ -61,14 +54,12 @@ public class Player {
 		this.game = g;
 		this.maze = g.maze;
 		this.batch = g.batch;
-		this.font = g.font;
 
-		this.rectangle = new Rectangle(INIT_X, INIT_Y, DevMaze.PLAYER_SIZE_PX,
-				DevMaze.PLAYER_SIZE_PX);
+		this.rectangle = new Rectangle(INIT_X, INIT_Y, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
 		this.walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet,
-				walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight()
-						/ FRAME_ROWS);
+		TextureRegion[][] tmp = TextureRegion.split(walkSheet, 
+				walkSheet.getWidth()  / FRAME_COLS, 
+				walkSheet.getHeight() / FRAME_ROWS);
 
 		int index = 0;
 		for (int i = 0; i < FRAME_ROWS; i++)
@@ -106,12 +97,6 @@ public class Player {
 		this.walkSheet.dispose();
 	}
 
-	public Rectangle getHitRectangle() {
-		return new Rectangle(this.position.x - hitRadius, this.position.y
-				- hitRadius, this.rectangle.width + (2 * hitRadius),
-				this.rectangle.height + (2 * hitRadius));
-	}
-
 	public boolean isAlive() {
 		return this.currentHealth > 0;
 	}
@@ -125,13 +110,6 @@ public class Player {
 		batch.draw(tmp, this.position.x, this.position.y,
 				(tmp.getRegionWidth() / 2), (tmp.getRegionHeight() / 2),
 				tmp.getRegionWidth(), tmp.getRegionHeight(), 1, 1, angle());
-
-		if (DevMaze.DEBUG) 
-		{
-			font.draw(batch, "HP: " + this.currentHealth + "/"
-					+ this.totalHealth, this.position.x, this.position.y);
-			//TODO add distance to end of level
-		}
 	}
 
 	public void reset(int x, int y, boolean resetHealth) {

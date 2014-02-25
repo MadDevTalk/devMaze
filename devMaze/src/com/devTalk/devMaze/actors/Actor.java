@@ -14,7 +14,6 @@ public interface Actor {
 
 	public static enum ActorState {
 		FINDING_DESTINATION,
-		FOLLOWING_PLAYER,
 		AT_DESTINATION,
 	};
 

@@ -1,6 +1,8 @@
 package com.devTalk.devMaze.actors;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,7 +27,7 @@ public class Guard implements Actor {
 	private Tile destination;
 	private List<Tile> path;
 	private ActorState state;
-	private boolean alive, moving, alerted;
+	private boolean alive, alerted;
 	private Vector2 position;
 	private int velocityScale;
 	private Vector2 velocity;
@@ -36,6 +38,9 @@ public class Guard implements Actor {
 	private SpriteBatch batch;
 	private Player player;
 	private Maze maze;
+	private int prevAngle;
+
+	Map<Integer, Integer> DIR_INDEX_MAP = new HashMap<Integer, Integer>();
 	
 	public Guard(DevMaze g, Tile location) {
 		
@@ -67,22 +72,24 @@ public class Guard implements Actor {
 		prevPosition = position.cpy();
 		velocity = new Vector2();
 		velocityLatch = new Vector2();
-	}
-
-	public int dirIndex() {
-		return 0;
+		velocityScale = 2;
+		
+		DIR_INDEX_MAP.put(0, 1);
+		DIR_INDEX_MAP.put(90, 2);			
+		DIR_INDEX_MAP.put(-90, 3);
+		DIR_INDEX_MAP.put(180, 0);
+		DIR_INDEX_MAP.put(-180, 0);
+		
 	}
 	
 	public int getCount() {
 		return count;
 	}
 
-	@Override
 	public int getVelocityScale() {
-		return velocityScale;
+		return velocityScale + (alerted ? 1 : 0);
 	}
 
-	@Override
 	public void render() {
 		Vector3 pos = new Vector3(this.getPosition().x, this.getPosition().y, 0);
 		if (camera.frustum.sphereInFrustum(pos, this.getRectangle().getWidth())) {
@@ -112,19 +119,17 @@ public class Guard implements Actor {
 		walkSheet.dispose();
 	}
 
-	@Override
 	public void updatePos() {
-		prevPosition.set(position.cpy());
-		position.add(velocity);
-		rectangle.set(position.x, position.y,
-				DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
-
-		float xPos = position.x;
-		float yPos = position.y;
-
-		// TODO this can be more efficient by checking by tile
-		if (!alerted)
-			if (velocity.x != 0 || velocity.y != 0)
+		if (isMoving()) {
+			prevPosition.set(position.cpy());
+			position.add(velocity);
+			rectangle.set(position.x, position.y, DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
+	
+			float xPos = position.x;
+			float yPos = position.y;
+	
+			// TODO this can be more efficient by checking by tile
+			if (!alerted) {
 				while (maze.tileAtLocation(xPos, yPos) != null && maze.tileAtLocation(xPos, yPos).inMaze) {
 					if (player.rectangle.contains(xPos, yPos)) {
 						alerted = true;
@@ -134,6 +139,9 @@ public class Guard implements Actor {
 					xPos += (velocity.x * (DevMaze.MONSTER_SIZE_PX / 2));
 					xPos += (velocity.y * (DevMaze.MONSTER_SIZE_PX / 2));
 				}
+			}
+			
+		}
 	}
 
 	public boolean isAlive() {
@@ -141,7 +149,7 @@ public class Guard implements Actor {
 	}
 
 	public boolean isMoving() {
-		return moving;
+		return (velocity.x != 0 || velocity.y != 0);
 	}
 	
 	public boolean isAlerted() {
@@ -185,7 +193,14 @@ public class Guard implements Actor {
 	}
 
 	public TextureRegion texture() {
-		return walkFrames[dirIndex()];
+		return walkFrames[DIR_INDEX_MAP.get(angle())];
+	}
+	
+	private int angle() {
+		if (!isMoving())
+			return prevAngle;
+
+		return prevAngle = (int) Math.toDegrees(Math.atan2(-velocity.x, velocity.y));
 	}
 	
 }

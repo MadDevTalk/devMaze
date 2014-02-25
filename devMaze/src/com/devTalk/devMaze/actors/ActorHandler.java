@@ -138,14 +138,11 @@ public class ActorHandler {
 	}
 
 	private boolean seekDestination(Actor monster) {
-		Tile currentPosition = maze.tileAtLocation(monster.getPosition().x,
-				monster.getPosition().y);
-		Tile lastPosition = maze.tileAtLocation(monster.getPrevPosition().x,
-				monster.getPrevPosition().y);
+		Tile currentPosition = maze.tileAtLocation(monster.getPosition().x, monster.getPosition().y);
+		Tile lastPosition = maze.tileAtLocation(monster.getPrevPosition().x, monster.getPrevPosition().y);
 
 		if (lastPosition != currentPosition)
-			monster.setCount((DevMaze.EDGE_SIZE_PX / 2)
-					/ monster.getVelocityScale());
+			monster.setCount((DevMaze.EDGE_SIZE_PX / 2) / monster.getVelocityScale());
 
 		if (monster.getPath().size() > 1) {
 			monster.getPath().remove(currentPosition);
@@ -199,23 +196,13 @@ public class ActorHandler {
 	public void updateMonsters() {
 		for (Actor monster : actors) {
 			switch (monster.getState()) {
-			case FOLLOWING_PLAYER:
-				setDestination(monster, player);
-				break;
 			case FINDING_DESTINATION:
-				if (monster.isAlerted())
-					monster.setState(ActorState.FOLLOWING_PLAYER);
-				else if (!seekDestination(monster)) 
+				if (!seekDestination(monster)) 
 					monster.setState(ActorState.AT_DESTINATION);
 				break;
 			case AT_DESTINATION:
-				if (monster.isAlerted()) {
-					//
-				}
-				else {
-					setDestination(monster, null);
-					monster.setState(ActorState.FINDING_DESTINATION);
-				}
+				setDestination(monster, monster.isAlerted() ? player : null);
+				monster.setState(ActorState.FINDING_DESTINATION);
 				break;
 			default:
 				break;
