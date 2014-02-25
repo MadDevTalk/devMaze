@@ -197,6 +197,9 @@ public class ActorHandler {
 		for (Actor monster : actors) {
 			switch (monster.getState()) {
 			case FINDING_DESTINATION:
+				if (monster.isAlerted()) 
+					setDestination(monster, player);
+				
 				if (!seekDestination(monster)) 
 					monster.setState(ActorState.AT_DESTINATION);
 				break;

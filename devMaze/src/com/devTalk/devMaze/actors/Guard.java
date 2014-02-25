@@ -20,6 +20,7 @@ public class Guard implements Actor {
 	private static final int FRAME_ROWS = 1;
 	
 	Texture walkSheet = new Texture(Gdx.files.internal("guard_walking.png"));
+	Texture exclamationMark = new Texture(Gdx.files.internal("exclamation_mark.png"));
 	TextureRegion[] walkFrames;
 	public Rectangle rectangle;
 	
@@ -89,6 +90,11 @@ public class Guard implements Actor {
 	public void render() {
 		Vector3 pos = new Vector3(this.getPosition().x, this.getPosition().y, 0);
 		if (camera.frustum.sphereInFrustum(pos, this.getRectangle().getWidth())) {
+			if (alerted)
+				batch.draw(exclamationMark, 
+						position.x + (DevMaze.MONSTER_SIZE_PX / 4), 
+						position.y + DevMaze.MONSTER_SIZE_PX);
+			
 			batch.draw(texture(), position.x, position.y,
 					(texture().getRegionWidth() / 2), (texture().getRegionHeight() / 2),
 					texture().getRegionWidth(), texture().getRegionHeight(), 1, 1, 0);
