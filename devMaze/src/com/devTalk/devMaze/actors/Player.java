@@ -142,7 +142,7 @@ public class Player {
 		this.stateTime += stateTime;
 
 		if (isMoving() && !game.pause)
-			return walkAnimation.getKeyFrame(stateTime, true);
+			return walkAnimation.getKeyFrame(this.stateTime, true);
 		else
 			return walkFrames[4];
 	}
