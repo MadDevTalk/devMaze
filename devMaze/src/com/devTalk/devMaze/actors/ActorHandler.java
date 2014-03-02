@@ -47,6 +47,21 @@ public class ActorHandler {
 		for (Actor monster : actors)
 			monster.dispose();
 	}
+	
+	public void playerMoveAlert(Tile newTile) {
+		for (Actor actor : actors) {
+			if (actor.isAlerted())
+			{
+				List<Tile> tmp = actor.getPath();
+				if(tmp.contains(newTile))
+					tmp.remove(newTile);
+				else
+					tmp.add(newTile);
+				
+				actor.setDestination(newTile);
+			}
+		}
+	}
 
 	/**
 	 * A* pathing implemented as per
@@ -158,6 +173,23 @@ public class ActorHandler {
 				monster.getVelocity().set(x * monster.getVelocityScale(), y * monster.getVelocityScale());
 				monster.getVelocityLatch().set(monster.getVelocity().cpy());
 			}
+			
+			// TODO this can be more efficient
+			if (!monster.isAlerted()) {
+				float xPos = monster.getPosition().x;
+				float yPos = monster.getPosition().y;
+				
+				while (maze.tileAtLocation(xPos, yPos) != null && maze.tileAtLocation(xPos, yPos).inMaze) {
+					if (player.rectangle.contains(xPos, yPos)) {
+						monster.alert();
+						setDestination(monster, player);
+						break;
+					}
+
+					xPos += (monster.getVelocity().x * (DevMaze.MONSTER_SIZE_PX / 2));
+					xPos += (monster.getVelocity().y * (DevMaze.MONSTER_SIZE_PX / 2));
+				}
+			}
 
 			return true;
 		} else {
@@ -171,8 +203,8 @@ public class ActorHandler {
 		actors.clear();
 		Random r = new Random();
 		for (int i = 0; i < monsterCount; i++) {
-			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			actors.add(new Guard(game, openTile));
+			//Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
+			//actors.add(new Guard(game, openTile));
 		}
 	}
 
@@ -196,10 +228,7 @@ public class ActorHandler {
 		for (Actor monster : actors) {
 			switch (monster.getState()) {
 			case FINDING_DESTINATION:
-				if (monster.isAlerted()) 
-					setDestination(monster, player);
-				
-				if (!seekDestination(monster)) 
+				if (!seekDestination(monster) && !monster.isAlerted()) 
 					monster.setState(ActorState.AT_DESTINATION);
 				break;
 			case AT_DESTINATION:

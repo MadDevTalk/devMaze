@@ -18,62 +18,46 @@ public class HUDInputProcessor implements InputProcessor {
 		this.touch_down = new Vector3();
 	}
 
-	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		int tempX = screenX;
-		int tempY = screenY;
-
-		screenX += camera.position.x - camera.viewportWidth / 2;
-		screenY = (int) (camera.position.y + camera.viewportHeight / 2 - screenY);
-
 		if (hud.actionedAt(screenX, screenY)) {
-			this.touch_down.set(tempX, tempY, 0);
-			return true;
+			//touch_down.set(screenX, tempY, 0);
+			return false;
 		} else
 			return false;
 	}
 
-	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		screenX += camera.position.x - camera.viewportWidth / 2;
-		screenY = (int) (camera.position.y + camera.viewportHeight / 2 - screenY);
-		return hud.actionedAt(screenX, screenY);
+		return false;
 	}
 
-	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		int x = (int) (this.touch_down.x + camera.position.x - (camera.viewportWidth / 2));
-		int y = (int) (camera.position.y + camera.viewportHeight / 2 - this.touch_down.y);
+		int x = (int) (touch_down.x + camera.position.x - (camera.viewportWidth / 2));
+		int y = (int) (camera.position.y + camera.viewportHeight / 2 - touch_down.y);
 		hud.stopAction(x, y);
 		return false;
 	}

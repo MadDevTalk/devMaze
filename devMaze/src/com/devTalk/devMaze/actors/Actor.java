@@ -19,6 +19,7 @@ public interface Actor {
 
 	public int           getCount();
 	public int           getVelocityScale();
+	public void			 alert();
 	public void          render();
 	public void		     setCount(int count);
 	public void          setPath(List<Tile> path);

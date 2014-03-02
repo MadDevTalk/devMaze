@@ -37,8 +37,6 @@ public class Guard implements Actor {
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	private Player player;
-	private Maze maze;
 	private int prevAngle;
 
 	Map<Integer, Integer> DIR_INDEX_MAP = new HashMap<Integer, Integer>();
@@ -47,8 +45,6 @@ public class Guard implements Actor {
 		
 		camera = g.camera;
 		batch = g.batch;
-		maze = g.maze;
-		player = g.player;
 		
 		int xPos = (int) (location.center.x - (DevMaze.MONSTER_SIZE_PX / 2));
 		int yPos = (int) (location.center.y - (DevMaze.MONSTER_SIZE_PX / 2));
@@ -126,23 +122,6 @@ public class Guard implements Actor {
 			prevPosition.set(position.cpy());
 			position.add(velocity);
 			rectangle.set(position.x, position.y, DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
-	
-			float xPos = position.x;
-			float yPos = position.y;
-	
-			// TODO this can be more efficient
-			if (!alerted) {
-				while (maze.tileAtLocation(xPos, yPos) != null && maze.tileAtLocation(xPos, yPos).inMaze) {
-					if (player.rectangle.contains(xPos, yPos)) {
-						alerted = true;
-						break;
-					}
-
-					xPos += (velocity.x * (DevMaze.MONSTER_SIZE_PX / 2));
-					xPos += (velocity.y * (DevMaze.MONSTER_SIZE_PX / 2));
-				}
-			}
-			
 		}
 	}
 
@@ -203,6 +182,10 @@ public class Guard implements Actor {
 			return prevAngle;
 
 		return prevAngle = (int) Math.toDegrees(Math.atan2(-velocity.x, velocity.y));
+	}
+
+	public void alert() {
+		alerted = true;
 	}
 	
 }
