@@ -154,6 +154,7 @@ public class Maze {
 	}
 
 	public void render() {
+		batch.begin();
 		for (int i = 0; i < this.tiles.length; i++)
 			for (int j = 0; j < this.tiles[0].length; j++) {
 				float x = this.tiles[i][j].rectangle.x;
@@ -163,7 +164,7 @@ public class Maze {
 				if (camera.frustum.sphereInFrustum(tile, DevMaze.EDGE_SIZE_PX))
 					batch.draw(this.tiles[i][j].texture(), x, y);
 			}
-
+		batch.end();
 	}
 
 	// May want to throw a new OutOfMaze exception or something

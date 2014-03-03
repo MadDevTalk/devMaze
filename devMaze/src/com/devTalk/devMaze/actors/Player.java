@@ -106,7 +106,9 @@ public class Player {
 	}
 
 	public void render() {
+		batch.begin();
 		batch.draw(texture(), position.x, position.y);
+		batch.end();
 	}
 
 	public void reset(int x, int y, boolean resetHealth) {
@@ -137,7 +139,6 @@ public class Player {
 	}
 
 	public TextureRegion texture() {
-		System.out.println(angle());
 		return walkFrames[directionIndex(angle())];
 	}
 

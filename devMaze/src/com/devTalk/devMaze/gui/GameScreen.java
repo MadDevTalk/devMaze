@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.devTalk.devMaze.actors.ItemHandler;
 import com.devTalk.devMaze.actors.ActorHandler;
 import com.devTalk.devMaze.actors.Player;
@@ -17,6 +18,7 @@ public class GameScreen implements Screen {
 	private DevMaze game;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
+	private ShapeRenderer shapeRenderer;
 
 	private Maze maze;
 	private Player player;
@@ -29,14 +31,15 @@ public class GameScreen implements Screen {
 	public GameScreen(DevMaze g) {
 
 		// Get reference to our game objects
-		this.game = g;
-		this.camera = g.camera;
-		this.batch = g.batch;
-		this.maze = g.maze;
-		this.player = g.player;
-		this.monsterHandler = g.monsterHandler;
-		this.itemHandler = g.itemHandler;
-		this.hud = new HUD(g);
+		game = g;
+		camera = g.camera;
+		batch = g.batch;
+		shapeRenderer = g.shapeRenderer;
+		maze = g.maze;
+		player = g.player;
+		monsterHandler = g.monsterHandler;
+		itemHandler = g.itemHandler;
+		hud = new HUD(g);
 
 		// Set our input processor
 		inputMultiplexer = new InputMultiplexer();
@@ -92,28 +95,25 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		camera.update();
 
-		// Tell batch to use the same coordinates as the camera
+		// Tell batch and shapeRenderer to use the same coordinates as the camera
 		batch.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
 
 		// Draw everything
-		batch.begin();
-		{
-			// **DRAW MAZE** //
-			maze.render();
+		// **DRAW MAZE** //
+		maze.render();
 
-			// **DRAW ITEMS** //
-			itemHandler.render();
+		// **DRAW ITEMS** //
+		itemHandler.render();
 
-			// **DRAW MONSTERS** //
-			monsterHandler.render();
+		// **DRAW MONSTERS** //
+		monsterHandler.render();
 
-			// **DRAW PLAYER** //
-			player.render();
+		// **DRAW PLAYER** //
+		player.render();
 
-			// **DRAW HUD** //
-			hud.render();
-		}
-		batch.end();
+		// **DRAW HUD** //
+		hud.render();
 
 	}
 

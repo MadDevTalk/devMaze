@@ -16,10 +16,18 @@ public class HUD {
 	}
 
 	public boolean actionedAt(int x, int y) {
-		for (HUDModule module : this.modules)
+		for (HUDModule module : modules)
 			if (module.actionedAt(x, y))
 				return true;
 
+		return false;
+	}
+	
+	public boolean draggedAt(int x, int y) {
+		for (HUDModule module : modules)
+			if (module.draggedAt(x, y))
+				return true;
+			
 		return false;
 	}
 

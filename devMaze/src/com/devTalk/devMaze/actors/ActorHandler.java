@@ -203,8 +203,8 @@ public class ActorHandler {
 		actors.clear();
 		Random r = new Random();
 		for (int i = 0; i < monsterCount; i++) {
-			//Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			//actors.add(new Guard(game, openTile));
+			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
+			actors.add(new Guard(game, openTile));
 		}
 	}
 

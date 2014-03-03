@@ -86,6 +86,7 @@ public class Guard implements Actor {
 	public void render() {
 		Vector3 pos = new Vector3(this.getPosition().x, this.getPosition().y, 0);
 		if (camera.frustum.sphereInFrustum(pos, this.getRectangle().getWidth())) {
+			batch.begin();
 			if (alerted)
 				batch.draw(exclamationMark, 
 						position.x + (DevMaze.MONSTER_SIZE_PX / 4), 
@@ -94,6 +95,7 @@ public class Guard implements Actor {
 			batch.draw(texture(), position.x, position.y,
 					(texture().getRegionWidth() / 2), (texture().getRegionHeight() / 2),
 					texture().getRegionWidth(), texture().getRegionHeight(), 1, 1, 0);
+			batch.end();
 		}
 	}
 

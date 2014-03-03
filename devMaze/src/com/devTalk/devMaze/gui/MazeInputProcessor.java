@@ -2,19 +2,15 @@ package com.devTalk.devMaze.gui;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
 import com.devTalk.devMaze.actors.Player;
 import com.devTalk.devMaze.maze.DevMaze;
 
 public class MazeInputProcessor implements InputProcessor {
 	
 	private Player player;
-	private Vector2 touch_down, touch_dragged;
 
 	public MazeInputProcessor(DevMaze game) {
 		player = game.player;
-		touch_down = new Vector2();
-		touch_dragged = new Vector2();
 	}
 
 	public boolean keyDown(int keycode) {
@@ -39,11 +35,6 @@ public class MazeInputProcessor implements InputProcessor {
 		return false;
 	}
 
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public boolean keyUp(int keycode) {		
 		switch (keycode) {
 		case Keys.UP:
@@ -65,40 +56,28 @@ public class MazeInputProcessor implements InputProcessor {
 		return false;
 	}
 
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
+	public boolean keyTyped(char character) {
 		return false;
 	}
 
-	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
+
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		touch_down.set(screenX, screenY);
-		
 		return false;
 	}
 
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		touch_dragged.set(screenX, screenY);
-		player.velocity.set(0,0,0);
-
-		int x = (int) (touch_dragged.x - touch_down.x);
-		int y = (int) (touch_dragged.y - touch_down.y);
-		
-		player.start(x > 0 ? DevMaze.KEY_VEL_PxPer60S : -DevMaze.KEY_VEL_PxPer60S, 0);
-		player.start(0, y > 0 ? -DevMaze.KEY_VEL_PxPer60S : DevMaze.KEY_VEL_PxPer60S);
-
 		return false;
 	}
 	
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		player.velocity.set(0,0,0);
-		return true;
+		return false;
 	}
 
 }

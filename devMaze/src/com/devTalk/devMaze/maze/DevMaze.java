@@ -6,6 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.devTalk.devMaze.actors.ItemHandler;
 import com.devTalk.devMaze.actors.ActorHandler;
 import com.devTalk.devMaze.actors.Player;
@@ -26,6 +27,7 @@ public class DevMaze extends Game {
 	public SpriteBatch batch;                        /* Canvas to draw/display game elements */
 	public BitmapFont font;                          /* Canvas to draw/display debug text */
 	public OrthographicCamera camera;                /* Our view of the SpriteBatch */
+	public ShapeRenderer shapeRenderer;              /* Renders shapes */
 		                                                    
 	public Maze maze;                                /* The current maze tileset */
 	public Player player;                            /* The player object */
@@ -43,9 +45,10 @@ public class DevMaze extends Game {
 
 	public void create() {
 
-		// Create batch and font
+		// Create libGDX objects
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		shapeRenderer = new ShapeRenderer();
 
 		// Create Camera
 		camera = new OrthographicCamera();
