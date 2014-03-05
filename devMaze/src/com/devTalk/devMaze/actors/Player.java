@@ -21,7 +21,6 @@ public class Player {
 	private static final int INIT_X = DevMaze.EDGE_SIZE_PX * (3 / 2);
 	private static final int INIT_Y = DevMaze.EDGE_SIZE_PX * (3 / 2);
 
-	private DevMaze game;
 	private Maze maze;
 	private SpriteBatch batch;
 	
@@ -44,7 +43,6 @@ public class Player {
 	public Player(DevMaze g) {
 		pack = new Pack(g);
 
-		game = g;
 		maze = g.maze;
 		batch = g.batch;
 
@@ -127,23 +125,12 @@ public class Player {
 		currentHealth = INIT_HEALTH;
 	}
 
-	public void start(int xVel, int yVel) {
-		velocity.add(xVel, yVel, 0);
-	}
-
-	public void stop(int xVel, int yVel) {
-		velocity.sub(xVel, yVel, 0);
-
-		if (this.velocity.isZero())
-			walking = false;
-	}
-
 	public TextureRegion texture() {
 		return walkFrames[directionIndex(angle())];
 	}
 
 	public void updatePos() {
-		updatePos((int) this.velocity.x, (int) this.velocity.y);
+		updatePos((int) velocity.x, (int) velocity.y);
 	}
 
 	public void updatePos(int xOffset, int yOffset) {
@@ -177,15 +164,8 @@ public class Player {
 		} else
 			walking = false;
 		
-		Tile previousPosition = maze.tileAtLocation(prevPosition.x, prevPosition.y);
-		Tile currentPosition = maze.tileAtLocation(position.x, position.y);
-		
-		if (previousPosition != currentPosition) {
-			game.monsterHandler.playerMoveAlert(currentPosition);
-		}
-		
 		rectangle.set(position.x, position.y, DevMaze.PLAYER_SIZE_PX, DevMaze.PLAYER_SIZE_PX);
-		currentPosition.tread = true;
+		maze.tileAtLocation(position.x, position.y).tread = true;
 	}
 
 }

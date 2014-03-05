@@ -16,17 +16,16 @@ public class MazeInputProcessor implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		switch (keycode) {
 		case Keys.UP:
-			if (!player.isMoving())
-			player.start(0, DevMaze.KEY_VEL_PxPer60S);
+			player.velocity.add(0, DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		case Keys.RIGHT:
-			player.start(DevMaze.KEY_VEL_PxPer60S, 0);
+			player.velocity.add(DevMaze.KEY_VEL_PxPer60S, 0, 0);
 			break;
 		case Keys.DOWN:
-			player.start(0, -DevMaze.KEY_VEL_PxPer60S);
+			player.velocity.add(0, -DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		case Keys.LEFT:
-			player.start(-DevMaze.KEY_VEL_PxPer60S, 0);
+			player.velocity.add(-DevMaze.KEY_VEL_PxPer60S, 0, 0);
 			break;
 		default:
 			break;
@@ -38,16 +37,16 @@ public class MazeInputProcessor implements InputProcessor {
 	public boolean keyUp(int keycode) {		
 		switch (keycode) {
 		case Keys.UP:
-			player.stop(0, DevMaze.KEY_VEL_PxPer60S);
+			player.velocity.sub(0, DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		case Keys.RIGHT:
-			player.stop(DevMaze.KEY_VEL_PxPer60S, 0);
+			player.velocity.sub(DevMaze.KEY_VEL_PxPer60S, 0, 0);
 			break;
 		case Keys.DOWN:
-			player.stop(0, -DevMaze.KEY_VEL_PxPer60S);
+			player.velocity.sub(0, -DevMaze.KEY_VEL_PxPer60S, 0);
 			break;
 		case Keys.LEFT:
-			player.stop(-DevMaze.KEY_VEL_PxPer60S, 0);
+			player.velocity.sub(-DevMaze.KEY_VEL_PxPer60S, 0, 0);
 			break;
 		default:
 			break;

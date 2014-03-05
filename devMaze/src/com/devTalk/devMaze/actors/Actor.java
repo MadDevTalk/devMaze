@@ -13,6 +13,7 @@ public interface Actor {
 	};
 
 	public static enum ActorState {
+		FOLLOWING_PLAYER,
 		FINDING_DESTINATION,
 		AT_DESTINATION,
 	};

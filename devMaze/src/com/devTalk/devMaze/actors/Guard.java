@@ -36,6 +36,8 @@ public class Guard implements Actor {
 	private Vector2 prevPosition;
 	
 	private OrthographicCamera camera;
+	private Maze maze;
+	private Player player;
 	private SpriteBatch batch;
 	private int prevAngle;
 
@@ -45,6 +47,8 @@ public class Guard implements Actor {
 		
 		camera = g.camera;
 		batch = g.batch;
+		player = g.player;
+		maze = g.maze;
 		
 		int xPos = (int) (location.center.x - (DevMaze.MONSTER_SIZE_PX / 2));
 		int yPos = (int) (location.center.y - (DevMaze.MONSTER_SIZE_PX / 2));
@@ -84,8 +88,8 @@ public class Guard implements Actor {
 	}
 
 	public void render() {
-		Vector3 pos = new Vector3(this.getPosition().x, this.getPosition().y, 0);
-		if (camera.frustum.sphereInFrustum(pos, this.getRectangle().getWidth())) {
+		Vector3 pos = new Vector3(getPosition().x, getPosition().y, 0);
+		if (camera.frustum.sphereInFrustum(pos, getRectangle().getWidth())) {
 			batch.begin();
 			if (alerted)
 				batch.draw(exclamationMark, 
@@ -124,6 +128,23 @@ public class Guard implements Actor {
 			prevPosition.set(position.cpy());
 			position.add(velocity);
 			rectangle.set(position.x, position.y, DevMaze.MONSTER_SIZE_PX, DevMaze.MONSTER_SIZE_PX);
+			
+			// TODO this can be more efficient
+			Vector3 pos = new Vector3(getPosition().x, getPosition().y, 0);
+			if (!isAlerted() && camera.frustum.sphereInFrustum(pos, getRectangle().getWidth())) {
+				float xPos = getPosition().x;
+				float yPos = getPosition().y;
+				
+				while (maze.tileAtLocation(xPos, yPos) != null && maze.tileAtLocation(xPos, yPos).inMaze) {
+					if (player.rectangle.contains(xPos, yPos)) {
+						alert();
+						break;
+					}
+
+					xPos += (getVelocity().x * (DevMaze.MONSTER_SIZE_PX / 2));
+					yPos += (getVelocity().y * (DevMaze.MONSTER_SIZE_PX / 2));
+				}
+			}
 		}
 	}
 
