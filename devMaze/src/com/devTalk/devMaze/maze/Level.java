@@ -20,7 +20,7 @@ public class Level {
 		case LEVEL_1:
 			this.mazeWidth = 15;
 			this.mazeHeight = 11;
-			this.numMonsters = 5;
+			this.numMonsters = 1;
 			this.numItems = 30;
 			this.monsterDifficulty = ActorType.EASY;
 			break;
@@ -34,28 +34,28 @@ public class Level {
 		case LEVEL_3:
 			this.mazeWidth = 31;
 			this.mazeHeight = 25;
-			this.numMonsters = 10;
+			this.numMonsters = 4;
 			this.numItems = 3;
 			this.monsterDifficulty = ActorType.EASY;
 			break;
 		case LEVEL_4:
 			this.mazeWidth = 35;
 			this.mazeHeight = 29;
-			this.numMonsters = 15;
+			this.numMonsters = 6;
 			this.numItems = 5;
 			this.monsterDifficulty = ActorType.MEDIUM;
 			break;
 		case LEVEL_5:
 			this.mazeWidth = 35;
 			this.mazeHeight = 29;
-			this.numMonsters = 15;
+			this.numMonsters = 8;
 			this.numItems = 8;
 			this.monsterDifficulty = ActorType.HARD;
 			break;
 		case LEVEL_6:
 			this.mazeWidth = 35;
 			this.mazeHeight = 29;
-			this.numMonsters = 30;
+			this.numMonsters = 10;
 			this.numItems = 12;
 			this.monsterDifficulty = ActorType.HARD;
 			break;
