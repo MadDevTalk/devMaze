@@ -118,7 +118,7 @@ public class GameScreen implements Screen {
 	}
 
 	public void resize(int width, int height) {
-		//TODO;
+		camera.setToOrtho(false, width, height);
 	}
 
 	// Return from pause

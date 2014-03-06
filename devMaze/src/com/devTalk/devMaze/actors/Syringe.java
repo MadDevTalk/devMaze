@@ -8,8 +8,6 @@ import com.devTalk.devMaze.maze.DevMaze;
 
 public class Syringe implements Item {
 
-
-	private Player player;
 	private SpriteBatch batch;
 
 	private static Texture mapTexture = new Texture(Gdx.files.internal("syringe.png"));
@@ -22,7 +20,6 @@ public class Syringe implements Item {
 	
 	public Syringe(float x, float y, DevMaze g){
 		batch = g.batch;
-		player = g.player;
 		mapRectangle = new Rectangle(x, y, mapTexture.getHeight(), mapTexture.getWidth());
 		packRectangle = new Rectangle(0, 1, packTexture.getHeight(), packTexture.getWidth());
 	}

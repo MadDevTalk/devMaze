@@ -3,6 +3,7 @@ package com.devTalk.devMaze.maze;
 import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -53,7 +54,7 @@ public class DevMaze extends Game {
 
 		// Create Camera
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		// Create game objects
 		maze = new Maze(this);
