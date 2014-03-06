@@ -23,6 +23,7 @@ public class DevMaze extends Game {
 	public static final int PLAYER_SIZE_PX = 64;     /* The square size of the player, must be  power of 2 */
 	public static final int MONSTER_SIZE_PX = 64;    /* The square size of the monster, must be power of 2 */
 	public static final int KEY_VEL_PxPer60S = 6;    /* DEPRECATED: The speed in pixels of the player */
+	public static final int SPEED_LATCH_PX = 32;     /* DEPRECATED: Fastest speed when dragging */
                                                      
 	public SpriteBatch batch;                        /* Canvas to draw/display game elements */
 	public BitmapFont font;                          /* Canvas to draw/display debug text */
@@ -87,6 +88,7 @@ public class DevMaze extends Game {
 		gameScreen.dispose();
 	}
 
+
 	public void newGame() {
 		// Reset levels
 		levels.clear();
@@ -106,7 +108,7 @@ public class DevMaze extends Game {
 		maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
 		player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, true);
 		monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
-		//itemHandler.set(currentLevel.numItems);
+		itemHandler.set(currentLevel.numItems);
 	}
 
 	public void newLevel() {
