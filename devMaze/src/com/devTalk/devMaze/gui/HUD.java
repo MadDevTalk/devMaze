@@ -11,17 +11,23 @@ public class HUD {
 
 	public HUD(DevMaze g) {
 		this.modules = new ArrayList<HUDModule>();
-		//this.modules.add(new AButtonModule(g));
-		//this.modules.add(new BButtonModule(g));
-		//this.modules.add(new DPadModule(g));
 		this.modules.add(new PauseModule(g));
+		this.modules.add(new DirectionalModule(g));
 	}
 
 	public boolean actionedAt(int x, int y) {
-		for (HUDModule module : this.modules)
+		for (HUDModule module : modules)
 			if (module.actionedAt(x, y))
 				return true;
 
+		return false;
+	}
+	
+	public boolean draggedAt(int x, int y) {
+		for (HUDModule module : modules)
+			if (module.draggedAt(x, y))
+				return true;
+			
 		return false;
 	}
 

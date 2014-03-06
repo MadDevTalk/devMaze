@@ -41,6 +41,7 @@ public class ItemHandler {
 	}
 
 	public void render() {
+		batch.begin();
 		for (Item item : this.items) 
 		{
 			Vector3 center = new Vector3(item.mapRectangle().x, item.mapRectangle().y, 0);
@@ -56,6 +57,7 @@ public class ItemHandler {
 				}
 			}
 		}
+		batch.end();
 	}
 
 	public void runOverItem(Rectangle playerArea) {

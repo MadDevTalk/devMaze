@@ -50,6 +50,7 @@ public class PauseModule implements HUDModule {
 
 	@Override
 	public void render() {
+		batch.begin();
 		if (game.pause) {
 			batch.draw(
 					menu,
@@ -65,12 +66,20 @@ public class PauseModule implements HUDModule {
 				camera.position.x - camera.viewportWidth / 2,
 				(camera.position.y + camera.viewportHeight / 2)
 						- button.getHeight());
+		
+		batch.end();
 	}
 
 	@Override
 	public void stopAction(int x, int y) {
 		if (game.pause)
 			;// itemHandler.stopAction(x, y);
+	}
+
+	@Override
+	public boolean draggedAt(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

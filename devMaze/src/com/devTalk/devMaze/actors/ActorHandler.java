@@ -5,58 +5,46 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.devTalk.devMaze.actors.Monster.MonsterState;
-import com.devTalk.devMaze.actors.Monster.MonsterType;
+import com.devTalk.devMaze.actors.Actor.ActorState;
+import com.devTalk.devMaze.actors.Actor.ActorType;
 import com.devTalk.devMaze.maze.DevMaze;
 import com.devTalk.devMaze.maze.Maze;
 import com.devTalk.devMaze.maze.PathList;
 import com.devTalk.devMaze.maze.PathNode;
 import com.devTalk.devMaze.maze.Tile;
 
-public class MonsterHandler {
+public class ActorHandler {
 
 	private static final int G_WEIGHT_AXIAL = 10;
 
 	private Maze maze;
-	private DevMaze game;
 	private Player player;
-	private SpriteBatch batch;
-	private OrthographicCamera camera;
+	private DevMaze game;
 
-	public List<Monster> monsters;
+	public List<Actor> actors;
 
-	public MonsterHandler(DevMaze g) {
+	public ActorHandler(DevMaze g) {
 		this.game = g;
 		this.maze = g.maze;
-		this.batch = g.batch;
-		this.camera = g.camera;
 		this.player = g.player;
-		this.monsters = new ArrayList<Monster>();
+		this.actors = new ArrayList<Actor>();
 	}
 
 	public void detectHit(Rectangle hitArea) {
-		List<Monster> deadMonsters = new ArrayList<Monster>();
-		for (Monster monster : monsters)
-			if (hitArea.overlaps(monster.getRectangle())) {
-				monster.setCurrentHealth(monster.getCurrentHealth()
-						- player.hitDamage);
+		List<Actor> deadMonsters = new ArrayList<Actor>();
+		for (Actor monster : actors)
+			if(monster.isHitBy(hitArea))
 				if (!monster.isAlive())
 					deadMonsters.add(monster);
-			}
 
-		monsters.removeAll(deadMonsters);
+		actors.removeAll(deadMonsters);
 
 	}
 
 	public void dispose() {
-		for (Monster monster : monsters)
+		for (Actor monster : actors)
 			monster.dispose();
 	}
 
@@ -64,7 +52,7 @@ public class MonsterHandler {
 	 * A* pathing implemented as per
 	 * http://www.policyalmanac.org/games/aStarTutorial.htm
 	 */
-	private boolean findPath(Monster monster, Tile end) {
+	private boolean findPath(Actor monster, Tile end) {
 		Tile start = maze.tileAtLocation(monster.getPosition().x, monster.getPosition().y);
 		PathList openList = new PathList();
 		PathList closedList = new PathList();
@@ -121,10 +109,8 @@ public class MonsterHandler {
 	}
 
 	private int heuristic(Tile current, Tile destination) {
-		int horizontal = Math.abs((int) (destination.getPosition().x - current
-				.getPosition().x));
-		int vertical = Math.abs((int) (destination.getPosition().y - current
-				.getPosition().y));
+		int horizontal = Math.abs((int) (destination.getPosition().x - current.getPosition().x));
+		int vertical = Math.abs((int) (destination.getPosition().y - current.getPosition().y));
 		return (horizontal + vertical);// * G_WEIGHT_AXIAL;
 	}
 
@@ -147,19 +133,16 @@ public class MonsterHandler {
 	}
 
 	public void render() {
-		for (Monster monster : this.monsters)
+		for (Actor monster : this.actors)
 			monster.render();
 	}
 
-	private boolean seekDestination(Monster monster) {
-		Tile currentPosition = maze.tileAtLocation(monster.getPosition().x,
-				monster.getPosition().y);
-		Tile lastPosition = maze.tileAtLocation(monster.getPrevPosition().x,
-				monster.getPrevPosition().y);
+	private boolean seekDestination(Actor monster) {
+		Tile currentPosition = maze.tileAtLocation(monster.getPosition().x, monster.getPosition().y);
+		Tile lastPosition = maze.tileAtLocation(monster.getPrevPosition().x, monster.getPrevPosition().y);
 
 		if (lastPosition != currentPosition)
-			monster.setCount((DevMaze.EDGE_SIZE_PX / 2)
-					/ monster.getVelocityScale());
+			monster.setCount((DevMaze.EDGE_SIZE_PX / 2) / monster.getVelocityScale());
 
 		if (monster.getPath().size() > 1) {
 			monster.getPath().remove(currentPosition);
@@ -172,8 +155,7 @@ public class MonsterHandler {
 				monster.getVelocity().set(monster.getVelocityLatch());
 				monster.setCount(monster.getCount() - 1);
 			} else {
-				monster.getVelocity().set(x * monster.getVelocityScale(),
-						y * monster.getVelocityScale());
+				monster.getVelocity().set(x * monster.getVelocityScale(), y * monster.getVelocityScale());
 				monster.getVelocityLatch().set(monster.getVelocity().cpy());
 			}
 
@@ -185,26 +167,16 @@ public class MonsterHandler {
 		}
 	}
 
-	public void set(int monsterCount, MonsterType difficulty) {
-		monsters.clear();
+	public void set(int monsterCount, ActorType difficulty) {
+		actors.clear();
 		Random r = new Random();
 		for (int i = 0; i < monsterCount; i++) {
-			Tile openTile = maze.openTiles
-					.get(r.nextInt(maze.openTiles.size()));
-			if (i % 2 == 0)
-				monsters.add(new Goblin(
-						(float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						difficulty, game));
-			else
-				monsters.add(new Mech(
-						(float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-						difficulty, game));
+			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
+			actors.add(new Guard(game, openTile));
 		}
 	}
 
-	private boolean setDestination(Monster monster, Player player) {
+	private boolean setDestination(Actor monster, Player player) {
 		Tile end;
 
 		if (player == null) {
@@ -221,38 +193,22 @@ public class MonsterHandler {
 	}
 
 	public void updateMonsters() {
-		for (Monster monster : monsters) {
+		for (Actor monster : actors) {
 			switch (monster.getState()) {
-			case IN_COMBAT:
-				if (!monster.attacking()) {
-					Random r = new Random();
-					int random = r.nextInt(monster.getAttackFrequency());
-					if (random == 0) {
-						monster.attack();
-						monster.setState(MonsterState.FOLLOWING_PLAYER);
-					}
-				} 
-				
-				break;
 			case FOLLOWING_PLAYER:
 				setDestination(monster, player);
-				if (!seekDestination(monster))
-					monster.setState(MonsterState.IN_COMBAT);
+				if (!seekDestination(monster)) 
+					monster.setState(ActorState.AT_DESTINATION);
 				break;
 			case FINDING_DESTINATION:
-				if (monster.sawPlayer())
-					monster.setState(MonsterState.FOLLOWING_PLAYER);
+				if (monster.isAlerted())
+					monster.setState(ActorState.FOLLOWING_PLAYER);
 				else if (!seekDestination(monster)) 
-					monster.setState(MonsterState.AT_DESTINATION);
+					monster.setState(ActorState.AT_DESTINATION);
 				break;
 			case AT_DESTINATION:
-				if (monster.sawPlayer()) {
-					monster.setState(MonsterState.IN_COMBAT);
-				}
-				else {
-					setDestination(monster, null);
-					monster.setState(MonsterState.FINDING_DESTINATION);
-				}
+				setDestination(monster, monster.isAlerted() ? player : null);
+				monster.setState(ActorState.FINDING_DESTINATION);
 				break;
 			default:
 				break;
