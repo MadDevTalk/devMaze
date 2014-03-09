@@ -16,7 +16,7 @@ public class DirectionalModule implements HUDModule {
 	private Player player;
 	
 	private boolean active;
-	private Vector2 midPoint;
+	private Vector2 midPoint, dragPoint;
 	private int radius;
 
 	public DirectionalModule(DevMaze g) {
@@ -25,6 +25,7 @@ public class DirectionalModule implements HUDModule {
 		player = g.player;
 		active = false;
 		midPoint = new Vector2();
+		dragPoint = new Vector2();
 	}
 
 	public boolean actionedAt(int x, int y) {
@@ -42,6 +43,7 @@ public class DirectionalModule implements HUDModule {
 			float y = (camera.position.y + camera.viewportHeight / 2) - midPoint.y;
 			shapeRenderer.setColor(254, 1, 1, 1);
 			shapeRenderer.circle(x, y, radius);
+			shapeRenderer.line(x, y, x + dragPoint.x, y - dragPoint.y);
 			shapeRenderer.end();
 		}
 	}
@@ -55,6 +57,7 @@ public class DirectionalModule implements HUDModule {
 		if (active) {
 			int dX = (int) (x - midPoint.x);
 			int dY = (int) (y - midPoint.y);
+			dragPoint.set(dX, dY);
 			radius = (int) Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 			
 			int velocity = (int) (3.5 * Math.log10(radius));

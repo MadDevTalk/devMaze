@@ -29,34 +29,35 @@ public class GameScreen implements Screen {
 	private InputMultiplexer inputMultiplexer;
 
 	public GameScreen(DevMaze g) {
-
-		// Get reference to our game objects
+		// Reference Game Objects
 		game = g;
-		camera = g.camera;
-		batch = g.batch;
-		shapeRenderer = g.shapeRenderer;
 		maze = g.maze;
+		batch = g.batch;
 		player = g.player;
-		monsterHandler = g.monsterHandler;
+		camera = g.camera;
 		itemHandler = g.itemHandler;
-		hud = new HUD(g);
+		shapeRenderer = g.shapeRenderer;
+		monsterHandler = g.monsterHandler;
+		
+		// Create HUD and add modules
+		hud = new HUD();
+		hud.addModule(new PauseModule(g));
+		hud.addModule(new DirectionalModule(g));
 
 		// Set our input processor
 		inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.addProcessor(new HUDInputProcessor(g, this.hud));
+		inputMultiplexer.addProcessor(new HUDInputProcessor(hud));
 		inputMultiplexer.addProcessor(new MazeInputProcessor(g));
-		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
 
 
 	// Kills the app. Calls a pause first
 	public void dispose() {
-		this.hud.dispose();
+		hud.dispose();
 	}
 
-	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		Gdx.input.setInputProcessor(null);
 	}
 
 	// Save user app information
@@ -99,7 +100,6 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 
-		// Draw everything
 		// **DRAW MAZE** //
 		maze.render();
 
@@ -118,7 +118,7 @@ public class GameScreen implements Screen {
 	}
 
 	public void resize(int width, int height) {
-		//TODO;
+		camera.setToOrtho(false, width, height);
 	}
 
 	// Return from pause
@@ -126,8 +126,7 @@ public class GameScreen implements Screen {
 		// TODO
 	}
 
-	@Override
 	public void show() {
-		// TODO
+		Gdx.input.setInputProcessor(inputMultiplexer);
 	}
 }

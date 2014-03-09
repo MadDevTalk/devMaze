@@ -19,15 +19,17 @@ public class PauseModule implements HUDModule {
 	private Texture menu = new Texture(Gdx.files.internal("pause_menu.png"));
 
 	public PauseModule(DevMaze g) {
-		this.game = g;
-		this.batch = g.batch;
-		this.player = g.player;
-		this.camera = g.camera;
+		game = g;
+		batch = g.batch;
+		player = g.player;
+		camera = g.camera;
 	}
 
-	@Override
 	public boolean actionedAt(int x, int y) {
-		if (this.rectangle().contains(x, y)) {
+		x += camera.position.x - camera.viewportWidth / 2;
+		y = (int) (camera.position.y + camera.viewportHeight / 2 - y);
+		
+		if (rectangle().contains(x, y)) {
 			game.pause = !game.pause;
 			return true;
 		} else if (game.pause)
@@ -48,7 +50,6 @@ public class PauseModule implements HUDModule {
 				button.getHeight());
 	}
 
-	@Override
 	public void render() {
 		batch.begin();
 		if (game.pause) {
@@ -72,8 +73,7 @@ public class PauseModule implements HUDModule {
 
 	@Override
 	public void stopAction(int x, int y) {
-		if (game.pause)
-			;// itemHandler.stopAction(x, y);
+		// TODO
 	}
 
 	@Override

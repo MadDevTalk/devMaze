@@ -24,38 +24,27 @@ public class ItemHandler {
 	public List<Item> items;
 
 	public ItemHandler(DevMaze g) {
-		this.game = g;
-		this.maze = g.maze;
-		this.batch = g.batch;
-		this.player = g.player;
-		this.camera = g.camera;
+		game = g;
+		maze = g.maze;
+		batch = g.batch;
+		player = g.player;
+		camera = g.camera;
 		
 		items = new ArrayList<Item>();
 	}
 
 	public void dispose() {
-		for (Item item : this.items)
-		{
+		for (Item item : items)
 			item.dispose();
-		}
 	}
 
 	public void render() {
 		batch.begin();
-		for (Item item : this.items) 
+		for (Item item : items) 
 		{
 			Vector3 center = new Vector3(item.mapRectangle().x, item.mapRectangle().y, 0);
 			if (camera.frustum.sphereInFrustum(center, item.mapRectangle().getWidth()))
-			{
-				batch.draw(item.mapTexture(), item.mapRectangle().x,
-						item.mapRectangle().y);
-	
-				if (DevMaze.DEBUG) 
-				{
-					game.font.draw(batch, "this is an item.",
-							item.mapRectangle().x, item.mapRectangle().y);
-				}
-			}
+				batch.draw(item.mapTexture(), item.mapRectangle().x, item.mapRectangle().y);
 		}
 		batch.end();
 	}
@@ -69,14 +58,14 @@ public class ItemHandler {
 				usedItems.add(item);
 			}
 		}
-		this.items.removeAll(usedItems);
+		items.removeAll(usedItems);
 	}
 
 	public void set(int numItems) {
 		items.clear();
 		Random r = new Random();
-		Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
 		for(int i = 0; i < numItems; i++){
+			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
 			items.add(new Syringe((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
 					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)), game));
 		}
@@ -87,6 +76,6 @@ public class ItemHandler {
 	}
 
 	public void updateItems() {
-		this.runOverItem(player.rectangle);
+		runOverItem(player.rectangle);
 	}
 }

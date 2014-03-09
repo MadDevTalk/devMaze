@@ -3,6 +3,7 @@ package com.devTalk.devMaze.maze;
 import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,7 +46,6 @@ public class DevMaze extends Game {
 	public boolean pause;                            /* Is the game paused */
 
 	public void create() {
-
 		// Create libGDX objects
 		batch = new SpriteBatch();
 		font = new BitmapFont();
@@ -53,7 +53,7 @@ public class DevMaze extends Game {
 
 		// Create Camera
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		// Create game objects
 		maze = new Maze(this);
@@ -116,7 +116,7 @@ public class DevMaze extends Game {
 		maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
 		player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, false);
 		monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
-		//this.itemHandler.set(currentLevel.numItems);
+		itemHandler.set(currentLevel.numItems);
 	}
 
 	public void render() {
