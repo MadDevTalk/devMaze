@@ -30,7 +30,6 @@ public class Syringe implements Item {
 		
 	}
 
-	@Override
 	public void dispose() {
 		mapTexture.dispose();
 		packTexture.dispose();

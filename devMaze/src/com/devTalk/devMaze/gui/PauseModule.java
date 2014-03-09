@@ -28,6 +28,7 @@ public class PauseModule implements HUDModule {
 	public boolean actionedAt(int x, int y) {
 		x += camera.position.x - camera.viewportWidth / 2;
 		y = (int) (camera.position.y + camera.viewportHeight / 2 - y);
+		
 		if (rectangle().contains(x, y)) {
 			game.pause = !game.pause;
 			return true;
@@ -49,7 +50,6 @@ public class PauseModule implements HUDModule {
 				button.getHeight());
 	}
 
-	@Override
 	public void render() {
 		batch.begin();
 		if (game.pause) {
@@ -73,8 +73,7 @@ public class PauseModule implements HUDModule {
 
 	@Override
 	public void stopAction(int x, int y) {
-		if (game.pause)
-			;// itemHandler.stopAction(x, y);
+		// TODO
 	}
 
 	@Override

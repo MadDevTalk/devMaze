@@ -116,7 +116,7 @@ public class DevMaze extends Game {
 		maze.create(currentLevel.mazeHeight, currentLevel.mazeWidth);
 		player.reset(EDGE_SIZE_PX + 2, EDGE_SIZE_PX + 2, false);
 		monsterHandler.set(currentLevel.numMonsters, currentLevel.monsterDifficulty);
-		//this.itemHandler.set(currentLevel.numItems);
+		itemHandler.set(currentLevel.numItems);
 	}
 
 	public void render() {

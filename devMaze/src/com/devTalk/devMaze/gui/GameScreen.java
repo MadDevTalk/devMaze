@@ -57,7 +57,7 @@ public class GameScreen implements Screen {
 	}
 
 	public void hide() {
-		// TODO Auto-generated method stub
+		Gdx.input.setInputProcessor(null);
 	}
 
 	// Save user app information
@@ -100,7 +100,6 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 
-		// Draw everything
 		// **DRAW MAZE** //
 		maze.render();
 

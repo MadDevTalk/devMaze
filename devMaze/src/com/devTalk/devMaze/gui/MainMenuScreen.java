@@ -15,8 +15,8 @@ public class MainMenuScreen implements Screen{
 	private SpriteBatch batch;
 	
 	Texture bgimage = new Texture(Gdx.files.internal("bgimage.png"));
-	HUD hud;
 	
+	HUD hud;
 	InputProcessor inputProcessor;
 
 	public MainMenuScreen(DevMaze g) {
@@ -75,4 +75,5 @@ public class MainMenuScreen implements Screen{
 	public void show() {
 		Gdx.input.setInputProcessor(inputProcessor);
 	}
+	
 }

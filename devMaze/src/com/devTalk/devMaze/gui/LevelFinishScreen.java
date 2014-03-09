@@ -21,10 +21,10 @@ public class LevelFinishScreen implements Screen {
 	Rectangle menu, resume;
 
 	public LevelFinishScreen(DevMaze g) {
-		this.game = g;
-		this.batch = g.batch;
-		this.font = g.font;
-		this.camera = g.camera;
+		game = g;
+		batch = g.batch;
+		font = g.font;
+		camera = g.camera;
 
 		menuColor = new Texture(Gdx.files.internal("MENU.png"));
 		resumeColor = new Texture(Gdx.files.internal("RESUME.png"));
@@ -33,17 +33,14 @@ public class LevelFinishScreen implements Screen {
 		// Place the buttons
 		x = 100;
 		y = 75;
-		menu = new Rectangle(x, y, menuColor.getWidth() * 2,
-				menuColor.getHeight());
+		menu = new Rectangle(x, y, menuColor.getWidth() * 2, menuColor.getHeight());
 		y = 155;
-		resume = new Rectangle(x, y, resumeColor.getWidth() * 2,
-				resumeColor.getHeight());
+		resume = new Rectangle(x, y, resumeColor.getWidth() * 2, resumeColor.getHeight());
 	}
 
-	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		menuColor.dispose();
+		resumeColor.dispose();
 	}
 
 	@Override
@@ -117,10 +114,8 @@ public class LevelFinishScreen implements Screen {
 
 	}
 
-	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-
+		Gdx.input.setInputProcessor(null);
 	}
 
 }
