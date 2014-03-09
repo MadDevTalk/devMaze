@@ -143,16 +143,6 @@ public class Maze {
 		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
 	}
 
-	public void makeSwatch(int topX, int topY) {
-		for (int i = 0; i <= 5; i++) {
-			for (int j = 0; j <= 5; j++) {
-				if (this.tiles[i][j].inMaze) {
-					this.tiles[i][j].inSwatch(true);
-				}
-			}
-		}
-	}
-
 	public void render() {
 		batch.begin();
 		for (int i = 0; i < this.tiles.length; i++)
