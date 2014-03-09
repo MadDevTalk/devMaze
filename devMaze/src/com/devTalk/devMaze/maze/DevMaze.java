@@ -46,7 +46,6 @@ public class DevMaze extends Game {
 	public boolean pause;                            /* Is the game paused */
 
 	public void create() {
-
 		// Create libGDX objects
 		batch = new SpriteBatch();
 		font = new BitmapFont();

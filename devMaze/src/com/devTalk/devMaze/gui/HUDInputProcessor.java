@@ -1,13 +1,12 @@
 package com.devTalk.devMaze.gui;
 
 import com.badlogic.gdx.InputProcessor;
-import com.devTalk.devMaze.maze.DevMaze;
 
 public class HUDInputProcessor implements InputProcessor {
 
 	private HUD hud;
 
-	public HUDInputProcessor(DevMaze g, HUD hud) {
+	public HUDInputProcessor(HUD hud) {
 		this.hud = hud;
 	}
 
