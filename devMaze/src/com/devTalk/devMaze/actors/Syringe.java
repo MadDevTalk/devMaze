@@ -10,16 +10,16 @@ public class Syringe implements Item {
 
 	private SpriteBatch batch;
 
-	private static Texture mapTexture = new Texture(Gdx.files.internal("syringe.png"));
-	private static Texture packTexture = new Texture(Gdx.files.internal("syringe.png"));
+	private static Texture mapTexture = new Texture(Gdx.files.internal("syringe_map.png"));
+	private static Texture packTexture = new Texture(Gdx.files.internal("syringe_pack.png"));
 	
-	private Rectangle mapRectangle;
-	private Rectangle packRectangle;
-
+	private Rectangle mapRectangle, packRectangle;
 	private static final int ITEM_ID = 3;
 	
 	public Syringe(float x, float y, DevMaze g){
 		batch = g.batch;
+		x -= mapTexture.getWidth() / 2;
+		y -= mapTexture.getHeight() / 2;
 		mapRectangle = new Rectangle(x, y, mapTexture.getHeight(), mapTexture.getWidth());
 		packRectangle = new Rectangle(0, 1, packTexture.getHeight(), packTexture.getWidth());
 	}
@@ -35,40 +35,30 @@ public class Syringe implements Item {
 		packTexture.dispose();
 	}
 
-	@Override
 	public boolean equals(Item item) {
 		return item.getID() == ITEM_ID;
 	}
 
-	@Override
 	public int getID() {
 		return ITEM_ID;
 	}
 
-	@Override
 	public Rectangle mapRectangle() {
-		// TODO Auto-generated method stub
 		return mapRectangle;
 	}
 
-	@Override
 	public Texture mapTexture() {
-		// TODO Auto-generated method stub
 		return mapTexture;
 	}
-
-	@Override
+	
 	public Rectangle packRectangle() {
-		// TODO Auto-generated method stub
 		return packRectangle;
 	}
 
-	@Override
 	public Texture packTexture() {
 		return packTexture;
 	}
 
-	@Override
 	public void render() {
 		batch.draw(packTexture(), packRectangle().x, packRectangle().y);
 	}

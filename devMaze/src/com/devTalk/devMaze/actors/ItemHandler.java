@@ -66,8 +66,7 @@ public class ItemHandler {
 		Random r = new Random();
 		for(int i = 0; i < numItems; i++){
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			items.add(new Syringe((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
-					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)), game));
+			items.add(new Syringe(openTile.center.x, openTile.center.y,  game));
 		}
 	}
 	
