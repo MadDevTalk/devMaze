@@ -56,7 +56,7 @@ public class MainMenuScreen implements Screen{
 		
 		// **DRAW BACKGROUND** //
 		batch.begin();
-		batch.draw(bgimage, 0, 0);
+		batch.draw(bgimage, 0, 0, camera.viewportWidth, camera.viewportHeight);
 		batch.end();
 
 		// **DRAW BUTTONS** //

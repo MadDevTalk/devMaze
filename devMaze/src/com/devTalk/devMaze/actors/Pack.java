@@ -1,4 +1,4 @@
-package com.devTalk.devMaze.gui;
+package com.devTalk.devMaze.actors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.devTalk.devMaze.actors.Item;
 import com.devTalk.devMaze.maze.DevMaze;
 
 public class Pack {
@@ -41,7 +40,7 @@ public class Pack {
 					return true;
 				}
 
-		return false;
+		return true;
 	}
 
 	public void add(Item item) {

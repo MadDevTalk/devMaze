@@ -13,8 +13,10 @@ public class NewGameModule implements HUDModule {
 	private SpriteBatch batch;
 	private DevMaze game;
 	
-	Texture button = new Texture(Gdx.files.internal("SINGLE_PLAYER.png"));
-	Texture button_onClick = new Texture(Gdx.files.internal("onclick_singleplayer.png"));
+	Texture button_landscape = new Texture(Gdx.files.internal("SINGLE_PLAYER.png"));
+	Texture onClick_button_landscape = new Texture(Gdx.files.internal("onclick_singleplayer.png"));
+	Texture button_portrait = new Texture(Gdx.files.internal("single_player_portrait.png"));
+	Texture onClick_button_portrait = new Texture(Gdx.files.internal("single_player_portrait_onClick.png")); 
 	
 	Rectangle rectangle;
 	boolean actioned;
@@ -23,12 +25,9 @@ public class NewGameModule implements HUDModule {
 		game = g;
 		batch = g.batch;
 		camera = g.camera;
-		
-		int x = (int) (camera.position.x - (button.getWidth() / 2));
-		int y = (int) (camera.position.y - (button.getHeight() / 2));
-		rectangle = new Rectangle(x, y + 80, 512, 64);
-		
+
 		actioned = false;
+		rectangle = new Rectangle();
 	}
 	
 	public boolean actionedAt(int x, int y) {
@@ -52,18 +51,21 @@ public class NewGameModule implements HUDModule {
 	}
 
 	public void dispose() {
-		button.dispose();
-		button_onClick.dispose();
+		button_landscape.dispose();
+		onClick_button_landscape.dispose();
+		button_portrait.dispose();
+		onClick_button_portrait.dispose();
 	}
 
 	public void render() {
+		Texture texture = texture();
+		rectangle.set(camera.position.x - (texture.getWidth() / 2), 
+				      camera.position.y - (texture.getHeight() / 2), 
+				      texture.getWidth(), 
+				      texture.getHeight());
+		
 		batch.begin();
-		
-		if (actioned)
-			batch.draw(button_onClick, rectangle.x, rectangle.y);
-		else
-			batch.draw(button, rectangle.x, rectangle.y);
-		
+		batch.draw(texture(), rectangle.x, rectangle.y);
 		batch.end();
 	}
 
@@ -76,6 +78,13 @@ public class NewGameModule implements HUDModule {
 			game.newGame();
 			game.setScreen(game.gameScreen);
 		}
+	}
+	
+	private Texture texture() {
+		if(camera.viewportHeight >= camera.viewportWidth)
+			return actioned ? onClick_button_portrait : button_portrait;
+		else
+			return actioned ? onClick_button_landscape : button_landscape;
 	}
 
 }

@@ -68,7 +68,6 @@ public class GameScreen implements Screen {
 	// The main loop, fires @ 60 fps
 	// LibGDX combines the main and user input threads
 	public void render(float delta) {
-
 		if (!game.pause) {
 
 			// Set the camera on the player's current position

@@ -53,11 +53,13 @@ public class PauseModule implements HUDModule {
 	public void render() {
 		batch.begin();
 		if (game.pause) {
+			Texture texture = menuTexture();
 			batch.draw(
-					menu,
-					camera.position.x - camera.viewportWidth / 2,
-					(camera.position.y + camera.viewportHeight / 2)
-							- menu.getHeight());
+					texture,
+					camera.position.x - (camera.viewportWidth / 2),
+					(camera.position.y - (camera.viewportHeight / 2)),
+					camera.viewportWidth,
+					camera.viewportHeight);
 
 			player.pack.render();
 		}
@@ -65,8 +67,7 @@ public class PauseModule implements HUDModule {
 		batch.draw(
 				button,
 				camera.position.x - camera.viewportWidth / 2,
-				(camera.position.y + camera.viewportHeight / 2)
-						- button.getHeight());
+				(camera.position.y + camera.viewportHeight / 2) - button.getHeight());
 		
 		batch.end();
 	}
@@ -80,6 +81,10 @@ public class PauseModule implements HUDModule {
 	public boolean draggedAt(int x, int y) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	private Texture menuTexture() {
+		return (camera.viewportHeight >= camera.viewportWidth) ? menu : menu;
 	}
 
 }
