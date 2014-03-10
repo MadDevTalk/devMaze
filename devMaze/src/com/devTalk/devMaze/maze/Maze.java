@@ -39,7 +39,7 @@ public class Maze {
 			}
 		}
 	
-		this.generate();
+		generate();
 	}
 
 	public void dispose() {
@@ -75,22 +75,23 @@ public class Maze {
 	}
 
 	public Maze(DevMaze g) {
-		this.camera = g.camera;
-		this.batch = g.batch;
-		this.tiles = new Tile[0][0];
-		this.openTiles = new ArrayList<Tile>();
+		camera = g.camera;
+		batch = g.batch;
+		tiles = new Tile[0][0];
+		openTiles = new ArrayList<Tile>();
+		hallways = new ArrayList<Hallway>();
 	}
 
 	public void render() {
 		batch.begin();
-		for (int i = 0; i < this.tiles.length; i++)
-			for (int j = 0; j < this.tiles[0].length; j++) {
-				float x = this.tiles[i][j].rectangle.x;
-				float y = this.tiles[i][j].rectangle.y;
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[0].length; j++) {
+				float x = tiles[i][j].rectangle.x;
+				float y = tiles[i][j].rectangle.y;
 				Vector3 tile = new Vector3(x, y, 0);
 
 				if (camera.frustum.sphereInFrustum(tile, DevMaze.EDGE_SIZE_PX))
-					batch.draw(this.tiles[i][j].texture(), x, y);
+					batch.draw(tiles[i][j].texture(), x, y);
 			}
 		batch.end();
 	}
@@ -216,6 +217,7 @@ public class Maze {
 			}
 		}
 		
+		hallways.add(hallway);
 	}
 
 	/**
