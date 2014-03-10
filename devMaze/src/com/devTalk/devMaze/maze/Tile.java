@@ -12,7 +12,7 @@ public class Tile {
 
 	private Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 	private Texture NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
-	private Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
+	private Texture SHADOW = new Texture(Gdx.files.internal("SHADOW.png"));
 	private Texture TREAD = new Texture(Gdx.files.internal("TREAD.png"));
 	private Texture SHADOW_TREAD = new Texture(Gdx.files.internal("SHADOW_TREAD.png"));
 	
@@ -46,7 +46,7 @@ public class Tile {
 	public void dispose() {
 		IN_MAZE.dispose();
 		NOT_IN_MAZE.dispose();
-		SWATCH.dispose();
+		SHADOW.dispose();
 		TREAD.dispose();
 	}
 
@@ -81,6 +81,8 @@ public class Tile {
 					return SHADOW_TREAD;
 				else
 					return TREAD;
+			else if(isShadow)
+				return SHADOW;
 			else
 				return IN_MAZE;
 		else return NOT_IN_MAZE;

@@ -116,25 +116,105 @@ public class Maze {
 	}
 	
 	private void analyze() {
+		Direction dir;
+		
 		for (int row = 0; row < tiles.length; row++)
 			for (int col = 0; col < tiles[0].length; col++)
 				if (tiles[row][col].inMaze) {
 					openTiles.add(tiles[row][col]);
 					setNeighbors(row, col);
-					if(isLeaf(row, col){
-						defineHallway(row, col, dir)
+					
+					dir = isLeaf(row, col);
+					if(dir != null){
+						defineHallway(row, col, dir);
 					}
 				}
 	}
 
-	//
+	// Returns the direction out of the leaf, or null if this is not one
 	private Direction isLeaf(int row, int col) {
+		int count = 0;
+		Direction dir = null;
 		
-		return false;
+		try{
+			if(tiles[row + 1][col].inMaze){ 
+				count += 1;
+				dir = Direction.UP;
+			}
+		}
+		catch(Exception e){};
+		
+		try{
+			if(tiles[row][col + 1].inMaze){ 
+				count += 1;
+				dir = Direction.RIGHT;
+			}
+		}
+		catch(Exception e){};
+		
+		try{
+			if(tiles[row - 1][col].inMaze){ 
+				count += 1;
+				dir = Direction.DOWN;
+			}
+		}
+		catch(Exception e){};
+		
+		try{
+			if(tiles[row][col - 1].inMaze){ 
+				count += 1;
+				dir = Direction.LEFT;
+			}
+		}
+		catch(Exception e){};
+		
+		// Exactly one inMaze neighbor
+		if(count == 1)
+			return dir;
+		else
+			return null; // Not a leaf
 	}
 
-	private void defineHallway(int row, int col) {
-		if(tiles[row][col].inMaze)
+	private void defineHallway(int row, int col, Direction dir) {
+		Hallway hallway = new Hallway();
+		Tile thisTile = tiles[row][col];
+		boolean wall = false;
+		int x = row; int y = col;
+		
+		while(!wall){
+			hallway.addSpace(thisTile);
+			
+			switch(dir){
+				case UP:
+					thisTile = tiles[x + 1][y];
+					x++;
+					
+					if(!thisTile.inMaze)
+						wall = true;
+					break;
+				case DOWN:
+					thisTile = tiles[x - 1][y];
+					x--;
+					
+					if(!thisTile.inMaze)
+						wall = true;
+					break;
+				case LEFT:
+					thisTile = tiles[x][y - 1];
+					y--;
+					
+					if(!thisTile.inMaze)
+						wall = true;
+					break;
+				case RIGHT:
+					thisTile = tiles[x][y + 1];
+					y++;
+					
+					if(!thisTile.inMaze)
+						wall = true;
+					break;
+			}
+		}
 		
 	}
 
