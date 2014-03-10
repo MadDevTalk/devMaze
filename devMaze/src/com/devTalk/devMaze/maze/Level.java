@@ -18,7 +18,7 @@ public class Level {
 			mazeWidth = 15;
 			mazeHeight = 11;
 			numMonsters = 1;
-			numItems = 1;
+			numItems = 10;
 			monsterDifficulty = ActorType.EASY;
 			break;
 		case LEVEL_2:

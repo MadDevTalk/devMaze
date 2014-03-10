@@ -51,7 +51,8 @@ public class ItemHandler {
 
 	public void runOverItem(Rectangle playerArea) {
 		List<Item> usedItems = new ArrayList<Item>();
-		for (Item item : this.items) 
+		
+		for (Item item : items) 
 		{
 			if (playerArea.overlaps(item.mapRectangle())) {
 				player.pack.add(item);
@@ -66,8 +67,16 @@ public class ItemHandler {
 		Random r = new Random();
 		for(int i = 0; i < numItems; i++){
 			Tile openTile = maze.openTiles.get(r.nextInt(maze.openTiles.size()));
-			items.add(new Syringe((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+			
+			// Alternate between which items are placed. There's definitely better ways of implementing this
+			if(i%2 == 0){
+				items.add(new Syringe((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
 					(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)), game));
+			}
+			else {
+				items.add(new LightController((float) ((openTile.getPosition().x * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)),
+						(float) ((openTile.getPosition().y * DevMaze.EDGE_SIZE_PX) + (DevMaze.EDGE_SIZE_PX / 4)), game));
+			}
 		}
 	}
 	
