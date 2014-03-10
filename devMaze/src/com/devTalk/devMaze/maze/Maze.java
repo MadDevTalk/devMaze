@@ -13,49 +13,32 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class Maze {
 
-	private OrthographicCamera camera;
 	private SpriteBatch batch;
-
-	public Tile[][] tiles;
-	public List<Tile> openTiles;
+	private OrthographicCamera camera;
 	public Tile end;
-
-	public Maze(DevMaze g) {
-		this.camera = g.camera;
-		this.batch = g.batch;
-		this.tiles = new Tile[0][0];
-		this.openTiles = new ArrayList<Tile>();
-	}
-
-	private void analyze() {
-		for (int row = 0; row < tiles.length; row++)
-			for (int col = 0; col < tiles[0].length; col++)
-				if (tiles[row][col].inMaze) {
-					openTiles.add(tiles[row][col]);
-					setNeighbors(row, col);
-				}
-	}
-
+	public List<Tile> openTiles;
+	public List<Hallway> hallways;
+	public Tile[][] tiles;
 	// May want to throw a new OutOfMaze exception or something
 	public int col(float xPos) {
 		int calculated = (int) ((xPos + (DevMaze.PLAYER_SIZE_PX / 2)) / DevMaze.EDGE_SIZE_PX);
-
+	
 		if (calculated > tiles[0].length - 1 || calculated < 0)
 			calculated = -1;
-
+	
 		return calculated;
 	}
 
 	public void create(int row, int col) {
 		tiles = new Tile[row][col];
 		openTiles.clear();
-
+	
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j] = new Tile(i, j);
 			}
 		}
-
+	
 		this.generate();
 	}
 
@@ -65,82 +48,37 @@ public class Maze {
 				tiles[i][j].dispose();
 	}
 
-	/**
-	 * Generates a maze within the boundaries using Randomized Prim's Algorithm
-	 * defined: http://en.wikipedia.org/wiki/Prim's_algorithm
-	 */
-	private void generate() {
-		Random gen = new Random();
-		List<Wall> walls = new ArrayList<Wall>();
-
-		// Start with a grid full of walls
-		int row, col;
-		row = col = 1;
-		Tile start = tiles[row][col];
-
-		// Mark as part of the maze
-		start.inMaze(true);
-
-		// Add the walls of the cell to the wall list
-		walls.addAll(get_Neighbors(row, col));
-
-		// While there are walls in the list:
-		while (walls.size() > 1) {
-
-			// Pick a random wall from the list
-			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
-
-			// If the cell on the opposite side isn't in the maze yet
-			if (!getOppositeTile(wall).inMaze) {
-				// Mark the edge a passage
-				tiles[wall.row][wall.col].inMaze(true);
-
-				// Mark the cell on the opposite side a passage
-				getOppositeTile(wall).inMaze(true);
-
-				row = wall.row + wall.rowOffset;
-				col = wall.col + wall.colOffset;
-
-				// Add the walls of the cell to the wall list
-				walls.addAll(get_Neighbors(row, col));
-
-			} else
-				// Remove wall from list
-				walls.remove(wall);
-
-		}
-
-		// Mark end tile
-		end = tiles[tiles.length - 2][tiles[0].length - 1];
-		end.inMaze(true);
-
-		analyze();
+	public int distanceToEnd() {
+		return -1;
 	}
 
 	public List<Wall> get_Neighbors(int row, int col) {
 		List<Wall> temp = new ArrayList<Wall>();
-
+	
 		// Check top
 		if (tiles.length - row > 3 && !tiles[row + 1][col].inMaze)
 			temp.add(new Wall(row, col, row + 1, col));
-
+	
 		// Check right
 		if (tiles[0].length - col > 3 && !tiles[row][col + 1].inMaze)
 			temp.add(new Wall(row, col, row, col + 1));
-
+	
 		// Check bottom
 		if (row > 2 && !tiles[row - 1][col].inMaze)
 			temp.add(new Wall(row, col, row - 1, col));
-
+	
 		// Check left
 		if (col > 2 && !tiles[row][col - 1].inMaze)
 			temp.add(new Wall(row, col, row, col - 1));
-
+	
 		return temp;
 	}
 
-	private Tile getOppositeTile(Wall wall) {
-		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
+	public Maze(DevMaze g) {
+		this.camera = g.camera;
+		this.batch = g.batch;
+		this.tiles = new Tile[0][0];
+		this.openTiles = new ArrayList<Tile>();
 	}
 
 	public void render() {
@@ -167,15 +105,6 @@ public class Maze {
 		return calculated;
 	}
 
-	private void setNeighbors(int row, int col) {
-		for (int i = -1; i <= 1; i++)
-			for (int j = -1; j <= 1; j++)
-				try {
-					if (i != 0 || j != 0)
-						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
-				} catch (IndexOutOfBoundsException e) {};
-	}
-
 	public Tile tileAtLocation(float xPos, float yPos) {
 		int row = row(yPos);
 		int col = col(xPos);
@@ -186,7 +115,91 @@ public class Maze {
 		return tiles[row(yPos)][col(xPos)];
 	}
 	
-	public int distanceToEnd() {
-		return -1;
+	private void analyze() {
+		for (int row = 0; row < tiles.length; row++)
+			for (int col = 0; col < tiles[0].length; col++)
+				if (tiles[row][col].inMaze) {
+					openTiles.add(tiles[row][col]);
+					setNeighbors(row, col);
+					if(isLeaf(row, col){
+						defineHallway(row, col, dir)
+					}
+				}
+	}
+
+	//
+	private Direction isLeaf(int row, int col) {
+		
+		return false;
+	}
+
+	private void defineHallway(int row, int col) {
+		if(tiles[row][col].inMaze)
+		
+	}
+
+	/**
+	 * Generates a maze within the boundaries using Randomized Prim's Algorithm
+	 * defined: http://en.wikipedia.org/wiki/Prim's_algorithm
+	 */
+	private void generate() {
+		Random gen = new Random();
+		List<Wall> walls = new ArrayList<Wall>();
+	
+		// Start with a grid full of walls
+		int row, col;
+		row = col = 1;
+		Tile start = tiles[row][col];
+	
+		// Mark as part of the maze
+		start.inMaze(true);
+	
+		// Add the walls of the cell to the wall list
+		walls.addAll(get_Neighbors(row, col));
+	
+		// While there are walls in the list:
+		while (walls.size() > 1) {
+	
+			// Pick a random wall from the list
+			Wall wall = walls.get(gen.nextInt(walls.size() - 1));
+	
+			// If the cell on the opposite side isn't in the maze yet
+			if (!getOppositeTile(wall).inMaze) {
+				// Mark the edge a passage
+				tiles[wall.row][wall.col].inMaze(true);
+	
+				// Mark the cell on the opposite side a passage
+				getOppositeTile(wall).inMaze(true);
+	
+				row = wall.row + wall.rowOffset;
+				col = wall.col + wall.colOffset;
+	
+				// Add the walls of the cell to the wall list
+				walls.addAll(get_Neighbors(row, col));
+	
+			} else
+				// Remove wall from list
+				walls.remove(wall);
+	
+		}
+	
+		// Mark end tile
+		end = tiles[tiles.length - 2][tiles[0].length - 1];
+		end.inMaze(true);
+	
+		analyze();
+	}
+
+	private Tile getOppositeTile(Wall wall) {
+		return tiles[wall.row + wall.rowOffset][wall.col + wall.colOffset];
+	}
+
+	private void setNeighbors(int row, int col) {
+		for (int i = -1; i <= 1; i++)
+			for (int j = -1; j <= 1; j++)
+				try {
+					if (i != 0 || j != 0)
+						tiles[row][col].addNeighbor(tiles[row + i][col + j]);
+				} catch (IndexOutOfBoundsException e) {};
 	}
 }

@@ -13,19 +13,21 @@ public class Tile {
 	private Texture IN_MAZE = new Texture(Gdx.files.internal("IN_MAZE.png"));
 	private Texture NOT_IN_MAZE = new Texture(Gdx.files.internal("NOT_IN_MAZE.png"));
 	private Texture SWATCH = new Texture(Gdx.files.internal("SWATCH.png"));
-	private Texture PORTAL = new Texture(Gdx.files.internal("PORTAL.png"));
+	private Texture TREAD = new Texture(Gdx.files.internal("TREAD.png"));
+	private Texture SHADOW_TREAD = new Texture(Gdx.files.internal("SHADOW_TREAD.png"));
 	
 	private Vector2 position;
 	private List<Tile> neighbors;
 
-	public boolean inMaze, inSwatch, isPortal, tread;
+	public boolean inMaze, inSwatch, isPortal, isShadow, tread;
 	public Rectangle rectangle;
 	public Vector2 center;
 
 	public Tile(int row, int col) {
-		this.inMaze = false;
-		this.inSwatch = false;
-		this.isPortal = false;
+		inMaze = false;
+		inSwatch = false;
+		isPortal = false;
+		isShadow = false;
 
 		neighbors = new ArrayList<Tile>();
 		position = new Vector2(col, row);
@@ -45,39 +47,46 @@ public class Tile {
 		IN_MAZE.dispose();
 		NOT_IN_MAZE.dispose();
 		SWATCH.dispose();
-		PORTAL.dispose();
+		TREAD.dispose();
 	}
 
 	public List<Tile> getNeighbors() {
-		return this.neighbors;
+		return neighbors;
 	}
 
 	public Vector2 getPosition() {
-		return this.position;
+		return position;
 	}
 
 	public void inMaze(boolean bool) {
-		this.inMaze = bool;
+		inMaze = bool;
 	}
 
 	public void inSwatch(boolean bool) {
-		this.inSwatch = bool;
+		inSwatch = bool;
 	}
 
 	public void isPortal(boolean bool) {
-		this.isPortal = bool;
+		isPortal = bool;
+	}
+	
+	public void isShadow(boolean bool){
+		isShadow = bool;
 	}
 
 	public Texture texture() {
-		if (this.inMaze)
-			if (this.tread)
-				return PORTAL;
+		if (inMaze)
+			if (tread)
+				if(isShadow)
+					return SHADOW_TREAD;
+				else
+					return TREAD;
 			else
 				return IN_MAZE;
 		else return NOT_IN_MAZE;
 	}
 
 	public String toString() {
-		return "(" + (int) this.position.x + ", " + (int) this.position.y + ")";
+		return "(" + (int) position.x + ", " + (int) position.y + ")";
 	}
 }
