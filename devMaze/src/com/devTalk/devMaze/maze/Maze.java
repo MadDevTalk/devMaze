@@ -208,8 +208,13 @@ public class Maze {
 						wall = true;
 					break;
 				case RIGHT:
-					thisTile = tiles[x][y + 1];
-					y++;
+					try{
+						thisTile = tiles[x][y + 1];
+						y++;
+					}
+					catch(Exception e){
+						wall = true;
+					}
 					
 					if(!thisTile.inMaze)
 						wall = true;

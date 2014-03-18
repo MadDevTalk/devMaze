@@ -29,7 +29,10 @@ public class LightController implements Item {
 	}
 	
 	public void action() {
-		System.out.println("I was clicked!");
+		packTexture = new Texture(Gdx.files.internal("OPEN_CONTROLLER.png"));
+		packRectangle = new Rectangle(0, 1, packTexture.getHeight(), packTexture.getWidth());
+		
+		System.out.println("I happen!");
 	}
 
 	public void dispose() {
